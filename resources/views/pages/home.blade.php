@@ -25,7 +25,7 @@
                   <span class="info-label">Ngày sinh:</span> <span class="info-value">--/--/----</span>
                 </div>
                 <div class="mb-1">
-                  <span class="info-label">Đơn vị:</span> <span class="info-value">Đường thủy II</span>
+                  <span class="info-label">Đơn vị:</span> <span class="info-value">TTDN Đường Thủy Sông Hậu</span>
                 </div>
               </div>
             </div>
