@@ -14,7 +14,7 @@
               </div>
               <div class="col-8">
                 <div class="mb-1">
-                  <span class="info-label">Số báo danh:</span> <span class="info-value">Hỗ trợ HV</span>
+                  <span class="info-label">Số báo danh:</span> <span class="info-value">LPT.SH.001</span>
                 </div>
                 <div class="mb-1">
                   <span class="info-label">Họ tên:</span>
@@ -22,7 +22,7 @@
                 </div>
                 <div class="mb-1"><span class="info-label">Giới tính:</span> <span class="info-value">Nam</span></div>
                 <div class="mb-1">
-                  <span class="info-label">Ngày sinh:</span> <span class="info-value">--/--/----</span>
+                  <span class="info-label">Ngày sinh:</span> <span class="info-value">26/02/2026</span>
                 </div>
                 <div class="mb-1">
                   <span class="info-label">Đơn vị:</span> <span class="info-value">TTDN Đường Thủy Sông Hậu</span>
