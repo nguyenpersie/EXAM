@@ -228,7 +228,7 @@
 
     @yield('content')
 
-    @include('partials.fotter')
+    @include('partials.footer')
 
     <div class="modal fade" id="submitModal" tabindex="-1">
       <div class="modal-dialog">
