@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
+            $table->string('category');
+            $table->string('title');
+            $table->integer('duration_minutes');
+            $table->float('total_score');
             $table->timestamps();
         });
     }
