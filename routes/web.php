@@ -10,3 +10,4 @@ Route::get('/', function () {
 
 Route::get('/', [HomeController::class, 'index'])->name('pages.home');
 Route::resource('questions', QuestionController::class)->names('admin.questions');
+
