@@ -11,6 +11,7 @@
 
   </head>
   <body>
+    dd(1);
 
     <div class="container">
         <h1 class="text-2xl font-bold mb-6">Quản lý câu hỏi</h1>
