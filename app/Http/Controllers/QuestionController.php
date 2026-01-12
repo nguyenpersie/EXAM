@@ -18,7 +18,6 @@ class QuestionController extends Controller
     }
     public function index(): View
     {
-        dd(1);
         $questions = $this->questionService->getPaginatedQuestions();
         return view('admin.index', compact('questions'));
     }
