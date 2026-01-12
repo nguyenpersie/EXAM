@@ -11,12 +11,12 @@
 
   </head>
   <body>
-    dd(1);
 
     <div class="container">
         <h1 class="text-2xl font-bold mb-6">Quản lý câu hỏi</h1>
 
-        <a href="#">Thêm câu hỏi mới</a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCreate">
+            <i class="bi bi-person-fill-add"></i> Thêm câu hỏi mới</button>
 
         <table class="w-full border-collapse">
             <thead>
