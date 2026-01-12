@@ -2,29 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class UserExam extends Model
 {
-    use HasApiTokens, Notifiable;
-
-    protected $fillable = [
-        'student_code',
-        'full_name',
-        'password',
-        'category',      // Hạng được gán (LPT, TM, TT, T4, ...)
-        'role',          // 'admin' hoặc 'student'
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'role' => 'string',
-    ];
+    //
 }
