@@ -16,7 +16,7 @@
     <div class="container">
         <h1 class="text-2xl font-bold mb-6">Quản lý câu hỏi</h1>
 
-        <a href="{{ route('questions.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">Thêm câu hỏi mới</a>
+        <a href="#">Thêm câu hỏi mới</a>
 
         <table class="w-full border-collapse">
             <thead>
