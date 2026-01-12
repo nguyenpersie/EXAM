@@ -27,7 +27,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('admin.questions.create');
+        return view('admin.questions.modals.add', compact('addExam'));
     }
 
     /**
