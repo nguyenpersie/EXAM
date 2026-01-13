@@ -48,33 +48,12 @@
             </tbody>
         </table>
 
-        {{ $questions->links() }}
+        <div class="d-flex justify-content-center">
+            {{ $questions->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
+        </div>
     </div>
 
     @include('partials.footer')
-
-    <div class="modal fade" id="submitModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Xác nhận nộp bài</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <p>Bạn chắc chắn muốn kết thúc bài thi?</p>
-            <ul>
-              <li>Số câu đã làm: <strong id="modal-done">0</strong></li>
-              <li>Số câu chưa làm: <strong id="modal-remain">0</strong></li>
-            </ul>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Làm tiếp</button>
-            <button type="button" class="btn btn-primary" onclick="alert('Đã nộp bài thành công!')">Đồng ý nộp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @include('admin.questions.modals.add')
   </body>
