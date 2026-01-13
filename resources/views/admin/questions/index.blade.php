@@ -36,7 +36,7 @@
                     <td class="border p-2">{{ $question->section }}</td>
                     <td class="border p-2">{{ $question->level }}</td>
                     <td class="border p-2">
-                        <a href="{{ route('questions.edit', $question) }}" class="text-blue-500">Sửa</a>
+                        <a href="#" class="text-blue-500">Sửa</a>
                         <form action="{{ route('questions.destroy', $question) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
