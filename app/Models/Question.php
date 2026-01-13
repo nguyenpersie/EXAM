@@ -22,7 +22,7 @@ class Question extends Model
     // Quan hệ với đáp án
     public function options()
     {
-        return $this->hasMany(Option::class);
+        return $this->hasMany(Option::class, 'question_id', 'id');
     }
 
     // Quan hệ với đề thi (many-to-many)
