@@ -10,7 +10,7 @@ class Subject extends Model
     protected $primaryKey = 'subject_id';
     use HasFactory;
 
-    protected $table = 'Subject';
+    protected $table = 'subjects';
 
     protected $fillable = [
         'name',

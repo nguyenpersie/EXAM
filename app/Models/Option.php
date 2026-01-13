@@ -10,7 +10,7 @@ class Option extends Model
     protected $primaryKey = 'option_id';
     use HasFactory;
 
-    protected $table = 'Option';
+    protected $table = 'options';
 
     protected $fillable = [
         'question_id',
