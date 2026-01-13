@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
+    protected $primaryKey = 'subject_id';
     use HasFactory;
+
+    protected $table = 'Subject';
 
     protected $fillable = [
         'name',
