@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+    protected $primaryKey = 'question_id';
     use HasFactory;
+
+    protected $table = 'Question';
 
     protected $fillable = [
         'content',       // Nội dung câu hỏi (hỗ trợ HTML)
