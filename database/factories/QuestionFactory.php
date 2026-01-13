@@ -22,7 +22,7 @@ class QuestionFactory extends Factory
     {
         return [
             'content' => fake()->paragraph(3) . '?', // Câu hỏi giả dạng đoạn văn kết thúc bằng dấu ?
-            'section' => fake()->randomElement(['I', 'II', 'III']), // Phần I, II, III
+            'section' => fake()->randomElement(['1', '2', '3']), // Phần I, II, III
             'level' => fake()->numberBetween(1, 5), // Độ khó từ 1 đến 5
             'created_at' => now(),
             'updated_at' => now(),
