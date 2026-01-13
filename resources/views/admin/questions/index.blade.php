@@ -37,7 +37,7 @@
                     <td class="border p-2">{{ $question->level }}</td>
                     <td class="border p-2">
                         <a href="#" class="text-blue-500">Sửa</a>
-                        <form action="{{ route('questions.destroy', $question) }}" method="POST" class="inline">
+                        <form action="#" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-500 ml-4" onclick="return confirm('Xóa thật không?')">Xóa</button>
