@@ -10,7 +10,7 @@ class Exam extends Model
     protected $primaryKey = 'exam_id';
     use HasFactory;
 
-    protected $table = 'Exam';
+    protected $table = 'exams';
 
     protected $fillable = [
         'code',                  // Mã hạng (LPT, TM, TT, T4...)

@@ -11,7 +11,7 @@ class ExamQuestion extends Model
     protected $primaryKey = 'exam_question_id';
     use HasFactory;
 
-    protected $table = 'ExamQuestion';
+    protected $table = 'exam_question';
 
     protected $fillable = [
         'exam_id',

@@ -10,7 +10,7 @@ class Question extends Model
     protected $primaryKey = 'question_id';
     use HasFactory;
 
-    protected $table = 'Question';
+    protected $table = 'questions';
 
     protected $fillable = [
         'content',       // Nội dung câu hỏi (hỗ trợ HTML)

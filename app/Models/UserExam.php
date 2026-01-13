@@ -11,7 +11,7 @@ class User extends Authenticatable
     protected $primaryKey = 'user_id';
     use HasApiTokens, Notifiable;
 
-    protected $table = 'UserExam';
+    protected $table = 'users_exam';
 
     protected $fillable = [
         'student_code',
