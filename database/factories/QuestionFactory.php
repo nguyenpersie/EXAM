@@ -40,6 +40,7 @@ class QuestionFactory extends Factory
             $options = [];
             for ($i = 0; $i < 4; $i++) {
                 $options[] = [
+                    'question_id' => $question->id,
                     'content' => fake()->sentence(6), // Đáp án giả
                     'is_correct' => $i === $correctIndex,
                     'created_at' => now(),
