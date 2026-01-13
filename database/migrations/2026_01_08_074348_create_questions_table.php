@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
             $table->text('content');
-            $table->tinyInteger('section');
+            $table->string('section');
             $table->tinyInteger('level');
             $table->timestamps();
         });
