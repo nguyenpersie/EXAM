@@ -12,7 +12,7 @@ class UserExam extends Authenticatable
     protected $primaryKey = 'user_id';
     use HasApiTokens, Notifiable, HasFactory;
 
-    protected $table = 'users_exam';
+    protected $table = 'users';
 
     protected $fillable = [
        'student_code',
