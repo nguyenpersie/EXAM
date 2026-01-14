@@ -6,7 +6,7 @@ use App\Models\UserExam;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class UserExamSeeder extends Seeder
 {
     /**
      * Run the database seeds.
