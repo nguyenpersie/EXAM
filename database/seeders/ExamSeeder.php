@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Exam;
 use App\Models\Question;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
