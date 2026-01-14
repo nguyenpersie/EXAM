@@ -18,6 +18,7 @@ class UserExamSeeder extends Seeder
             'student_code' => 'ADMIN001',
             'full_name' => 'Admin System',
             'email' => 'admin@example.com',
+            'category' => 'ADMIN',
         ]);
 
         // Tạo 100 học viên giả
