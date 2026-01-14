@@ -25,9 +25,9 @@ class UserExamFactory extends Factory
     {
         $categories = ['LPT', 'TM', 'TT', 'T4', 'T3', 'T2', 'T1', 'M3', 'M2', 'M1', 'ĐKCT', 'ATVB', 'ATXD'];
         return [
-           'student_code' => 'SBD' . fake()->unique()->numberBetween(1, 10),
+           'student_code' => 'SBD' . fake()->numberBetween(100, 900),
             'full_name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'email' => fake()->safeEmail(),
             'password' => Hash::make('123456'),
             'role' => 'student',
             'category' => fake()->randomElement($categories),
