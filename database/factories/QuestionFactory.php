@@ -18,16 +18,16 @@ class QuestionFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    public function definition(array $attributes = []): array
     {
-       return [
+       return array_merge([
             'exam_id' => null, // Sẽ được gán khi tạo exam (hoặc null nếu dùng ngân hàng chung)
             'content' => fake()->paragraph(3) . '?', // Nội dung câu hỏi giả
             'section' => fake()->randomElement(['I', 'II', 'III']),
             'level' => fake()->numberBetween(1, 5),
             'created_at' => now(),
             'updated_at' => now(),
-        ];
+        ], $attributes);
     }
 
     /**
