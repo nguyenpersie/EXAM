@@ -14,11 +14,12 @@ class User extends Authenticatable
     protected $table = 'users_exam';
 
     protected $fillable = [
-        'student_code',
+       'student_code',
         'full_name',
+        'email',
         'password',
-        'category',      // Hạng được gán (LPT, TM, TT, T4, ...)
-        'role',          // 'admin' hoặc 'student'
+        'role',
+        'category',
     ];
 
     protected $hidden = [
@@ -27,7 +28,11 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'role' => 'string',
+       'role' => 'string',
     ];
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
 }

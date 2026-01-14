@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('options', function (Blueprint $table) {
+       Schema::create('options', function (Blueprint $table) {
             $table->id();
             $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
-            $table->text('content');
-            $table->boolean('is_correct')->default(false);
+            $table->text('content')->comment('Nội dung đáp án A/B/C/D');
+            $table->boolean('is_correct')->default(false)->comment('Đáp án đúng hay không');
             $table->timestamps();
         });
     }

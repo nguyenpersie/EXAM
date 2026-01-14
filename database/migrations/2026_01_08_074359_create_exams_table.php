@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exams', function (Blueprint $table) {
+       Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->string('category');
-            $table->string('title');
-            $table->integer('duration_minutes');
-            $table->float('total_score');
+            $table->string('code', 20)->unique()->comment('Mã hạng: LPT, TM, TT...');
+            $table->string('title', 255)->comment('Tên đề thi');
+            $table->integer('duration_minutes')->comment('Thời gian làm bài');
+            $table->float('total_score')->comment('Tổng điểm');
+            $table->float('passing_score')->comment('Điểm đạt');
             $table->timestamps();
         });
     }
