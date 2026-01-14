@@ -20,10 +20,11 @@ class QuestionFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'content' => fake()->paragraph(3) . '?', // Câu hỏi giả dạng đoạn văn kết thúc bằng dấu ?
-            'section' => fake()->randomElement(['1', '2', '3']), // Phần I, II, III
-            'level' => fake()->numberBetween(1, 5), // Độ khó từ 1 đến 5
+       return [
+            'exam_id' => null, // Sẽ được gán khi tạo exam (hoặc null nếu dùng ngân hàng chung)
+            'content' => fake()->paragraph(3) . '?', // Nội dung câu hỏi giả
+            'section' => fake()->randomElement(['I', 'II', 'III']),
+            'level' => fake()->numberBetween(1, 5),
             'created_at' => now(),
             'updated_at' => now(),
         ];
@@ -32,23 +33,20 @@ class QuestionFactory extends Factory
     /**
      * Tự động tạo 4 đáp án, trong đó 1 cái đúng
      */
-    public function withOptions(): static
+   public function withOptions(): static
     {
         return $this->afterCreating(function (Question $question) {
+            $letters = ['A', 'B', 'C', 'D'];
             $correctIndex = fake()->numberBetween(0, 3); // Chọn ngẫu nhiên đáp án đúng
 
-            $options = [];
             for ($i = 0; $i < 4; $i++) {
-                $options[] = [
-                    'question_id' => $question->id,
-                    'content' => fake()->sentence(6), // Đáp án giả
+                $question->options()->create([
+                    'content' => $letters[$i] . '. ' . fake()->sentence(8),
                     'is_correct' => $i === $correctIndex,
                     'created_at' => now(),
                     'updated_at' => now(),
-                ];
+                ]);
             }
-
-            $question->options()->createMany($options);
         });
     }
 }
