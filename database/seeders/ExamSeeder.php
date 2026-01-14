@@ -20,7 +20,7 @@ class ExamSeeder extends Seeder
             ->create()
             ->each(function ($exam) {
                 Question::factory()
-                    ->count(20)
+                    ->count(30)
                     ->withOptions() // Tự động tạo 4 đáp án
                     ->create(['exam_id' => $exam->id]);
             });

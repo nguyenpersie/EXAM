@@ -16,7 +16,7 @@ class ExamFactory extends Factory
      */
     public function definition(): array
     {
-        $code = fake()->randomElement(['LPT', 'TM', 'TT', 'T4', 'T3', 'T2', 'T1', 'M3', 'M2', 'M1', 'ĐKCT', 'ATVB', 'ATXD']);
+        $code = fake()->unique()->randomElement(['LPT', 'TM', 'TT', 'T4', 'T3', 'T2', 'T1', 'M3', 'M2', 'M1', 'ĐKCT', 'ATVB', 'ATXD']) . '-' . fake()->numberBetween(1, 99);
         return [
             'code' => $code,
             'title' => "Đề thi thử hạng $code " . fake()->year(),
