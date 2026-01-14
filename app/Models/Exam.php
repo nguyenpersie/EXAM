@@ -13,20 +13,16 @@ class Exam extends Model
     protected $table = 'exams';
 
     protected $fillable = [
-        'code',                  // Mã hạng (LPT, TM, TT, T4...)
-        'title',                 // Tên đề thi
-        'duration_minutes',      // Thời gian làm bài
-        'total_score',           // Tổng điểm
-        'passing_score',         // Điểm đạt
-        'section_i_count',       // Số câu phần I
-        'section_ii_count',      // Số câu phần II
-        'section_iii_count',     // Số câu phần III
+      'code',
+        'title',
+        'duration_minutes',
+        'total_score',
+        'passing_score',
     ];
 
     // Quan hệ với câu hỏi (many-to-many)
     public function questions()
     {
-        return $this->belongsToMany(Question::class, 'exam_questions')
-                    ->withPivot('point');
+        return $this->hasMany(Question::class);
     }
 }

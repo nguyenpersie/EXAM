@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users_exam', function (Blueprint $table) {
+       Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('student_code')->nullable();
-            $table->string('full_name');
-            $table->string('password');
-            $table->string('category')->nullable();
-            $table->tinyInteger('role')->default(1); // 0=admin, 1=student
+            $table->string('student_code', 50)->unique()->comment('Mã học viên (SBD)');
+            $table->string('full_name', 100);
+            $table->string('email', 100)->unique();
+            $table->string('password', 255);
+            $table->string('role', 20)->default('student')->comment('admin hoặc student');
+            $table->string('category', 20)->comment('Hạng: LPT, TM, TT, T4...');
             $table->timestamps();
         });
     }

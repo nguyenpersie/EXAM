@@ -52,7 +52,6 @@
             {{ $questions->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
         </div>
     </div>
-
     @include('partials.footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @include('admin.questions.modals.add')

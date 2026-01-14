@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+       Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            //$table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
-            $table->text('content');
-            $table->tinyInteger('section');
-            $table->tinyInteger('level');
+            $table->foreignId('exam_id')->constrained('exams')->onDelete('cascade');
+            $table->text('content')->comment('Nội dung câu hỏi (hỗ trợ HTML)');
+            $table->string('section', 10)->comment('Phần I, II, III');
+            $table->tinyInteger('level')->default(3)->comment('Độ khó 1-5');
             $table->timestamps();
         });
     }
