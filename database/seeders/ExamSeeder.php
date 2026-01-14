@@ -36,26 +36,26 @@ class ExamSeeder extends Seeder
             ->create()
             ->each(function ($exam) {
                 // Tạo 30 câu hỏi cho đề thi này
-                Question::factory()
-                    ->count(30)
-                    ->create() // Tạo câu hỏi trước (exam_id null tạm thời)
-                    ->each(function ($question) use ($exam) {
-                        // Gán exam_id thủ công sau khi tạo
-                        $question->update(['exam_id' => $exam->id]);
+                for ($i = 0; $i < 30; $i++) {
+                    $question = Question::factory()->create(); // Tạo câu hỏi trước
 
-                        // Tạo 4 đáp án cho câu hỏi
-                        $letters = ['A', 'B', 'C', 'D'];
-                        $correctIndex = fake()->numberBetween(0, 3);
+                    // Gán exam_id thủ công (đây là fix chính)
+                    $question->exam_id = $exam->id;
+                    $question->save();
 
-                        for ($i = 0; $i < 4; $i++) {
-                            $question->options()->create([
-                                'content' => $letters[$i] . '. ' . fake()->sentence(8),
-                                'is_correct' => $i === $correctIndex,
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ]);
-                        }
-                    });
+                    // Tạo 4 đáp án cho câu hỏi
+                    $letters = ['A', 'B', 'C', 'D'];
+                    $correctIndex = fake()->numberBetween(0, 3);
+
+                    for ($j = 0; $j < 4; $j++) {
+                        $question->options()->create([
+                            'content' => $letters[$j] . '. ' . fake()->sentence(8),
+                            'is_correct' => $j === $correctIndex,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
             });
 
         $this->command->info('Đã tạo 10 đề thi giả, mỗi đề 30 câu hỏi + 120 đáp án!');
