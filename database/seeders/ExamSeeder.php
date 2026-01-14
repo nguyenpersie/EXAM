@@ -28,22 +28,20 @@ class ExamSeeder extends Seeder
     //     $this->command->info('Đã tạo 10 đề thi giả, mỗi đề 20 câu hỏi + 80 đáp án!');
     // }
 
-    public function run(): void
+   public function run(): void
     {
         // Tạo 10 đề thi giả
         Exam::factory()
             ->count(10)
             ->create()
             ->each(function ($exam) {
-                // Tạo 30 câu hỏi cho đề thi này
+                // Tạo 30 câu hỏi, gán exam_id ngay khi tạo
                 for ($i = 0; $i < 30; $i++) {
-                    $question = Question::factory()->create(); // Tạo câu hỏi trước
+                    $question = Question::factory()->create([
+                        'exam_id' => $exam->id  // ← Gán exam_id ở đây (override đúng cách)
+                    ]);
 
-                    // Gán exam_id thủ công (đây là fix chính)
-                    $question->exam_id = $exam->id;
-                    $question->save();
-
-                    // Tạo 4 đáp án cho câu hỏi
+                    // Tạo 4 đáp án
                     $letters = ['A', 'B', 'C', 'D'];
                     $correctIndex = fake()->numberBetween(0, 3);
 
