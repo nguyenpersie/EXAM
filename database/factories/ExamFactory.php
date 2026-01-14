@@ -16,8 +16,15 @@ class ExamFactory extends Factory
      */
     public function definition(): array
     {
+        $code = fake()->randomElement(['LPT', 'TM', 'TT', 'T4', 'T3', 'T2', 'T1', 'M3', 'M2', 'M1', 'ĐKCT', 'ATVB', 'ATXD']);
         return [
-            //
+            'code' => $code,
+            'title' => "Đề thi thử hạng $code " . fake()->year(),
+            'duration_minutes' => fake()->numberBetween(30, 90),
+            'total_score' => 100,
+            'passing_score' => 80,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
