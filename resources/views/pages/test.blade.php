@@ -360,8 +360,8 @@
             return;
           }
           timeLeft--;
-          const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
-          const s = (timeLeft % 60).toString().padStart(2, "0");
+          const m = Math.floor(timeLeft / 45).toString().padStart(2, "0");
+          const s = (timeLeft % 45).toString().padStart(2, "0");
           els.timer.innerText = `${m}:${s}`;
         }, 1000);
       }
