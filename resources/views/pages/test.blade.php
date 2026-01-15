@@ -89,7 +89,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tiếp tục làm</button>
-                <button type="button" class="btn btn-danger" onclick="submitExam()">Nộp bài</button>
+                <button type="button" class="btn btn-danger" onclick="submitExam()" data-bs-dismiss="modal">Nộp bài</button>
             </div>
         </div>
     </div>
@@ -327,12 +327,18 @@
 
       function confirmSubmit() {
         const doneCount = Object.keys(userAnswers).length;
-        document.getElementById("modal-done").innerText = doneCount;
-        document.getElementById("modal-remain").innerText = TOTAL_QUESTIONS - doneCount;
+        const modalDone = document.getElementById("modal-done");
+        const modalRemain = document.getElementById("modal-remain");
+
+        if (modalDone) modalDone.innerText = doneCount;
+        if (modalRemain) modalRemain.innerText = TOTAL_QUESTIONS - doneCount;
 
         const myModal = new bootstrap.Modal(document.getElementById("submitModal"));
         myModal.show();
       }
+
+      // Hàm này được gọi từ nút "Xác nhận nộp bài" trong modal
+      window.submitExam = submitExam;
 
       /* =========================================
        7. CHẤM ĐIỂM VÀ LƯU KẾT QUẢ
@@ -590,7 +596,19 @@
       }
 
       /* =========================================
-       9. MAIN RUN
+       9. EXPORT FUNCTIONS TO GLOBAL SCOPE
+       ========================================= */
+      // Để các hàm có thể gọi từ onclick trong HTML
+      window.changeQuestion = changeQuestion;
+      window.goToQuestion = goToQuestion;
+      window.selectAnswer = selectAnswer;
+      window.toggleFlag = toggleFlag;
+      window.confirmSubmit = confirmSubmit;
+      window.submitExam = submitExam;
+      window.viewDetailedResults = viewDetailedResults;
+
+      /* =========================================
+       10. MAIN RUN
        ========================================= */
       if (examData && examData.length > 0) {
         initSheet();
@@ -599,6 +617,6 @@
       } else {
         alert('Không tìm thấy dữ liệu đề thi!');
       }
-</script>
+    </script>
 
 @endsection
