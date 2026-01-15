@@ -72,13 +72,13 @@
                 </div>
             </div>
         </div> --}}
-                <!-- Cột trái: Bảng câu hỏi - chia 2 cột song song -->
+        <!-- Cột trái: Bảng câu hỏi - chia 2 cột song song -->
         <div class="col-lg-3 col-md-4 mb-4">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white text-center py-2">
                     <h6 class="mb-0">Bảng câu hỏi</h6>
                 </div>
-                <div class="card-body p-2">
+                <div class="card-body p-2" style="max-height: 70vh; overflow-y: auto;">
                     <div class="row g-2">
                         <!-- Cột 1 (câu 1-15) -->
                         <div class="col-6">
@@ -92,9 +92,7 @@
                                         <th>D</th>
                                     </tr>
                                 </thead>
-                                <tbody id="sheet-column-1">
-                                    <!-- Script sẽ render 15 câu đầu vào đây -->
-                                </tbody>
+                                <tbody id="sheet-column-1"></tbody>
                             </table>
                         </div>
 
@@ -110,9 +108,7 @@
                                         <th>D</th>
                                     </tr>
                                 </thead>
-                                <tbody id="sheet-column-2">
-                                    <!-- Script sẽ render 15 câu sau vào đây -->
-                                </tbody>
+                                <tbody id="sheet-column-2"></tbody>
                             </table>
                         </div>
                     </div>
@@ -238,30 +234,38 @@
         const column1 = examData.slice(0, half);
         const column2 = examData.slice(half);
 
-        // Render cột 1 (câu 1 đến half)
-        document.getElementById("sheet-column-1").innerHTML = column1
-            .map(
-                (q, idx) => `
-                <tr id="row-${q.id}">
-                    <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${q.id}</td>
-                    ${[0, 1, 2, 3]
-                      .map(
-                        (optIdx) => `
-                        <td>
-                            <span class="sheet-check"
-                                  id="cell-${q.id}-${optIdx}"
-                                  onclick="selectAnswer(${q.id}, ${examData[idx].options[optIdx].id})"></span>
-                        </td>
-                    `
-                      )
-                      .join("")}
-                </tr>
-            `
-            )
-            .join("");
+        // Render cột 1
+    document.getElementById("sheet-column-1").innerHTML = column1
+        .map((q, idx) => `
+            <tr id="row-${q.id}">
+                <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${q.id}</td>
+                ${[0, 1, 2, 3].map((optIdx) => `
+                    <td>
+                        <span class="sheet-check"
+                              id="cell-${q.id}-${optIdx}"
+                              onclick="selectAnswer(${q.id}, ${examData[idx].options[optIdx].id})"></span>
+                    </td>
+                `).join("")}
+            </tr>
+        `)
+        .join("");
 
-        // Render cột 2 (câu half+1 đến cuối)
-        document.getElementById("sheet-column-2").innerHTML = column2
+    // Render cột 2
+    document.getElementById("sheet-column-2").innerHTML = column2
+        .map((q, idx) => `
+            <tr id="row-${q.id}">
+                <td class="sheet-q-num" onclick="goToQuestion(${idx + half})" id="q-label-${idx + half}">${q.id}</td>
+                ${[0, 1, 2, 3].map((optIdx) => `
+                    <td>
+                        <span class="sheet-check"
+                              id="cell-${q.id}-${optIdx}"
+                              onclick="selectAnswer(${q.id}, ${examData[idx + half].options[optIdx].id})"></span>
+                    </td>
+                `).join("")}
+            </tr>
+        `)
+        .join("");
+
             .map(
                 (q, idx) => `
                 <tr id="row-${q.id}">
