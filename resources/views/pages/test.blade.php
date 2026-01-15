@@ -129,7 +129,7 @@
         id: question.id,
         content: question.content,
         options: question.options.map(opt => opt.content),
-        correctAnswer: question.options.findIndex(opt => opt.is_correct === 1) // Lưu đáp án đúng (không hiển thị cho user)
+        correctAnswer: question.options.findIndex(opt => opt.is_correct === 1) // Lưu đáp án đúng
       }));
 
       const TOTAL_QUESTIONS = examData.length;
@@ -138,11 +138,12 @@
       /* =========================================
        2. STATE QUẢN LÝ (TRẠNG THÁI)
        ========================================= */
-      let currentIdx = 0; // Đang xem câu index 0 (câu 1)
-      let userAnswers = {}; // Lưu đáp án: { 1: 0, 2: 3 } (câu 1 chọn A, câu 2 chọn D)
-      let flaggedSet = new Set(); // Các câu đánh dấu
+      let currentIdx = 0;
+      let userAnswers = {};
+      let flaggedSet = new Set();
       let timeLeft = EXAM_DURATION;
       let timerInterval;
+      let examStartTime = Date.now();
 
       /* =========================================
        3. DOM ELEMENTS
@@ -194,7 +195,7 @@
         els.qNum.innerText = `Nội dung câu hỏi ${idx + 1}`;
 
         // Update nội dung & đáp án (Radio buttons)
-        const savedAns = userAnswers[q.id]; // Đáp án đã chọn trước đó (nếu có)
+        const savedAns = userAnswers[q.id];
 
         const optionsHTML = q.options
           .map(
@@ -226,7 +227,7 @@
         document.querySelectorAll(".sheet-q-num").forEach((el) => el.classList.remove("active"));
         document.getElementById(`q-label-${idx}`).classList.add("active");
 
-        // Cuộn bảng sheet đến câu đang làm (nếu bảng dài quá)
+        // Cuộn bảng sheet đến câu đang làm
         document.getElementById(`row-${q.id}`).scrollIntoView({ behavior: "smooth", block: "center" });
       }
 
@@ -234,23 +235,20 @@
        5. LOGIC XỬ LÝ (ACTION)
        ========================================= */
 
-      // Xử lý khi chọn đáp án (Từ Radio hoặc từ Bảng Sheet)
+      // Xử lý khi chọn đáp án
       function selectAnswer(qId, optIdx) {
-        // 1. Lưu vào State
         userAnswers[qId] = optIdx;
 
-        // 2. Cập nhật UI Bảng Sheet (Tô đen ô)
-        // Reset dòng đó trước
+        // Cập nhật UI Bảng Sheet
         [0, 1, 2, 3].forEach((i) => {
           const cell = document.getElementById(`cell-${qId}-${i}`);
           if (cell) cell.classList.remove("checked");
         });
 
-        // Tô màu ô mới
         const selectedCell = document.getElementById(`cell-${qId}-${optIdx}`);
         if (selectedCell) selectedCell.classList.add("checked");
 
-        // 3. Nếu đang đứng ở câu đó thì tick radio button tương ứng
+        // Tick radio button nếu đang ở câu đó
         if (examData[currentIdx].id === qId) {
           const radios = document.getElementsByName("currentQuestion");
           if (radios[optIdx]) radios[optIdx].checked = true;
@@ -265,7 +263,7 @@
         }
       }
 
-      // Nhảy đến câu bất kỳ từ bảng sheet
+      // Nhảy đến câu bất kỳ
       function goToQuestion(idx) {
         renderQuestion(idx);
       }
@@ -316,14 +314,12 @@
         timerInterval = setInterval(() => {
           if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            alert("Hết giờ làm bài!");
-            // Có thể tự động submit ở đây
+            alert("Hết giờ làm bài! Bài thi sẽ tự động nộp.");
+            submitExam();
             return;
           }
           timeLeft--;
-          const m = Math.floor(timeLeft / 60)
-            .toString()
-            .padStart(2, "0");
+          const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
           const s = (timeLeft % 60).toString().padStart(2, "0");
           els.timer.innerText = `${m}:${s}`;
         }, 1000);
@@ -338,49 +334,271 @@
         myModal.show();
       }
 
-      // Hàm submit bài thi (gửi lên server)
+      /* =========================================
+       7. CHẤM ĐIỂM VÀ LƯU KẾT QUẢ
+       ========================================= */
       function submitExam() {
-        // Chuyển userAnswers thành format phù hợp để gửi lên server
-        const answers = Object.entries(userAnswers).map(([questionId, optionIndex]) => ({
-          question_id: parseInt(questionId),
-          selected_option: optionIndex
-        }));
+        clearInterval(timerInterval);
 
-        // Gửi dữ liệu qua AJAX hoặc form submit
-        // Ví dụ dùng fetch API:
-        fetch(`/exams-${examDataFromDB.id}/submit`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-          },
-          body: JSON.stringify({
-            answers: answers,
-            time_spent: EXAM_DURATION - timeLeft
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          // Xử lý kết quả trả về
-          window.location.href = `/exams-${examDataFromDB.id}/result`;
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Có lỗi xảy ra khi nộp bài!');
+        // Tính điểm
+        let correctCount = 0;
+        let wrongCount = 0;
+        let skippedCount = 0;
+
+        const detailedResults = examData.map((question, idx) => {
+          const userAnswer = userAnswers[question.id];
+          const isCorrect = userAnswer === question.correctAnswer;
+
+          if (userAnswer === undefined) {
+            skippedCount++;
+            return {
+              questionNumber: idx + 1,
+              questionId: question.id,
+              questionContent: question.content,
+              userAnswer: null,
+              correctAnswer: question.correctAnswer,
+              isCorrect: false,
+              status: 'skipped'
+            };
+          } else if (isCorrect) {
+            correctCount++;
+            return {
+              questionNumber: idx + 1,
+              questionId: question.id,
+              questionContent: question.content,
+              userAnswer: userAnswer,
+              correctAnswer: question.correctAnswer,
+              isCorrect: true,
+              status: 'correct'
+            };
+          } else {
+            wrongCount++;
+            return {
+              questionNumber: idx + 1,
+              questionId: question.id,
+              questionContent: question.content,
+              userAnswer: userAnswer,
+              correctAnswer: question.correctAnswer,
+              isCorrect: false,
+              status: 'wrong'
+            };
+          }
         });
+
+        // Tính điểm số
+        const score = (correctCount / TOTAL_QUESTIONS) * examDataFromDB.total_score;
+        const percentage = (correctCount / TOTAL_QUESTIONS) * 100;
+        const timeSpent = EXAM_DURATION - timeLeft;
+        const isPassed = score >= examDataFromDB.passing_score;
+
+        // Lưu kết quả vào object
+        const examResult = {
+          examId: examDataFromDB.id,
+          examTitle: examDataFromDB.title,
+          examCode: examDataFromDB.code,
+          totalQuestions: TOTAL_QUESTIONS,
+          correctCount: correctCount,
+          wrongCount: wrongCount,
+          skippedCount: skippedCount,
+          score: score.toFixed(2),
+          totalScore: examDataFromDB.total_score,
+          passingScore: examDataFromDB.passing_score,
+          percentage: percentage.toFixed(2),
+          isPassed: isPassed,
+          timeSpent: timeSpent,
+          duration: EXAM_DURATION,
+          submittedAt: new Date().toISOString(),
+          detailedResults: detailedResults
+        };
+
+        // Lưu vào biến tạm (có thể dùng sessionStorage hoặc chuyển sang trang kết quả)
+        sessionStorage.setItem('examResult', JSON.stringify(examResult));
+
+        // Chuyển sang trang kết quả hoặc hiển thị modal kết quả
+        showResultModal(examResult);
       }
 
       /* =========================================
-       7. MAIN RUN
+       8. HIỂN THỊ KẾT QUẢ
        ========================================= */
-      // Chạy khi load trang
+      function showResultModal(result) {
+        const resultHTML = `
+          <div class="modal fade" id="resultModal" tabindex="-1" data-bs-backdrop="static">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header bg-${result.isPassed ? 'success' : 'danger'} text-white">
+                  <h5 class="modal-title">
+                    <i class="bi bi-${result.isPassed ? 'check-circle' : 'x-circle'}"></i>
+                    Kết quả bài thi
+                  </h5>
+                </div>
+                <div class="modal-body">
+                  <div class="text-center mb-4">
+                    <h3>${result.examTitle}</h3>
+                    <p class="text-muted">Mã đề: ${result.examCode}</p>
+                  </div>
+
+                  <div class="row text-center mb-4">
+                    <div class="col-md-6">
+                      <div class="card bg-light">
+                        <div class="card-body">
+                          <h1 class="display-4 text-${result.isPassed ? 'success' : 'danger'}">
+                            ${result.score}/${result.totalScore}
+                          </h1>
+                          <p class="mb-0">Điểm số</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card bg-light">
+                        <div class="card-body">
+                          <h1 class="display-4 text-primary">${result.percentage}%</h1>
+                          <p class="mb-0">Tỷ lệ đúng</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mb-4">
+                    <div class="col-4 text-center">
+                      <div class="text-success">
+                        <i class="bi bi-check-circle fs-3"></i>
+                        <p class="mb-0"><strong>${result.correctCount}</strong></p>
+                        <small>Câu đúng</small>
+                      </div>
+                    </div>
+                    <div class="col-4 text-center">
+                      <div class="text-danger">
+                        <i class="bi bi-x-circle fs-3"></i>
+                        <p class="mb-0"><strong>${result.wrongCount}</strong></p>
+                        <small>Câu sai</small>
+                      </div>
+                    </div>
+                    <div class="col-4 text-center">
+                      <div class="text-warning">
+                        <i class="bi bi-dash-circle fs-3"></i>
+                        <p class="mb-0"><strong>${result.skippedCount}</strong></p>
+                        <small>Bỏ qua</small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="alert alert-info">
+                    <i class="bi bi-clock"></i> Thời gian làm bài:
+                    <strong>${Math.floor(result.timeSpent / 60)} phút ${result.timeSpent % 60} giây</strong>
+                    / ${Math.floor(result.duration / 60)} phút
+                  </div>
+
+                  ${result.isPassed ?
+                    '<div class="alert alert-success"><i class="bi bi-trophy"></i> Chúc mừng! Bạn đã vượt qua bài thi!</div>' :
+                    '<div class="alert alert-danger"><i class="bi bi-emoji-frown"></i> Bạn chưa đạt điểm! Điểm cần đạt: ' + result.passingScore + '</div>'
+                  }
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" onclick="viewDetailedResults()">
+                    <i class="bi bi-eye"></i> Xem chi tiết
+                  </button>
+                  <button type="button" class="btn btn-secondary" onclick="location.reload()">
+                    <i class="bi bi-arrow-clockwise"></i> Làm lại
+                  </button>
+                  <button type="button" class="btn btn-success" onclick="window.close()">
+                    <i class="bi bi-check-lg"></i> Hoàn thành
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Thêm modal vào body
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = resultHTML;
+        document.body.appendChild(tempDiv.firstElementChild);
+
+        // Hiển thị modal
+        const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+        resultModal.show();
+      }
+
+      // Xem chi tiết từng câu
+      function viewDetailedResults() {
+        const result = JSON.parse(sessionStorage.getItem('examResult'));
+
+        let detailHTML = `
+          <!DOCTYPE html>
+          <html lang="vi">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Chi tiết bài thi - ${result.examTitle}</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+          </head>
+          <body class="bg-light">
+            <div class="container py-4">
+              <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                  <h4 class="mb-0">Chi tiết bài làm - ${result.examTitle}</h4>
+                  <small>Điểm: ${result.score}/${result.totalScore} (${result.percentage}%)</small>
+                </div>
+              </div>
+        `;
+
+        result.detailedResults.forEach((item) => {
+          const statusClass = item.status === 'correct' ? 'success' : (item.status === 'wrong' ? 'danger' : 'warning');
+          const statusIcon = item.status === 'correct' ? 'check-circle' : (item.status === 'wrong' ? 'x-circle' : 'dash-circle');
+
+          detailHTML += `
+            <div class="card mb-3 border-${statusClass}">
+              <div class="card-header bg-${statusClass} bg-opacity-10">
+                <strong>Câu ${item.questionNumber}</strong>
+                <span class="badge bg-${statusClass} float-end">
+                  <i class="bi bi-${statusIcon}"></i>
+                  ${item.status === 'correct' ? 'Đúng' : (item.status === 'wrong' ? 'Sai' : 'Bỏ qua')}
+                </span>
+              </div>
+              <div class="card-body">
+                <p><strong>Câu hỏi:</strong> ${item.questionContent}</p>
+                <p class="mb-1"><strong>Đáp án của bạn:</strong>
+                  <span class="text-${statusClass}">
+                    ${item.userAnswer !== null ? String.fromCharCode(65 + item.userAnswer) : 'Không trả lời'}
+                  </span>
+                </p>
+                ${item.status !== 'correct' ? `
+                  <p class="mb-0"><strong>Đáp án đúng:</strong>
+                    <span class="text-success">${String.fromCharCode(65 + item.correctAnswer)}</span>
+                  </p>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        detailHTML += `
+              <div class="text-center mb-4">
+                <button class="btn btn-secondary" onclick="window.close()">Đóng</button>
+              </div>
+            </div>
+          </body>
+          </html>
+        `;
+
+        // Mở cửa sổ mới để hiển thị chi tiết
+        const detailWindow = window.open('', '_blank');
+        detailWindow.document.write(detailHTML);
+        detailWindow.document.close();
+      }
+
+      /* =========================================
+       9. MAIN RUN
+       ========================================= */
       if (examData && examData.length > 0) {
-        initSheet(); // Vẽ bảng câu hỏi
-        renderQuestion(0); // Vào câu 1
-        startTimer(); // Đếm giờ
+        initSheet();
+        renderQuestion(0);
+        startTimer();
       } else {
         alert('Không tìm thấy dữ liệu đề thi!');
       }
-    </script>
+</script>
 
 @endsection
