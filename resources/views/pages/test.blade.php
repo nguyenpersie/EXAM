@@ -4,26 +4,17 @@
 <div class="container-fluid py-4">
     <div class="row">
         <!-- Cột trái: Bảng câu hỏi (Sheet) -->
-        <div class="col-lg-3 col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white text-center">
-                    <h5 class="mb-0">Bảng câu hỏi</h5>
+        <div class="col-lg-3">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Thông tin thi</h5>
                 </div>
-                <div class="card-body p-0">
-                    <table class="table table-bordered m-0 sheet-table">
-                        <thead>
-                            <tr class="bg-light">
-                                <th>Câu</th>
-                                <th>A</th>
-                                <th>B</th>
-                                <th>C</th>
-                                <th>D</th>
-                            </tr>
-                        </thead>
-                        <tbody id="sheet-body">
-                            <!-- Script sẽ render bảng này -->
-                        </tbody>
-                    </table>
+                <div class="card-body">
+                    <p><strong>Đề thi:</strong> {{ $exam->title ?? 'Đề thử nghiệm' }}</p>
+                    <p><strong>Hạng:</strong> {{ $exam->code }}</p>
+                    <p><strong>Thời gian:</strong> {{ $exam->duration_minutes }} phút</p>
+                    <p><strong>Tổng điểm:</strong> {{ $exam->total_score }}</p>
+                    <p><strong>Điểm đạt:</strong> {{ $exam->passing_score }}</p>
                 </div>
             </div>
         </div>
@@ -58,17 +49,26 @@
         </div>
 
         <!-- Cột phải: Thông tin thi -->
-        <div class="col-lg-3">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-info text-white">
-                    <h5 class="mb-0">Thông tin thi</h5>
+        <div class="col-lg-3 col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h5 class="mb-0">Bảng câu hỏi</h5>
                 </div>
-                <div class="card-body">
-                    <p><strong>Đề thi:</strong> {{ $exam->title ?? 'Đề thử nghiệm' }}</p>
-                    <p><strong>Hạng:</strong> {{ $exam->code }}</p>
-                    <p><strong>Thời gian:</strong> {{ $exam->duration_minutes }} phút</p>
-                    <p><strong>Tổng điểm:</strong> {{ $exam->total_score }}</p>
-                    <p><strong>Điểm đạt:</strong> {{ $exam->passing_score }}</p>
+                <div class="card-body p-0">
+                    <table class="table table-bordered m-0 sheet-table">
+                        <thead>
+                            <tr class="bg-light">
+                                <th>Câu</th>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>C</th>
+                                <th>D</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sheet-body">
+                            <!-- Script sẽ render bảng này -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
