@@ -132,7 +132,7 @@
                     'id' => $opt->id,
                     'content' => $opt->content,
                 ];
-            })->values()
+            }).values()
         ];
     }));
 
@@ -165,31 +165,23 @@
      4. HÀM RENDER
      ========================================= */
 
-    // Khởi tạo bảng sheet
     function initSheet() {
         els.sheetBody.innerHTML = examData
-            .map(
-                (q, idx) => `
-            <tr id="row-${q.id}">
-                <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${q.id}</td>
-                ${[0, 1, 2, 3]
-                  .map(
-                    (optIdx) => `
-                    <td>
-                        <span class="sheet-check"
-                              id="cell-${q.id}-${optIdx}"
-                              onclick="selectAnswer(${q.id}, ${examData[idx].options[optIdx].id})"></span>
-                    </td>
-                `
-                  )
-                  .join("")}
-            </tr>
-        `
-            )
+            .map((q, idx) => `
+                <tr id="row-${q.id}">
+                    <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${q.id}</td>
+                    ${[0, 1, 2, 3].map((optIdx) => `
+                        <td>
+                            <span class="sheet-check"
+                                  id="cell-${q.id}-${optIdx}"
+                                  onclick="selectAnswer(${q.id}, ${examData[idx].options[optIdx].id})"></span>
+                        </td>
+                    `).join("")}
+                </tr>
+            `)
             .join("");
     }
 
-    // Hiển thị câu hỏi
     function renderQuestion(idx) {
         currentIdx = idx;
         const q = examData[idx];
@@ -199,17 +191,15 @@
         const savedAns = userAnswers[q.id];
 
         const optionsHTML = q.options
-            .map(
-                (opt, i) => `
-            <label class="option-item">
-                <input type="radio" name="currentQuestion" class="option-radio form-check-input"
-                       value="${opt.id}"
-                       ${savedAns === opt.id ? "checked" : ""}
-                       onchange="selectAnswer(${q.id}, ${opt.id})">
-                <span class="option-text">${opt.content}</span>
-            </label>
-        `
-            )
+            .map((opt, i) => `
+                <label class="option-item">
+                    <input type="radio" name="currentQuestion" class="option-radio form-check-input"
+                           value="${opt.id}"
+                           ${savedAns === opt.id ? "checked" : ""}
+                           onchange="selectAnswer(${q.id}, ${opt.id})">
+                    <span class="option-text">${opt.content}</span>
+                </label>
+            `)
             .join("");
 
         els.qContent.innerHTML = `
@@ -222,7 +212,7 @@
 
         updateFlagButtonUI();
 
-        document.querySelectorAll(".sheet-q-num").forEach((el) => el.classList.remove("active"));
+        document.querySelectorAll(".sheet-q-num").forEach(el => el.classList.remove("active"));
         document.getElementById(`q-label-${idx}`).classList.add("active");
 
         document.getElementById(`row-${q.id}`).scrollIntoView({ behavior: "smooth", block: "center" });
@@ -235,7 +225,6 @@
     function selectAnswer(qId, optId) {
         userAnswers[qId] = optId;
 
-        // Update UI Sheet
         const q = examData.find(q => q.id === qId);
         const optIdx = q.options.findIndex(opt => opt.id === optId);
         [0, 1, 2, 3].forEach(i => {
@@ -243,7 +232,6 @@
         });
         document.getElementById(`cell-${qId}-${optIdx}`).classList.add("checked");
 
-        // Update radio nếu đang xem câu đó
         if (examData[currentIdx].id === qId) {
             document.querySelector(`input[value="${optId}"]`).checked = true;
         }
