@@ -9,7 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class UserExam extends Authenticatable
 {
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'id';
     use HasApiTokens, Notifiable, HasFactory;
 
     protected $table = 'users';

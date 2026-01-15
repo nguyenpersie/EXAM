@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Exam extends Model
 {
-    protected $primaryKey = 'exam_id';
+    protected $primaryKey = 'id';
     use HasFactory;
 
     protected $table = 'exams';

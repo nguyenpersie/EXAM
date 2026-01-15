@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Option extends Model
 {
-    protected $primaryKey = 'option_id';
+    protected $primaryKey = 'id';
     use HasFactory;
 
     protected $table = 'options';
