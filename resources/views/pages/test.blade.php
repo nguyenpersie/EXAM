@@ -132,7 +132,7 @@
                     'id' => $opt->id,
                     'content' => $opt->content,
                 ];
-            }),
+            })->values(),
         ];
     }));
 
