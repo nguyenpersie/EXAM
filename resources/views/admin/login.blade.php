@@ -30,7 +30,6 @@
                     <label class="form-check-label" for="remember">Remember</label>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreate" style="width: 40%;">Register</button>
                     <button type="submit" class="btn btn-primary" style="width: 40%;">Login</button>
                 </div>
                 @csrf

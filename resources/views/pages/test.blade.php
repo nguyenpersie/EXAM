@@ -617,6 +617,52 @@
       } else {
         alert('Không tìm thấy dữ liệu đề thi!');
       }
-    </script>
+      function submitExam() {
+        clearInterval(timerInterval); // Dừng timer
+
+        let correctCount = 0;
+        let wrongCount = 0;
+        let skippedCount = 0;
+
+        // Duyệt qua tất cả câu hỏi để tính điểm
+        examData.forEach(q => {
+            const selectedId = userAnswers[q.id];
+            if (selectedId === undefined) {
+                skippedCount++;
+            } else {
+                const selectedOpt = q.options.find(opt => opt.id === selectedId);
+                if (selectedOpt && selectedOpt.is_correct) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+            }
+        });
+
+        const score = correctCount;
+        const totalScore = TOTAL_QUESTIONS; // Giả sử mỗi câu 1 điểm
+        const percentage = ((correctCount / TOTAL_QUESTIONS) * 100).toFixed(2);
+        const isPassed = score >= {{ $exam->passing_score ?? 80 }};
+
+        // Hiển thị kết quả trong modal
+        document.getElementById("result-score").innerText = `${score} / ${totalScore}`;
+        document.getElementById("result-status").innerText = isPassed ? "Đạt" : "Không đạt";
+        document.getElementById("result-title").innerText = isPassed ? "Chúc mừng!" : "Cố lên nhé!";
+
+        // Đóng modal submit và mở modal kết quả
+        const submitModal = bootstrap.Modal.getInstance(document.getElementById("submitModal"));
+        submitModal.hide();
+
+        const resultModal = new bootstrap.Modal(document.getElementById("resultModal"));
+        resultModal.show();
+    }
+
+    /* =========================================
+    7. MAIN RUN
+    ========================================= */
+    initSheet();
+    renderQuestion(0);
+    startTimer();
+</script>
 
 @endsection
