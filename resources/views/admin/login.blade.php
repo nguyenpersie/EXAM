@@ -15,7 +15,7 @@
     <div class="container vh-100 d-flex justify-content-center align-items-center">
         <div class="card p-4" style="width: 100%; max-width: 400px;">
             <h2 class="mb-4 text-center">LOGIN</h2>
-            <form id="loginForm" action="{{ route('postLogin') }}" method="post">
+            <form id="loginForm" action="#" method="post">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" name="email" id="email" placeholder="Email">
