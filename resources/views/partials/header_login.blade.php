@@ -22,6 +22,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/css/datepicker.min.css">
 
 <style>
+
+     html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
     .header {
         background-color: #e1eff7;
         padding: 10px 0;
@@ -98,6 +105,3 @@
         </button>
     @endif
 </div>
-
-
-
