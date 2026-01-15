@@ -118,40 +118,36 @@
 
 @section('scripts')
 <script>
-    // =========================================
-    // 1. DỮ LIỆU THỰC TẾ TỪ SERVER (Blade)
-    // =========================================
-    const examData = @json($exam->questions->map(function ($q) {
-        return [
-            'id' => $q->id,
-            'content' => $q->content,
-            'section' => $q->section,
-            'level' => $q->level,
-            'options' => $q->options->shuffle()->map(function ($opt) {
-                return [
-                    'id' => $opt->id,
-                    'content' => $opt->content,
-                ];
-            }).values()
-        ];
-    }));
+      /* =========================================
+       1. LOAD DỮ LIỆU TỪ DATABASE (EXAM ID = 67)
+       ========================================= */
+      // Dữ liệu được truyền từ Controller qua Blade
+      const examDataFromDB = @json($exam);
 
-    const TOTAL_QUESTIONS = examData.length;
-    const EXAM_DURATION = {{ $exam->duration_minutes ?? 60 }} * 60; // Thời gian từ DB (phút → giây)
+      // Chuyển đổi dữ liệu từ database sang format phù hợp
+      const examData = examDataFromDB.questions.map((question, index) => ({
+        id: question.id,
+        content: question.content,
+        options: question.options.map(opt => opt.content),
+        correctAnswer: question.options.findIndex(opt => opt.is_correct === 1) // Lưu đáp án đúng (không hiển thị cho user)
+      }));
 
-    /* =========================================
-     2. STATE QUẢN LÝ
-     ========================================= */
-    let currentIdx = 0;
-    let userAnswers = {}; // { question_id: option_id }
-    let flaggedSet = new Set();
-    let timeLeft = EXAM_DURATION;
-    let timerInterval;
+      const TOTAL_QUESTIONS = examData.length;
+      const EXAM_DURATION = examDataFromDB.duration_minutes * 60; // Chuyển phút sang giây
 
-    /* =========================================
-     3. DOM ELEMENTS
-     ========================================= */
-    const els = {
+      /* =========================================
+       2. STATE QUẢN LÝ (TRẠNG THÁI)
+       ========================================= */
+      let currentIdx = 0; // Đang xem câu index 0 (câu 1)
+      let userAnswers = {}; // Lưu đáp án: { 1: 0, 2: 3 } (câu 1 chọn A, câu 2 chọn D)
+      let flaggedSet = new Set(); // Các câu đánh dấu
+      let timeLeft = EXAM_DURATION;
+      let timerInterval;
+
+      /* =========================================
+       3. DOM ELEMENTS
+       ========================================= */
+      const els = {
         qNum: document.getElementById("display-q-num"),
         qContent: document.getElementById("q-content-area"),
         sheetBody: document.getElementById("sheet-body"),
@@ -159,166 +155,232 @@
         btnPrev: document.getElementById("btn-prev"),
         btnNext: document.getElementById("btn-next"),
         btnFlag: document.getElementById("btn-flag"),
-    };
+      };
 
-    /* =========================================
-     4. HÀM RENDER
-     ========================================= */
+      /* =========================================
+       4. HÀM RENDER (HIỂN THỊ)
+       ========================================= */
 
-    function initSheet() {
+      // Khởi tạo bảng trả lời (Chạy 1 lần đầu)
+      function initSheet() {
         els.sheetBody.innerHTML = examData
-            .map((q, idx) => {
-                const optionsCells = [0, 1, 2, 3].map(optIdx => '<td><span class="sheet-check" id="cell-' + q.id + '-' + optIdx + '" onclick="selectAnswer(' + q.id + ', ' + examData[idx].options[optIdx].id + ')"></span></td>').join('');
-                return '<tr id="row-' + q.id + '"><td class="sheet-q-num" onclick="goToQuestion(' + idx + ')" id="q-label-' + idx + '">' + q.id + '</td>' + optionsCells + '</tr>';
-            })
-            .join("");
-    }
+          .map(
+            (q, idx) => `
+            <tr id="row-${q.id}">
+                <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${idx + 1}</td>
+                ${[0, 1, 2, 3]
+                  .map(
+                    (optIdx) => `
+                    <td>
+                        <span class="sheet-check"
+                              id="cell-${q.id}-${optIdx}"
+                              onclick="selectAnswer(${q.id}, ${optIdx})"></span>
+                    </td>
+                `
+                  )
+                  .join("")}
+            </tr>
+        `
+          )
+          .join("");
+      }
 
-    function renderQuestion(idx) {
+      // Hiển thị câu hỏi chi tiết ở giữa
+      function renderQuestion(idx) {
         currentIdx = idx;
         const q = examData[idx];
 
-        els.qNum.innerText = 'Câu ' + q.id + ' (Phần ' + q.section + ' - Độ khó ' + q.level + ')';
+        // Update Tiêu đề
+        els.qNum.innerText = `Nội dung câu hỏi ${idx + 1}`;
 
-        const savedAns = userAnswers[q.id];
+        // Update nội dung & đáp án (Radio buttons)
+        const savedAns = userAnswers[q.id]; // Đáp án đã chọn trước đó (nếu có)
 
         const optionsHTML = q.options
-            .map((opt, i) => '<label class="option-item"><input type="radio" name="currentQuestion" class="option-radio form-check-input" value="' + opt.id + '" ' + (savedAns === opt.id ? "checked" : "") + ' onchange="selectAnswer(' + q.id + ', ' + opt.id + ')"><span class="option-text">' + opt.content + '</span></label>')
-            .join("");
+          .map(
+            (opt, i) => `
+            <label class="option-item">
+                <input type="radio" name="currentQuestion" class="option-radio form-check-input"
+                       value="${i}"
+                       ${savedAns === i ? "checked" : ""}
+                       onchange="selectAnswer(${q.id}, ${i})">
+                <span class="option-text"><b>${String.fromCharCode(65 + i)}.</b> ${opt}</span>
+            </label>
+        `
+          )
+          .join("");
 
-        els.qContent.innerHTML = '<div class="q-content-text">' + q.content + '</div><div class="q-options-list">' + optionsHTML + '</div>';
+        els.qContent.innerHTML = `
+            <div class="q-content-text">${q.content}</div>
+            <div class="q-options-list">${optionsHTML}</div>
+        `;
 
+        // Update nút Điều hướng
         els.btnPrev.disabled = idx === 0;
         els.btnNext.disabled = idx === examData.length - 1;
 
+        // Update nút Flag
         updateFlagButtonUI();
 
-        document.querySelectorAll(".sheet-q-num").forEach(el => el.classList.remove("active"));
-        document.getElementById('q-label-' + idx).classList.add("active");
+        // Highlight dòng đang chọn bên bảng Sheet
+        document.querySelectorAll(".sheet-q-num").forEach((el) => el.classList.remove("active"));
+        document.getElementById(`q-label-${idx}`).classList.add("active");
 
-        document.getElementById('row-' + q.id).scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+        // Cuộn bảng sheet đến câu đang làm (nếu bảng dài quá)
+        document.getElementById(`row-${q.id}`).scrollIntoView({ behavior: "smooth", block: "center" });
+      }
 
-    /* =========================================
-     5. LOGIC XỬ LÝ
-     ========================================= */
+      /* =========================================
+       5. LOGIC XỬ LÝ (ACTION)
+       ========================================= */
 
-    function selectAnswer(qId, optId) {
-        userAnswers[qId] = optId;
+      // Xử lý khi chọn đáp án (Từ Radio hoặc từ Bảng Sheet)
+      function selectAnswer(qId, optIdx) {
+        // 1. Lưu vào State
+        userAnswers[qId] = optIdx;
 
-        const q = examData.find(q => q.id === qId);
-        const optIdx = q.options.findIndex(opt => opt.id === optId);
-        [0, 1, 2, 3].forEach(i => {
-            document.getElementById('cell-' + qId + '-' + i).classList.remove("checked");
+        // 2. Cập nhật UI Bảng Sheet (Tô đen ô)
+        // Reset dòng đó trước
+        [0, 1, 2, 3].forEach((i) => {
+          const cell = document.getElementById(`cell-${qId}-${i}`);
+          if (cell) cell.classList.remove("checked");
         });
-        document.getElementById('cell-' + qId + '-' + optIdx).classList.add("checked");
 
+        // Tô màu ô mới
+        const selectedCell = document.getElementById(`cell-${qId}-${optIdx}`);
+        if (selectedCell) selectedCell.classList.add("checked");
+
+        // 3. Nếu đang đứng ở câu đó thì tick radio button tương ứng
         if (examData[currentIdx].id === qId) {
-            document.querySelector('input[value="' + optId + '"]').checked = true;
+          const radios = document.getElementsByName("currentQuestion");
+          if (radios[optIdx]) radios[optIdx].checked = true;
         }
-    }
+      }
 
-    function changeQuestion(step) {
+      // Chuyển câu hỏi
+      function changeQuestion(step) {
         const newIdx = currentIdx + step;
         if (newIdx >= 0 && newIdx < examData.length) {
-            renderQuestion(newIdx);
+          renderQuestion(newIdx);
         }
-    }
+      }
 
-    function goToQuestion(idx) {
+      // Nhảy đến câu bất kỳ từ bảng sheet
+      function goToQuestion(idx) {
         renderQuestion(idx);
-    }
+      }
 
-    function toggleFlag() {
+      // Đánh dấu (Flag)
+      function toggleFlag() {
         const qId = examData[currentIdx].id;
         if (flaggedSet.has(qId)) {
-            flaggedSet.delete(qId);
+          flaggedSet.delete(qId);
         } else {
-            flaggedSet.add(qId);
+          flaggedSet.add(qId);
         }
         updateFlagButtonUI();
         updateSheetFlagUI(qId);
-    }
+      }
 
-    function updateFlagButtonUI() {
+      function updateFlagButtonUI() {
         const qId = examData[currentIdx].id;
         if (flaggedSet.has(qId)) {
-            els.btnFlag.classList.add("btn-warning");
-            els.btnFlag.classList.remove("btn-outline-warning");
-            els.btnFlag.innerHTML = '<i class="bi bi-flag-fill"></i> Đã đánh dấu';
+          els.btnFlag.classList.remove("btn-outline-warning");
+          els.btnFlag.classList.add("btn-warning");
+          els.btnFlag.innerHTML = '<i class="bi bi-flag-fill"></i> Đã đánh dấu';
         } else {
-            els.btnFlag.classList.add("btn-outline-warning");
-            els.btnFlag.classList.remove("btn-warning");
-            els.btnFlag.innerHTML = '<i class="bi bi-flag"></i> Đánh dấu';
+          els.btnFlag.classList.add("btn-outline-warning");
+          els.btnFlag.classList.remove("btn-warning");
+          els.btnFlag.innerHTML = '<i class="bi bi-flag"></i> Đánh dấu';
         }
-    }
+      }
 
-    function updateSheetFlagUI(qId) {
-        const label = document.getElementById('q-label-' + currentIdx);
-        if (flaggedSet.has(qId)) {
+      function updateSheetFlagUI(qId) {
+        const label = document.getElementById(`q-label-${currentIdx}`);
+        if (label) {
+          if (flaggedSet.has(qId)) {
             label.style.backgroundColor = "#ffc107";
-        } else {
+          } else {
             label.style.backgroundColor = "";
-            if (currentIdx === qId - 1) label.classList.add("active");
-        }
-    }
-
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                alert("Hết giờ!");
-                submitExam();
-                return;
+            if (currentIdx === examData.findIndex(q => q.id === qId)) {
+              label.classList.add("active");
             }
-            timeLeft--;
-            const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
-            const s = (timeLeft % 60).toString().padStart(2, "0");
-            els.timer.innerText = m + ':' + s;
-        }, 1000);
-    }
+          }
+        }
+      }
 
-    function confirmSubmit() {
+      /* =========================================
+       6. TIMER VÀ SUBMIT
+       ========================================= */
+      function startTimer() {
+        timerInterval = setInterval(() => {
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            alert("Hết giờ làm bài!");
+            // Có thể tự động submit ở đây
+            return;
+          }
+          timeLeft--;
+          const m = Math.floor(timeLeft / 60)
+            .toString()
+            .padStart(2, "0");
+          const s = (timeLeft % 60).toString().padStart(2, "0");
+          els.timer.innerText = `${m}:${s}`;
+        }, 1000);
+      }
+
+      function confirmSubmit() {
         const doneCount = Object.keys(userAnswers).length;
         document.getElementById("modal-done").innerText = doneCount;
         document.getElementById("modal-remain").innerText = TOTAL_QUESTIONS - doneCount;
 
         const myModal = new bootstrap.Modal(document.getElementById("submitModal"));
         myModal.show();
-    }
+      }
 
-    function submitExam() {
-        let correctCount = 0;
-        let totalScore = 0;
+      // Hàm submit bài thi (gửi lên server)
+      function submitExam() {
+        // Chuyển userAnswers thành format phù hợp để gửi lên server
+        const answers = Object.entries(userAnswers).map(([questionId, optionIndex]) => ({
+          question_id: parseInt(questionId),
+          selected_option: optionIndex
+        }));
 
-        examData.forEach(q => {
-            const selectedId = userAnswers[q.id];
-            if (selectedId) {
-                const selectedOpt = q.options.find(opt => opt.id === selectedId);
-                if (selectedOpt && selectedOpt.is_correct) {
-                    correctCount++;
-                }
-                totalScore += 1; // Giả sử mỗi câu 1 điểm
-            }
+        // Gửi dữ liệu qua AJAX hoặc form submit
+        // Ví dụ dùng fetch API:
+        fetch(`/exams-${examDataFromDB.id}/submit`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: JSON.stringify({
+            answers: answers,
+            time_spent: EXAM_DURATION - timeLeft
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Xử lý kết quả trả về
+          window.location.href = `/exams-${examDataFromDB.id}/result`;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Có lỗi xảy ra khi nộp bài!');
         });
+      }
 
-        const score = correctCount;
-        const isPass = score >= {{ $exam->passing_score ?? 80 }};
-
-        document.getElementById("result-score").innerText = score + ' / ' + TOTAL_QUESTIONS;
-        document.getElementById("result-status").innerText = isPass ? "Đạt" : "Không đạt";
-        document.getElementById("result-title").innerText = isPass ? "Chúc mừng!" : "Cố lên nhé!";
-
-        const resultModal = new bootstrap.Modal(document.getElementById("resultModal"));
-        resultModal.show();
-    }
-
-    /* =========================================
-     7. MAIN RUN
-     ========================================= */
-    initSheet();
-    renderQuestion(0);
-    startTimer();
-</script>
+      /* =========================================
+       7. MAIN RUN
+       ========================================= */
+      // Chạy khi load trang
+      if (examData && examData.length > 0) {
+        initSheet(); // Vẽ bảng câu hỏi
+        renderQuestion(0); // Vào câu 1
+        startTimer(); // Đếm giờ
+      } else {
+        alert('Không tìm thấy dữ liệu đề thi!');
+      }
+    </script>
 
 @endsection
