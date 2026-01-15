@@ -1,4 +1,11 @@
 <style>
+
+      html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
       /* === GLOBAL STYLES & COLORS === */
       :root {
         --theme-orange: #f39c12; /* Màu cam chủ đạo nút/timer */

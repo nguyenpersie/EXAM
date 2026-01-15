@@ -49,7 +49,7 @@
         </div>
 
         <!-- Cột phải: Thông tin thi -->
-        <div class="col-lg-3 col-md-4 mb-4">
+        {{-- <div class="col-lg-3 col-md-4 mb-4">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white text-center">
                     <h5 class="mb-0">Bảng câu hỏi</h5>
@@ -71,7 +71,39 @@
                     </table>
                 </div>
             </div>
+        </div> --}}
+        <!-- Cột phải: Thông tin thi - chia 2 bảng nhỏ -->
+    <div class="col-lg-3">
+        <div class="row g-3">
+            <!-- Bảng 1: Thông tin đề thi -->
+            <div class="col-12">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-info text-white py-2">
+                        <h6 class="mb-0 text-center">Thông tin đề thi</h6>
+                    </div>
+                    <div class="card-body p-3 small">
+                        <p class="mb-2"><strong>Đề:</strong> {{ $exam->title ?? 'Đề thử nghiệm' }}</p>
+                        <p class="mb-2"><strong>Hạng:</strong> {{ $exam->code }}</p>
+                        <p class="mb-2"><strong>Thời gian:</strong> {{ $exam->duration_minutes }} phút</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng 2: Thông tin điểm số -->
+            <div class="col-12">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-primary text-white py-2">
+                        <h6 class="mb-0 text-center">Điểm số</h6>
+                    </div>
+                    <div class="card-body p-3 small">
+                        <p class="mb-2"><strong>Tổng điểm:</strong> {{ $exam->total_score }}</p>
+                        <p class="mb-2"><strong>Điểm đạt:</strong> {{ $exam->passing_score }}</p>
+                        <p class="mb-0"><strong>Thời gian còn lại:</strong> <span id="timer-display" class="fw-bold">60:00</span></p>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
     </div>
 </div>
 
