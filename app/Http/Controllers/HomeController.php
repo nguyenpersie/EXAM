@@ -7,8 +7,8 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function index(): View
-    {
-        return view ('pages.home');
-    }
+    // public function index(): View
+    // {
+    //     return view ('pages.home');
+    // }
 }
