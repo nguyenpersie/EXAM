@@ -28,7 +28,7 @@
                         <button id="btn-flag" class="btn btn-outline-warning btn-sm" onclick="toggleFlag()">
                             <i class="bi bi-flag"></i> Đánh dấu
                         </button>
-                        <span id="timer-display" class="badge bg-danger ms-2">60:00</span>
+                        <span id="timer-display" class="badge bg-danger ms-2">45:00</span>
                     </div>
                 </div>
                 <div class="card-body" id="q-content-area">
@@ -759,16 +759,20 @@
       // Dữ liệu được truyền từ Controller qua Blade
       const examDataFromDB = @json($exam);
 
+      console.log('Exam Data:', examDataFromDB); // Debug
+
       // Chuyển đổi dữ liệu từ database sang format phù hợp
       const examData = examDataFromDB.questions.map((question, index) => ({
         id: question.id,
         content: question.content,
         options: question.options.map(opt => opt.content),
-        correctAnswer: question.options.findIndex(opt => opt.is_correct === 1) // Lưu đáp án đúng
+        correctAnswer: question.options.findIndex(opt => opt.is_correct === 1)
       }));
 
+      console.log('Processed Exam Data:', examData); // Debug
+
       const TOTAL_QUESTIONS = examData.length;
-      const EXAM_DURATION = examDataFromDB.duration_minutes * 60; // Chuyển phút sang giây
+      const EXAM_DURATION = examDataFromDB.duration_minutes * 60;
 
       /* =========================================
        2. STATE QUẢN LÝ (TRẠNG THÁI)
@@ -794,29 +798,11 @@
         btnFlag: document.getElementById("btn-flag"),
       };
 
+      console.log('DOM Elements:', els); // Debug
+
       /* =========================================
        4. HÀM RENDER (HIỂN THỊ)
        ========================================= */
-
-      // Khởi tạo bảng trả lời (Chạy 1 lần đầu) - Chia làm 2 cột
-      function initSheet() {
-        const midPoint = Math.ceil(examData.length / 2); // Chia đôi số câu hỏi
-
-        // Cột 1: Câu 1 -> midPoint
-        const column1HTML = examData
-          .slice(0, midPoint)
-          .map((q, idx) => createSheetRow(q, idx))
-          .join("");
-
-        // Cột 2: Câu midPoint+1 -> hết
-        const column2HTML = examData
-          .slice(midPoint)
-          .map((q, idx) => createSheetRow(q, idx + midPoint))
-          .join("");
-
-        els.sheetColumn1.innerHTML = column1HTML;
-        els.sheetColumn2.innerHTML = column2HTML;
-      }
 
       // Hàm tạo 1 hàng trong bảng sheet
       function createSheetRow(q, idx) {
@@ -838,13 +824,47 @@
         `;
       }
 
+      // Khởi tạo bảng trả lời (Chạy 1 lần đầu) - Chia làm 2 cột
+      function initSheet() {
+        if (!els.sheetColumn1 || !els.sheetColumn2) {
+          console.error('Không tìm thấy element bảng câu hỏi!');
+          return;
+        }
+
+        const midPoint = Math.ceil(examData.length / 2);
+
+        // Cột 1: Câu 1 -> midPoint
+        const column1HTML = examData
+          .slice(0, midPoint)
+          .map((q, idx) => createSheetRow(q, idx))
+          .join("");
+
+        // Cột 2: Câu midPoint+1 -> hết
+        const column2HTML = examData
+          .slice(midPoint)
+          .map((q, idx) => createSheetRow(q, idx + midPoint))
+          .join("");
+
+        els.sheetColumn1.innerHTML = column1HTML;
+        els.sheetColumn2.innerHTML = column2HTML;
+
+        console.log('Sheet initialized'); // Debug
+      }
+
       // Hiển thị câu hỏi chi tiết ở giữa
       function renderQuestion(idx) {
+        if (!examData[idx]) {
+          console.error('Không tìm thấy câu hỏi tại index:', idx);
+          return;
+        }
+
         currentIdx = idx;
         const q = examData[idx];
 
         // Update Tiêu đề
-        els.qNum.innerText = `Nội dung câu hỏi ${idx + 1}`;
+        if (els.qNum) {
+          els.qNum.innerText = `Nội dung câu hỏi ${idx + 1}`;
+        }
 
         // Update nội dung & đáp án (Radio buttons)
         const savedAns = userAnswers[q.id];
@@ -863,24 +883,32 @@
           )
           .join("");
 
-        els.qContent.innerHTML = `
+        if (els.qContent) {
+          els.qContent.innerHTML = `
             <div class="q-content-text">${q.content}</div>
             <div class="q-options-list">${optionsHTML}</div>
-        `;
+          `;
+        }
 
         // Update nút Điều hướng
-        els.btnPrev.disabled = idx === 0;
-        els.btnNext.disabled = idx === examData.length - 1;
+        if (els.btnPrev) els.btnPrev.disabled = idx === 0;
+        if (els.btnNext) els.btnNext.disabled = idx === examData.length - 1;
 
         // Update nút Flag
         updateFlagButtonUI();
 
         // Highlight dòng đang chọn bên bảng Sheet
         document.querySelectorAll(".sheet-q-num").forEach((el) => el.classList.remove("active"));
-        document.getElementById(`q-label-${idx}`).classList.add("active");
+        const currentLabel = document.getElementById(`q-label-${idx}`);
+        if (currentLabel) currentLabel.classList.add("active");
 
         // Cuộn bảng sheet đến câu đang làm
-        document.getElementById(`row-${q.id}`).scrollIntoView({ behavior: "smooth", block: "center" });
+        const currentRow = document.getElementById(`row-${q.id}`);
+        if (currentRow) {
+          currentRow.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        console.log('Question rendered:', idx); // Debug
       }
 
       /* =========================================
@@ -905,6 +933,8 @@
           const radios = document.getElementsByName("currentQuestion");
           if (radios[optIdx]) radios[optIdx].checked = true;
         }
+
+        console.log('Answer selected:', qId, optIdx); // Debug
       }
 
       // Chuyển câu hỏi
@@ -933,6 +963,8 @@
       }
 
       function updateFlagButtonUI() {
+        if (!els.btnFlag) return;
+
         const qId = examData[currentIdx].id;
         if (flaggedSet.has(qId)) {
           els.btnFlag.classList.remove("btn-outline-warning");
@@ -963,6 +995,8 @@
        6. TIMER VÀ SUBMIT
        ========================================= */
       function startTimer() {
+        if (!els.timer) return;
+
         timerInterval = setInterval(() => {
           if (timeLeft <= 0) {
             clearInterval(timerInterval);
@@ -985,12 +1019,12 @@
         if (modalDone) modalDone.innerText = doneCount;
         if (modalRemain) modalRemain.innerText = TOTAL_QUESTIONS - doneCount;
 
-        const myModal = new bootstrap.Modal(document.getElementById("submitModal"));
-        myModal.show();
+        const submitModal = document.getElementById("submitModal");
+        if (submitModal) {
+          const myModal = new bootstrap.Modal(submitModal);
+          myModal.show();
+        }
       }
-
-      // Hàm này được gọi từ nút "Xác nhận nộp bài" trong modal
-      window.submitExam = submitExam;
 
       /* =========================================
        7. CHẤM ĐIỂM VÀ LƯU KẾT QUẢ
@@ -1069,10 +1103,12 @@
           detailedResults: detailedResults
         };
 
-        // Lưu vào biến tạm (có thể dùng sessionStorage hoặc chuyển sang trang kết quả)
+        // Lưu vào sessionStorage
         sessionStorage.setItem('examResult', JSON.stringify(examResult));
 
-        // Chuyển sang trang kết quả hoặc hiển thị modal kết quả
+        console.log('Exam Result:', examResult); // Debug
+
+        // Hiển thị kết quả
         showResultModal(examResult);
       }
 
@@ -1250,7 +1286,6 @@
       /* =========================================
        9. EXPORT FUNCTIONS TO GLOBAL SCOPE
        ========================================= */
-      // Để các hàm có thể gọi từ onclick trong HTML
       window.changeQuestion = changeQuestion;
       window.goToQuestion = goToQuestion;
       window.selectAnswer = selectAnswer;
@@ -1262,13 +1297,20 @@
       /* =========================================
        10. MAIN RUN
        ========================================= */
-      if (examData && examData.length > 0) {
-        initSheet();
-        renderQuestion(0);
-        startTimer();
-      } else {
-        alert('Không tìm thấy dữ liệu đề thi!');
-      }
-    </script>
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM Content Loaded');
+
+        if (examData && examData.length > 0) {
+          console.log('Initializing exam...');
+          initSheet();
+          renderQuestion(0);
+          startTimer();
+          console.log('Exam initialized successfully');
+        } else {
+          console.error('Exam data not found or empty');
+          alert('Không tìm thấy dữ liệu đề thi!');
+        }
+      });
+</script>
 
 @endsection
