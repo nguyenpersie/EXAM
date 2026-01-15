@@ -167,18 +167,10 @@
 
     function initSheet() {
         els.sheetBody.innerHTML = examData
-            .map((q, idx) => `
-                <tr id="row-${q.id}">
-                    <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${q.id}</td>
-                    ${[0, 1, 2, 3].map((optIdx) => `
-                        <td>
-                            <span class="sheet-check"
-                                  id="cell-${q.id}-${optIdx}"
-                                  onclick="selectAnswer(${q.id}, ${examData[idx].options[optIdx].id})"></span>
-                        </td>
-                    `).join("")}
-                </tr>
-            `)
+            .map((q, idx) => {
+                const optionsCells = [0, 1, 2, 3].map(optIdx => '<td><span class="sheet-check" id="cell-' + q.id + '-' + optIdx + '" onclick="selectAnswer(' + q.id + ', ' + examData[idx].options[optIdx].id + ')"></span></td>').join('');
+                return '<tr id="row-' + q.id + '"><td class="sheet-q-num" onclick="goToQuestion(' + idx + ')" id="q-label-' + idx + '">' + q.id + '</td>' + optionsCells + '</tr>';
+            })
             .join("");
     }
 
@@ -186,26 +178,15 @@
         currentIdx = idx;
         const q = examData[idx];
 
-        els.qNum.innerText = `Câu ${q.id} (Phần ${q.section} - Độ khó ${q.level})`;
+        els.qNum.innerText = 'Câu ' + q.id + ' (Phần ' + q.section + ' - Độ khó ' + q.level + ')';
 
         const savedAns = userAnswers[q.id];
 
         const optionsHTML = q.options
-            .map((opt, i) => `
-                <label class="option-item">
-                    <input type="radio" name="currentQuestion" class="option-radio form-check-input"
-                           value="${opt.id}"
-                           ${savedAns === opt.id ? "checked" : ""}
-                           onchange="selectAnswer(${q.id}, ${opt.id})">
-                    <span class="option-text">${opt.content}</span>
-                </label>
-            `)
+            .map((opt, i) => '<label class="option-item"><input type="radio" name="currentQuestion" class="option-radio form-check-input" value="' + opt.id + '" ' + (savedAns === opt.id ? "checked" : "") + ' onchange="selectAnswer(' + q.id + ', ' + opt.id + ')"><span class="option-text">' + opt.content + '</span></label>')
             .join("");
 
-        els.qContent.innerHTML = `
-            <div class="q-content-text">${q.content}</div>
-            <div class="q-options-list">${optionsHTML}</div>
-        `;
+        els.qContent.innerHTML = '<div class="q-content-text">' + q.content + '</div><div class="q-options-list">' + optionsHTML + '</div>';
 
         els.btnPrev.disabled = idx === 0;
         els.btnNext.disabled = idx === examData.length - 1;
@@ -213,9 +194,9 @@
         updateFlagButtonUI();
 
         document.querySelectorAll(".sheet-q-num").forEach(el => el.classList.remove("active"));
-        document.getElementById(`q-label-${idx}`).classList.add("active");
+        document.getElementById('q-label-' + idx).classList.add("active");
 
-        document.getElementById(`row-${q.id}`).scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById('row-' + q.id).scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     /* =========================================
@@ -228,12 +209,12 @@
         const q = examData.find(q => q.id === qId);
         const optIdx = q.options.findIndex(opt => opt.id === optId);
         [0, 1, 2, 3].forEach(i => {
-            document.getElementById(`cell-${qId}-${i}`).classList.remove("checked");
+            document.getElementById('cell-' + qId + '-' + i).classList.remove("checked");
         });
-        document.getElementById(`cell-${qId}-${optIdx}`).classList.add("checked");
+        document.getElementById('cell-' + qId + '-' + optIdx).classList.add("checked");
 
         if (examData[currentIdx].id === qId) {
-            document.querySelector(`input[value="${optId}"]`).checked = true;
+            document.querySelector('input[value="' + optId + '"]').checked = true;
         }
     }
 
@@ -273,7 +254,7 @@
     }
 
     function updateSheetFlagUI(qId) {
-        const label = document.getElementById(`q-label-${currentIdx}`);
+        const label = document.getElementById('q-label-' + currentIdx);
         if (flaggedSet.has(qId)) {
             label.style.backgroundColor = "#ffc107";
         } else {
@@ -293,7 +274,7 @@
             timeLeft--;
             const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
             const s = (timeLeft % 60).toString().padStart(2, "0");
-            els.timer.innerText = `${m}:${s}`;
+            els.timer.innerText = m + ':' + s;
         }, 1000);
     }
 
@@ -324,7 +305,7 @@
         const score = correctCount;
         const isPass = score >= {{ $exam->passing_score ?? 80 }};
 
-        document.getElementById("result-score").innerText = `${score} / ${TOTAL_QUESTIONS}`;
+        document.getElementById("result-score").innerText = score + ' / ' + TOTAL_QUESTIONS;
         document.getElementById("result-status").innerText = isPass ? "Đạt" : "Không đạt";
         document.getElementById("result-title").innerText = isPass ? "Chúc mừng!" : "Cố lên nhé!";
 
