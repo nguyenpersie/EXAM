@@ -10,6 +10,6 @@ class ExamController extends Controller
     public function test($id)
     {
         $exam = Exam::with('questions.options')->findOrFail($id);
-        return view('exam.test', compact('exam'));
+        return view('pages.test', compact('exam'));
     }
 }
