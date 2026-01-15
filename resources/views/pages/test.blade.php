@@ -176,7 +176,7 @@
       }));
 
       const TOTAL_QUESTIONS = examData.length;
-      const EXAM_DURATION = examDataFromDB.duration_minutes * 60; // Chuyển phút sang giây
+      const EXAM_DURATION = examDataFromDB.duration_minutes * 45; // Chuyển phút sang giây
 
       /* =========================================
        2. STATE QUẢN LÝ (TRẠNG THÁI)
@@ -194,7 +194,9 @@
       const els = {
         qNum: document.getElementById("display-q-num"),
         qContent: document.getElementById("q-content-area"),
-        sheetBody: document.getElementById("sheet-body"),
+        //sheetBody: document.getElementById("sheet-body"),
+        sheetColumn1: document.getElementById("sheet-column-1"),
+        sheetColumn2: document.getElementById("sheet-column-2"),
         timer: document.getElementById("timer-display"),
         btnPrev: document.getElementById("btn-prev"),
         btnNext: document.getElementById("btn-next"),
@@ -230,62 +232,43 @@
       // }
 
       function initSheet() {
-        const half = Math.ceil(examData.length / 2);
-        const column1 = examData.slice(0, half);
-        const column2 = examData.slice(half);
+        const midPoint = Math.ceil(examData.length / 2); // Chia đôi số câu hỏi
 
-        // Render cột 1
-    document.getElementById("sheet-column-1").innerHTML = column1
-        .map((q, idx) => `
-            <tr id="row-${q.id}">
-                <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${q.id}</td>
-                ${[0, 1, 2, 3].map((optIdx) => `
-                    <td>
-                        <span class="sheet-check"
-                              id="cell-${q.id}-${optIdx}"
-                              onclick="selectAnswer(${q.id}, ${examData[idx].options[optIdx].id})"></span>
-                    </td>
-                `).join("")}
-            </tr>
-        `)
-        .join("");
+        // Cột 1: Câu 1 -> midPoint
+        const column1HTML = examData
+          .slice(0, midPoint)
+          .map((q, idx) => createSheetRow(q, idx))
+          .join("");
 
-    // Render cột 2
-    document.getElementById("sheet-column-2").innerHTML = column2
-        .map((q, idx) => `
-            <tr id="row-${q.id}">
-                <td class="sheet-q-num" onclick="goToQuestion(${idx + half})" id="q-label-${idx + half}">${q.id}</td>
-                ${[0, 1, 2, 3].map((optIdx) => `
-                    <td>
-                        <span class="sheet-check"
-                              id="cell-${q.id}-${optIdx}"
-                              onclick="selectAnswer(${q.id}, ${examData[idx + half].options[optIdx].id})"></span>
-                    </td>
-                `).join("")}
-            </tr>
-        `)
-        .join("");
+        // Cột 2: Câu midPoint+1 -> hết
+        const column2HTML = examData
+          .slice(midPoint)
+          .map((q, idx) => createSheetRow(q, idx + midPoint))
+          .join("");
 
-            .map(
-                (q, idx) => `
-                <tr id="row-${q.id}">
-                    <td class="sheet-q-num" onclick="goToQuestion(${idx + half})" id="q-label-${idx + half}">${q.id}</td>
-                    ${[0, 1, 2, 3]
-                      .map(
-                        (optIdx) => `
-                        <td>
-                            <span class="sheet-check"
-                                  id="cell-${q.id}-${optIdx}"
-                                  onclick="selectAnswer(${q.id}, ${examData[idx + half].options[optIdx].id})"></span>
-                        </td>
-                    `
-                      )
-                      .join("")}
-                </tr>
-            `
-            )
-            .join("");
-    }
+        els.sheetColumn1.innerHTML = column1HTML;
+        els.sheetColumn2.innerHTML = column2HTML;
+      }
+
+      // Hàm tạo 1 hàng trong bảng sheet
+      function createSheetRow(q, idx) {
+        return `
+          <tr id="row-${q.id}">
+            <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${idx + 1}</td>
+            ${[0, 1, 2, 3]
+              .map(
+                (optIdx) => `
+                <td>
+                  <span class="sheet-check"
+                        id="cell-${q.id}-${optIdx}"
+                        onclick="selectAnswer(${q.id}, ${optIdx})"></span>
+                </td>
+              `
+              )
+              .join("")}
+          </tr>
+        `;
+      }
 
       // Hiển thị câu hỏi chi tiết ở giữa
       function renderQuestion(idx) {

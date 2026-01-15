@@ -220,4 +220,72 @@
         height: 80px;
         object-fit: contain;
       }
+
+      /* Style cho bảng câu hỏi 2 cột */
+      .sheet-table {
+          font-size: 0.85rem;
+      }
+
+      .sheet-table th {
+          padding: 0.3rem !important;
+          text-align: center;
+          font-weight: 600;
+          font-size: 0.75rem;
+      }
+
+      .sheet-table td {
+          padding: 0.2rem !important;
+          text-align: center;
+          vertical-align: middle;
+      }
+
+      .sheet-q-num {
+          cursor: pointer;
+          font-weight: 600;
+          background-color: #f8f9fa;
+          transition: all 0.2s;
+          min-width: 35px;
+      }
+
+      .sheet-q-num:hover {
+          background-color: #e9ecef;
+          transform: scale(1.05);
+      }
+
+      .sheet-q-num.active {
+          background-color: #0d6efd !important;
+          color: white !important;
+      }
+
+      .sheet-check {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border: 2px solid #dee2e6;
+          border-radius: 3px;
+          cursor: pointer;
+          transition: all 0.2s;
+      }
+
+      .sheet-check:hover {
+          border-color: #0d6efd;
+          transform: scale(1.1);
+      }
+
+      .sheet-check.checked {
+          background-color: #198754;
+          border-color: #198754;
+          position: relative;
+      }
+
+      .sheet-check.checked::after {
+          content: "✓";
+          color: white;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 14px;
+          font-weight: bold;
+      }
     </style>
