@@ -10,7 +10,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', [UserController::class, 'login'])->name('admin.login');
+Route::get('/', [UserController::class, 'ViewLogin'])->name('admin.login');
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+
 Route::resource('questions', QuestionController::class)->names('admin.questions');
 Route::get('/exams-{id}/test', [ExamController::class, 'test'])->name('exams.test');
 
