@@ -22,19 +22,16 @@
             <thead>
                 <tr class="bg-gray-200">
                     <th class="border p-2">STT</th>
-                    <th class="border p-2">Hạng</th>
-                    <th class="border p-2">Phần</th>
-                    <th class="border p-2">Độ khó</th>
-                    <th class="border p-2">Hành động</th>
+                    <th class="border p-2"> Mã Hạng</th>
+                    <th class="border p-2">Tên hạng</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($questions as $question)
+                @foreach($options as $option)
                 <tr>
                     <td class="border p-2">{{ $loop->iteration }}</td>
-                    <td class="border p-2">{{ Str::limit($question->content, 100) }}</td>
-                    <td class="border p-2">{{ $question->section }}</td>
-                    <td class="border p-2">{{ $question->level }}</td>
+                    <td class="border p-2">{{ $option->code }}</td>
+                    <td class="border p-2">{{ Str::limit($option->title, 100) }}</td>
                     <td class="border p-2">
                         <a href="#" class="text-blue-500">Sửa</a>
                         <form action="#" method="POST" class="inline">
@@ -49,7 +46,7 @@
         </table>
 
         <div class="d-flex justify-content-center">
-            {{ $questions->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
+            {{ $options->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
         </div>
     </div>
     @include('partials.footer')
