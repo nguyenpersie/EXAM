@@ -14,7 +14,7 @@ Route::get('/', [UserController::class, 'ViewLogin'])->name('admin.login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('questions', QuestionController::class)->names('admin.questions');
+Route::get('questions', [QuestionController::class, 'index'])->names('admin.questions');
 
 Route::get('/exams/{exam}/questions/import', [QuestionController::class, 'importForm'])->name('admin.questions.importForm');
 Route::post('/exams/{exam}/questions/import', [QuestionController::class, 'import'])->name('admin.questions.import');
