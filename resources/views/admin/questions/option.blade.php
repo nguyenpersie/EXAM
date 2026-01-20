@@ -31,7 +31,7 @@
                 <tr>
                     <td class="border p-2">{{ $loop->iteration }}</td>
                     <td class="border p-2">{{ $option->code }}</td>
-                    <td class="border p-2">{{ Str::limit($option->title, 100) }}</td>
+                    <td class="border p-2">{{ $option->title }}</td>
                     <td class="border p-2">
                         <a href="#" class="text-blue-500">Sửa</a>
                         <form action="#" method="POST" class="inline">
