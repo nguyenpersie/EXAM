@@ -4,7 +4,7 @@
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="staticBackdropLabel">Thêm câu hỏi</h1>
            <div class="container">
-            <h1>Import câu hỏi cho đề thi: {{ $exam->title }}</h1>
+            <h1>Import câu hỏi cho đề thi: LPT</h1>
 
             <form method="POST" action="{{ route('admin.questions.import', $exam->id) }}" enctype="multipart/form-data">
                 @csrf
