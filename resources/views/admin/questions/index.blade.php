@@ -13,6 +13,21 @@
   <body>
 
     <div class="container">
+        <h1>Import câu hỏi cho đề thi: {{ $exam->title }}</h1>
+
+        <form method="POST" action="{{ route('admin.questions.import', $exam->id) }}" enctype="multipart/form-data">
+            @csrf
+
+            <div class="form-group">
+                <label for="word_file">Upload file Word (.docx)</label>
+                <input type="file" name="word_file" id="word_file" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Import</button>
+        </form>
+    </div>
+
+    {{-- <div class="container">
         <h1 class="text-2xl font-bold mb-6">Quản lý câu hỏi</h1>
 
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCreate">
@@ -51,7 +66,7 @@
         <div class="d-flex justify-content-center">
             {{ $questions->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
         </div>
-    </div>
+    </div> --}}
     @include('partials.footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @include('admin.questions.modals.add')
