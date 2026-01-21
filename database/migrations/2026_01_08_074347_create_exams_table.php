@@ -18,6 +18,10 @@ return new class extends Migration
             $table->integer('duration_minutes')->comment('Thời gian làm bài');
             $table->float('total_score')->comment('Tổng điểm');
             $table->float('passing_score')->comment('Điểm đạt');
+            $table->string('category')->nullable()->after('title'); // Danh mục/Hạng mục
+            $table->text('description')->nullable()->after('category'); // Mô tả
+            $table->boolean('is_active')->default(true)->after('passing_score'); // Trạng thái
+            $table->index('category'); // Index cho tìm kiếm nhanh
             $table->timestamps();
         });
     }
@@ -27,6 +31,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exams');
+        //Schema::dropIfExists('exams');
+        Schema::table('exams', function (Blueprint $table) {
+            $table->dropColumn(['category', 'description', 'is_active']);
+        });
     }
 };
