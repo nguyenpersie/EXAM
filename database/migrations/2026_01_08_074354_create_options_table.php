@@ -17,6 +17,10 @@ return new class extends Migration
             $table->text('content')->comment('Nội dung đáp án A/B/C/D');
             $table->boolean('is_correct')->default(false)->comment('Đáp án đúng hay không');
             $table->timestamps();
+
+            // Indexes
+            $table->index('question_id');
+            $table->index('is_correct');
         });
     }
 

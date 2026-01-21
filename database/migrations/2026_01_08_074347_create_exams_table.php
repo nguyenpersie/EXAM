@@ -15,14 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('code', 20)->unique()->comment('Mã hạng: LPT, TM, TT...');
             $table->string('title', 255)->comment('Tên đề thi');
-            $table->integer('duration_minutes')->comment('Thời gian làm bài');
-            $table->float('total_score')->comment('Tổng điểm');
-            $table->float('passing_score')->comment('Điểm đạt');
-            $table->string('category')->nullable()->after('title'); // Danh mục/Hạng mục
-            $table->text('description')->nullable()->after('category'); // Mô tả
-            $table->boolean('is_active')->default(true)->after('passing_score'); // Trạng thái
-            $table->index('category'); // Index cho tìm kiếm nhanh
+            $table->string('category')->nullable()->comment('Danh mục/Hạng mục');
+            $table->text('description')->nullable()->comment('Mô tả đề thi');
+            $table->integer('duration_minutes')->comment('Thời gian làm bài (phút)');
+            $table->decimal('total_score', 8, 2)->comment('Tổng điểm');
+            $table->decimal('passing_score', 8, 2)->comment('Điểm đạt');
+            $table->boolean('is_active')->default(true)->comment('Trạng thái hoạt động');
             $table->timestamps();
+
+            // Indexes
+            $table->index('category');
+            $table->index('is_active');
         });
     }
 
@@ -31,9 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //Schema::dropIfExists('exams');
-        Schema::table('exams', function (Blueprint $table) {
-            $table->dropColumn(['category', 'description', 'is_active']);
-        });
+        Schema::dropIfExists('exams');
     }
 };
