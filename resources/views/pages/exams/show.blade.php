@@ -181,28 +181,42 @@
                 <!-- Hướng dẫn -->
                 <div class="card shadow-sm mb-3">
                     <div class="card-header bg-info text-white">
-                        <h6 class="mb-0"><i class="bi bi-info-circle"></i> Định dạng file Excel/CSV</h6>
+                        <h6 class="mb-0"><i class="bi bi-info-circle"></i> Định dạng file Word (.docx)</h6>
                     </div>
                     <div class="card-body">
-                        <p><strong>Các cột theo thứ tự:</strong></p>
-                        <ol class="small mb-3">
-                            <li><strong>Câu hỏi</strong> - Nội dung câu hỏi</li>
-                            <li><strong>Đáp án A</strong></li>
-                            <li><strong>Đáp án B</strong></li>
-                            <li><strong>Đáp án C</strong></li>
-                            <li><strong>Đáp án D</strong></li>
-                            <li><strong>Đáp án đúng</strong> - Ghi A, B, C hoặc D</li>
-                            <li><strong>Phần</strong> - (Tùy chọn) VD: Phần 1, Chương 2</li>
-                            <li><strong>Độ khó</strong> - (Tùy chọn) easy/medium/hard</li>
-                            <li><strong>Danh mục</strong> - (Tùy chọn) VD: Biển báo</li>
-                        </ol>
+                        <p><strong>Mỗi câu hỏi theo cấu trúc:</strong></p>
+                        <div class="border p-3 bg-light small" style="font-family: monospace;">
+                            Câu 1: Biển báo nào cấm đi ngược chiều?<br>
+                            A. Biển P.123<br>
+                            B. Biển P.124<br>
+                            C. Biển P.125<br>
+                            D. Biển W.201<br>
+                            Đáp án: A<br>
+                            Phần: Phần 1 - Biển báo<br>
+                            Độ khó: easy<br>
+                            Danh mục: Biển báo<br>
+                            ---<br>
+                            <br>
+                            Câu 2: Tốc độ tối đa trong khu dân cư là bao nhiêu?<br>
+                            A. 40 km/h<br>
+                            B. 50 km/h<br>
+                            C. 60 km/h<br>
+                            D. 70 km/h<br>
+                            Đáp án: C<br>
+                            ---
+                        </div>
 
-                        <div class="alert alert-warning mb-0">
+                        <div class="alert alert-warning mt-3 mb-0 small">
                             <i class="bi bi-exclamation-triangle"></i>
-                            <strong>Lưu ý:</strong> Dòng đầu tiên là tiêu đề cột, dữ liệu bắt đầu từ dòng 2
+                            <strong>Lưu ý:</strong><br>
+                            • Mỗi câu phân cách bằng dấu --- hoặc ===<br>
+                            • Đáp án đúng: ghi A, B, C hoặc D<br>
+                            • Phần, Độ khó, Danh mục là tùy chọn<br>
+                            • Độ khó: easy (dễ), medium (trung bình), hard (khó)
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Quản lý -->
                 <div class="card shadow-sm">
