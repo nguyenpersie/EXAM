@@ -33,14 +33,18 @@ class ExamController extends Controller
     }
 
     /**
-     * API: Lấy đề thi với câu hỏi đã trộn ngẫu nhiên
+     * API: Lấy đề thi với 30 câu hỏi ngẫu nhiên (có phân loại)
      */
-    public function getRandomizedExam($id)
+    public function getRandomizedExam($id, Request $request)
     {
-        $exam = Exam::with('questions.options')->findOrFail($id);
+        $exam = Exam::findOrFail($id);
 
-        // Trộn câu hỏi
-        $questions = $exam->questions->shuffle();
+        // Lấy categories được chọn (nếu có)
+        $categories = $request->input('categories', []);
+        $limit = $request->input('limit', 30);
+
+        // Lấy câu hỏi random
+        $questions = $exam->getRandomQuestionsByCategory($limit, $categories);
 
         // Trộn đáp án của từng câu
         $questions = $questions->map(function ($question) {

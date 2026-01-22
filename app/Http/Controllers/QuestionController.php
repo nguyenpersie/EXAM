@@ -7,6 +7,7 @@ use App\Models\Exam;
 use App\Models\Option;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpWord\IOFactory;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\View\View;
@@ -101,5 +102,188 @@ class QuestionController extends Controller
     {
         $question->delete();
         return redirect()->route('questions.index')->with('success', 'Câu hỏi đã được xóa!');
+    }
+
+    /**
+     * Import câu hỏi từ file Word
+     */
+    public function import(Request $request, $examId)
+    {
+        $request->validate([
+            'file' => 'required|mimes:docx,doc|max:10240',
+            'category' => 'nullable|string',
+        ]);
+
+        $exam = Exam::findOrFail($examId);
+
+        try {
+            DB::beginTransaction();
+
+            $file = $request->file('file');
+            $data = $this->parseWord($file);
+
+            $importedCount = 0;
+            $category = $request->category;
+
+            foreach ($data as $row) {
+                // Bỏ qua câu hỏi trống
+                if (empty($row['question']))
+                    continue;
+
+                $question = Question::create([
+                    'exam_id' => $exam->id,
+                    'content' => $row['question'],
+                    'section' => $row['section'] ?? null,
+                    'level' => $row['level'] ?? 'medium',
+                    'category' => $category ?? $row['category'] ?? null,
+                ]);
+
+                // Tạo 4 đáp án
+                foreach (['A', 'B', 'C', 'D'] as $index => $letter) {
+                    if (!empty($row['option_' . strtolower($letter)])) {
+                        Option::create([
+                            'question_id' => $question->id,
+                            'content' => $row['option_' . strtolower($letter)],
+                            'is_correct' => (strtoupper($row['correct_answer']) === $letter),
+                        ]);
+                    }
+                }
+
+                $importedCount++;
+            }
+
+            DB::commit();
+
+            return redirect()->route('exams.show', $exam->id)
+                ->with('success', "Đã import thành công {$importedCount} câu hỏi!");
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Lỗi import: ' . $e->getMessage());
+        }
+    }
+
+    private function parseWord($file)
+    {
+        $phpWord = \PhpOffice\PhpWord\IOFactory::load($file->getRealPath());
+        $text = '';
+
+        // Đọc toàn bộ text từ Word
+        foreach ($phpWord->getSections() as $section) {
+            foreach ($section->getElements() as $element) {
+                if (method_exists($element, 'getText')) {
+                    $text .= $element->getText() . "\n";
+                } elseif (method_exists($element, 'getElements')) {
+                    foreach ($element->getElements() as $childElement) {
+                        if (method_exists($childElement, 'getText')) {
+                            $text .= $childElement->getText() . "\n";
+                        }
+                    }
+                }
+            }
+        }
+
+        // Parse text thành câu hỏi
+        $data = [];
+
+        // Tách theo dấu --- hoặc ==== hoặc câu hỏi mới
+        $blocks = preg_split('/\n-{3,}|\n={3,}|\nCâu \d+:/i', $text);
+
+        foreach ($blocks as $block) {
+            $block = trim($block);
+            if (empty($block))
+                continue;
+
+            $question = $this->parseQuestionBlock($block);
+            if ($question) {
+                $data[] = $question;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Parse 1 block câu hỏi
+     */
+    private function parseQuestionBlock($block)
+    {
+        $lines = explode("\n", $block);
+        $data = [
+            'question' => '',
+            'option_a' => '',
+            'option_b' => '',
+            'option_c' => '',
+            'option_d' => '',
+            'correct_answer' => '',
+            'section' => null,
+            'level' => 'medium',
+            'category' => null,
+        ];
+
+        $questionLines = [];
+
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if (empty($line))
+                continue;
+
+            // Đáp án A, B, C, D
+            if (preg_match('/^([A-D])[.\)]\s*(.+)$/i', $line, $matches)) {
+                $letter = strtoupper($matches[1]);
+                $data['option_' . strtolower($letter)] = trim($matches[2]);
+            }
+            // Đáp án đúng
+            elseif (preg_match('/^(Đáp án|ĐA|Correct|Answer)[\s:]+([A-D])/i', $line, $matches)) {
+                $data['correct_answer'] = strtoupper($matches[2]);
+            }
+            // Phần
+            elseif (preg_match('/^(Phần|Section)[\s:]+(.+)$/i', $line, $matches)) {
+                $data['section'] = trim($matches[2]);
+            }
+            // Độ khó
+            elseif (preg_match('/^(Độ khó|Level)[\s:]+(easy|medium|hard|dễ|trung bình|khó)/i', $line, $matches)) {
+                $level = strtolower($matches[2]);
+                if (in_array($level, ['dễ', 'easy']))
+                    $data['level'] = 'easy';
+                elseif (in_array($level, ['khó', 'hard']))
+                    $data['level'] = 'hard';
+                else
+                    $data['level'] = 'medium';
+            }
+            // Danh mục
+            elseif (preg_match('/^(Danh mục|Category)[\s:]+(.+)$/i', $line, $matches)) {
+                $data['category'] = trim($matches[2]);
+            }
+            // Nội dung câu hỏi
+            else {
+                $questionLines[] = $line;
+            }
+        }
+
+        $data['question'] = implode(' ', $questionLines);
+
+        // Validate: phải có câu hỏi và ít nhất 2 đáp án
+        if (
+            empty($data['question']) ||
+            (empty($data['option_a']) && empty($data['option_b']))
+        ) {
+            return null;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Xóa toàn bộ câu hỏi của 1 đề
+     */
+    public function destroyAll($examId)
+    {
+        $exam = Exam::findOrFail($examId);
+        $count = $exam->questions()->count();
+        $exam->questions()->delete();
+
+        return redirect()->route('exams.show', $exam->id)
+            ->with('success', "Đã xóa {$count} câu hỏi!");
     }
 }

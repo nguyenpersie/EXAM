@@ -39,16 +39,17 @@ class Exam extends Model
     /**
      * Lấy câu hỏi ngẫu nhiên
      */
-    public function getRandomQuestions($limit = null)
+    public function getRandomQuestionsByCategory($limit = 30, $categories = [])
     {
         $query = $this->questions()->with('options');
 
-        if ($limit) {
-            return $query->inRandomOrder()->limit($limit)->get();
+        if (!empty($categories)) {
+            $query->whereIn('category', $categories);
         }
 
-        return $query->inRandomOrder()->get();
+        return $query->inRandomOrder()->limit($limit)->get();
     }
+
 
     /**
      * Scope: Chỉ lấy đề thi đang hoạt động

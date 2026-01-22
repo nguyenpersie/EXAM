@@ -68,6 +68,8 @@ Route::prefix('questions')->name('questions.')->group(function () {
 
     // Xóa câu hỏi
     Route::delete('/{id}', [QuestionController::class, 'destroy'])->name('destroy');
+    // Xóa tất cả câu hỏi của 1 đề
+    Route::delete('/exam/{examId}/destroy-all', [QuestionController::class, 'destroyAll'])->name('destroyAll');
 
     // Import câu hỏi từ Excel/CSV
     Route::post('/exam/{examId}/import', [QuestionController::class, 'import'])->name('import');
