@@ -16,7 +16,7 @@ class ExamController extends Controller
     public function index()
     {
         $exams = Exam::withCount('questions')->get();
-        return view('pages.exams.index', compact('exams'));
+        return view('pages.home', compact('exams'));
     }
 
     /**
@@ -29,7 +29,7 @@ class ExamController extends Controller
         // Không trộn ở đây, để JavaScript xử lý
         // Vì mỗi lần reload sẽ trộn lại
 
-        return view('pages.exams.test', compact('exam'));
+        return view('pages.test', compact('exam'));
     }
 
     /**
@@ -43,7 +43,7 @@ class ExamController extends Controller
         $questions = $exam->questions->shuffle();
 
         // Trộn đáp án của từng câu
-        $questions = $questions->map(function($question) {
+        $questions = $questions->map(function ($question) {
             $question->options = $question->options->shuffle();
             return $question;
         });
