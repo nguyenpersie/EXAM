@@ -110,7 +110,7 @@ class QuestionController extends Controller
     public function import(Request $request, $examId)
     {
         $request->validate([
-            'file' => 'required|mimes:docx,doc|max:10240',
+            'file' => 'required|mimes:docx,doc',
             'category' => 'nullable|string',
         ]);
 
