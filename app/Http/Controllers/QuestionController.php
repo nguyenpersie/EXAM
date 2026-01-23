@@ -163,44 +163,72 @@ class QuestionController extends Controller
         }
     }
 
+    /**
+     * Parse file Word (.docx)
+     */
     private function parseWord($file)
     {
         $phpWord = \PhpOffice\PhpWord\IOFactory::load($file->getRealPath());
-        $text = '';
+        $fullText = '';
 
-        // Đọc toàn bộ text từ Word
+        // Đọc toàn bộ text
         foreach ($phpWord->getSections() as $section) {
-            foreach ($section->getElements() as $element) {
-                if (method_exists($element, 'getText')) {
-                    $text .= $element->getText() . "\n";
-                } elseif (method_exists($element, 'getElements')) {
-                    foreach ($element->getElements() as $childElement) {
-                        if (method_exists($childElement, 'getText')) {
-                            $text .= $childElement->getText() . "\n";
-                        }
-                    }
-                }
-            }
+            $fullText .= $this->readSection($section);
         }
 
-        // Parse text thành câu hỏi
+        // Tách theo "Câu [số]:" hoặc dấu phân cách
+        $blocks = preg_split('/(?=Câu\s+\d+[:.])/', $fullText, -1, PREG_SPLIT_NO_EMPTY);
+
         $data = [];
-
-        // Tách theo dấu --- hoặc ==== hoặc câu hỏi mới
-        $blocks = preg_split('/\n-{3,}|\n={3,}|\nCâu \d+:/i', $text);
-
         foreach ($blocks as $block) {
             $block = trim($block);
             if (empty($block))
                 continue;
 
-            $question = $this->parseQuestionBlock($block);
-            if ($question) {
-                $data[] = $question;
+            // Nếu có dấu phân cách ---, tách tiếp
+            $subBlocks = preg_split('/-{3,}|={3,}/', $block, -1, PREG_SPLIT_NO_EMPTY);
+
+            foreach ($subBlocks as $subBlock) {
+                $question = $this->parseQuestionBlock(trim($subBlock));
+                if ($question && !empty($question['question'])) {
+                    $data[] = $question;
+                }
             }
         }
 
         return $data;
+    }
+
+    /**
+     * Đọc section Word
+     */
+    private function readSection($section)
+    {
+        $text = '';
+        foreach ($section->getElements() as $element) {
+            $text .= $this->readElement($element);
+        }
+        return $text;
+    }
+
+    /**
+     * Đọc element Word (đệ quy)
+     */
+    private function readElement($element)
+    {
+        $text = '';
+
+        if (method_exists($element, 'getText')) {
+            $text .= $element->getText() . "\n";
+        }
+
+        if (method_exists($element, 'getElements')) {
+            foreach ($element->getElements() as $childElement) {
+                $text .= $this->readElement($childElement);
+            }
+        }
+
+        return $text;
     }
 
     /**
@@ -217,7 +245,7 @@ class QuestionController extends Controller
             'option_d' => '',
             'correct_answer' => '',
             'section' => null,
-            'level' => 'medium',
+            'level' => '2',
             'category' => null,
         ];
 
@@ -244,12 +272,12 @@ class QuestionController extends Controller
             // Độ khó
             elseif (preg_match('/^(Độ khó|Level)[\s:]+(easy|medium|hard|dễ|trung bình|khó)/i', $line, $matches)) {
                 $level = strtolower($matches[2]);
-                if (in_array($level, ['dễ', 'easy']))
-                    $data['level'] = 'easy';
-                elseif (in_array($level, ['khó', 'hard']))
-                    $data['level'] = 'hard';
+                if (in_array($level, ['1', '1']))
+                    $data['level'] = '1';
+                elseif (in_array($level, ['3', '3']))
+                    $data['level'] = '3';
                 else
-                    $data['level'] = 'medium';
+                    $data['level'] = '2';
             }
             // Danh mục
             elseif (preg_match('/^(Danh mục|Category)[\s:]+(.+)$/i', $line, $matches)) {
