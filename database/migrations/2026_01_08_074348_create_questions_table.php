@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->text('content')->comment('Nội dung câu hỏi');
             $table->string('category')->nullable()->comment('Danh mục câu hỏi');
             $table->string('section')->nullable()->comment('Phần/Chương');
-            $table->string('level')->default('3')->comment('Độ khó 1-5');
+            $table->string('level')->default('2')->comment('Độ khó 1-5');
             $table->timestamps();
 
             // Indexes
