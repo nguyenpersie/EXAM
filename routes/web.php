@@ -19,7 +19,7 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('questions', [QuestionController::class, 'index'])->name('admin.questions');
 Route::get('options', [OptionController::class, 'index'])->name('admin.options');
 
-Route::get('/exams-{id}/test', [ExamController::class, 'test'])->name('exams.test');
+//Route::get('/exams-{id}/test', [ExamController::class, 'test'])->name('exams.test');
 
 // Trang chủ - Danh sách đề thi
 Route::get('/', [ExamController::class, 'index'])->name('home');
@@ -47,7 +47,7 @@ Route::prefix('exams')->name('exams.')->group(function () {
     Route::delete('/{id}', [ExamController::class, 'destroy'])->name('destroy');
 
     // Làm bài thi
-    Route::get('/{id}/test', [ExamController::class, 'test'])->name('exams.test');
+    Route::get('/{id}/test', [ExamController::class, 'test'])->name('test');
 
     // API: Lấy đề thi đã trộn ngẫu nhiên
     Route::get('/{id}/randomized', [ExamController::class, 'getRandomizedExam'])->name('randomized');

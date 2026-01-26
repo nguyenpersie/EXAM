@@ -2,244 +2,246 @@
 @section('content')
 
 {{-- <div class="container-fluid py-4">
-    <div class="row">
-        <!-- Cột trái: Bảng câu hỏi (Sheet) -->
-        <div class="col-lg-3">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-info text-white">
-                    <h5 class="mb-0">Thông tin thi</h5>
-                </div>
-                <div class="card-body">
-                    <p><strong>Đề thi:</strong> {{ $exam->title ?? 'Đề thử nghiệm' }}</p>
-                    <p><strong>Hạng:</strong> {{ $exam->code }}</p>
-                    <p><strong>Thời gian:</strong> {{ $exam->duration_minutes }} phút</p>
-                    <p><strong>Tổng điểm:</strong> {{ $exam->total_score }}</p>
-                    <p><strong>Điểm đạt:</strong> {{ $exam->passing_score }}</p>
-                </div>
-            </div>
+  <div class="row">
+    <!-- Cột trái: Bảng câu hỏi (Sheet) -->
+    <div class="col-lg-3">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">Thông tin thi</h5>
         </div>
-
-        <!-- Cột giữa: Nội dung câu hỏi + đáp án -->
-        <div class="col-lg-6 col-md-8 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0" id="display-q-num">Câu hỏi số 1</h5>
-                    <div>
-                        <button id="btn-flag" class="btn btn-outline-warning btn-sm" onclick="toggleFlag()">
-                            <i class="bi bi-flag"></i> Đánh dấu
-                        </button>
-                        <span id="timer-display" class="badge bg-danger ms-2">45:00</span>
-                    </div>
-                </div>
-                <div class="card-body" id="q-content-area">
-                    <!-- Script sẽ render nội dung câu hỏi + đáp án ở đây -->
-                </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <button id="btn-prev" class="btn btn-secondary" onclick="changeQuestion(-1)" disabled>
-                        <i class="bi bi-arrow-left"></i> Trước
-                    </button>
-                    <button id="btn-submit" class="btn btn-primary" onclick="confirmSubmit()">
-                        Nộp bài
-                    </button>
-                    <button id="btn-next" class="btn btn-secondary" onclick="changeQuestion(1)">
-                        Sau <i class="bi bi-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
+        <div class="card-body">
+          <p><strong>Đề thi:</strong> {{ $exam->title ?? 'Đề thử nghiệm' }}</p>
+          <p><strong>Hạng:</strong> {{ $exam->code }}</p>
+          <p><strong>Thời gian:</strong> {{ $exam->duration_minutes }} phút</p>
+          <p><strong>Tổng điểm:</strong> {{ $exam->total_score }}</p>
+          <p><strong>Điểm đạt:</strong> {{ $exam->passing_score }}</p>
         </div>
-
-        <!-- Cột phải: Thông tin thi -->
-        <div class="col-lg-3 col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white text-center">
-                    <h5 class="mb-0">Bảng câu hỏi</h5>
-                </div>
-                <div class="card-body p-0">
-                    <table class="table table-bordered m-0 sheet-table">
-                        <thead>
-                            <tr class="bg-light">
-                                <th>Câu</th>
-                                <th>A</th>
-                                <th>B</th>
-                                <th>C</th>
-                                <th>D</th>
-                            </tr>
-                        </thead>
-                        <tbody id="sheet-body">
-                            <!-- Script sẽ render bảng này -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+
+    <!-- Cột giữa: Nội dung câu hỏi + đáp án -->
+    <div class="col-lg-6 col-md-8 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0" id="display-q-num">Câu hỏi số 1</h5>
+          <div>
+            <button id="btn-flag" class="btn btn-outline-warning btn-sm" onclick="toggleFlag()">
+              <i class="bi bi-flag"></i> Đánh dấu
+            </button>
+            <span id="timer-display" class="badge bg-danger ms-2">45:00</span>
+          </div>
+        </div>
+        <div class="card-body" id="q-content-area">
+          <!-- Script sẽ render nội dung câu hỏi + đáp án ở đây -->
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <button id="btn-prev" class="btn btn-secondary" onclick="changeQuestion(-1)" disabled>
+            <i class="bi bi-arrow-left"></i> Trước
+          </button>
+          <button id="btn-submit" class="btn btn-primary" onclick="confirmSubmit()">
+            Nộp bài
+          </button>
+          <button id="btn-next" class="btn btn-secondary" onclick="changeQuestion(1)">
+            Sau <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cột phải: Thông tin thi -->
+    <div class="col-lg-3 col-md-4 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+          <h5 class="mb-0">Bảng câu hỏi</h5>
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-bordered m-0 sheet-table">
+            <thead>
+              <tr class="bg-light">
+                <th>Câu</th>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+                <th>D</th>
+              </tr>
+            </thead>
+            <tbody id="sheet-body">
+              <!-- Script sẽ render bảng này -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal xác nhận nộp bài -->
 <div class="modal fade" id="submitModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Xác nhận nộp bài</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Bạn đã làm xong <strong><span id="modal-done">0</span></strong> / {{ $exam->questions->count() ?? 30 }} câu.</p>
-                <p>Còn <strong><span id="modal-remain">30</span></strong> câu chưa làm. Nộp bài ngay?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tiếp tục làm</button>
-                <button type="button" class="btn btn-danger" onclick="submitExam()" data-bs-dismiss="modal">Nộp bài</button>
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xác nhận nộp bài</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn đã làm xong <strong><span id="modal-done">0</span></strong> / {{ $exam->questions->count() ?? 30 }} câu.
+        </p>
+        <p>Còn <strong><span id="modal-remain">30</span></strong> câu chưa làm. Nộp bài ngay?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tiếp tục làm</button>
+        <button type="button" class="btn btn-danger" onclick="submitExam()" data-bs-dismiss="modal">Nộp bài</button>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Modal kết quả -->
 <div class="modal fade" id="resultModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Kết quả thi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body text-center">
-                <h3 id="result-title">Kết quả</h3>
-                <p class="fs-4">Điểm: <strong id="result-score">0</strong> / {{ $exam->total_score ?? 100 }}</p>
-                <p class="fs-5" id="result-status">Không đạt</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="location.reload()">Làm lại</button>
-            </div>
-        </div>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Kết quả thi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <h3 id="result-title">Kết quả</h3>
+        <p class="fs-4">Điểm: <strong id="result-score">0</strong> / {{ $exam->total_score ?? 100 }}</p>
+        <p class="fs-5" id="result-status">Không đạt</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="location.reload()">Làm lại</button>
+      </div>
     </div>
+  </div>
 </div> --}}
 
-@section('scripts')
-{{-- <script>
-      /* =========================================
-       1. LOAD DỮ LIỆU TỪ DATABASE (EXAM ID = 67)
-       ========================================= */
-      // Dữ liệu được truyền từ Controller qua Blade
-      const examDataFromDB = @json($exam);
+{{-- @section('scripts') --}}
+{{--
+<script>
+  /* =========================================
+   1. LOAD DỮ LIỆU TỪ DATABASE (EXAM ID = 67)
+   ========================================= */
+  // Dữ liệu được truyền từ Controller qua Blade
+  const examDataFromDB = @json($exam);
 
-      // Chuyển đổi dữ liệu từ database sang format phù hợp
-      const examData = examDataFromDB.questions.map((question, index) => ({
-        id: question.id,
-        content: question.content,
-        options: question.options.map(opt => opt.content),
-        correctAnswer: question.options.findIndex(opt => opt.is_correct === 1) // Lưu đáp án đúng
-      }));
+  // Chuyển đổi dữ liệu từ database sang format phù hợp
+  const examData = examDataFromDB.questions.map((question, index) => ({
+    id: question.id,
+    content: question.content,
+    options: question.options.map(opt => opt.content),
+    correctAnswer: question.options.findIndex(opt => opt.is_correct === 1) // Lưu đáp án đúng
+  }));
 
-      const TOTAL_QUESTIONS = examData.length;
-      const EXAM_DURATION = examDataFromDB.duration_minutes * 45; // Chuyển phút sang giây
+  const TOTAL_QUESTIONS = examData.length;
+  const EXAM_DURATION = examDataFromDB.duration_minutes * 45; // Chuyển phút sang giây
 
-      /* =========================================
-       2. STATE QUẢN LÝ (TRẠNG THÁI)
-       ========================================= */
-      let currentIdx = 0;
-      let userAnswers = {};
-      let flaggedSet = new Set();
-      let timeLeft = EXAM_DURATION;
-      let timerInterval;
-      let examStartTime = Date.now();
+  /* =========================================
+   2. STATE QUẢN LÝ (TRẠNG THÁI)
+   ========================================= */
+  let currentIdx = 0;
+  let userAnswers = {};
+  let flaggedSet = new Set();
+  let timeLeft = EXAM_DURATION;
+  let timerInterval;
+  let examStartTime = Date.now();
 
-      /* =========================================
-       3. DOM ELEMENTS
-       ========================================= */
-      const els = {
-        qNum: document.getElementById("display-q-num"),
-        qContent: document.getElementById("q-content-area"),
-        //sheetBody: document.getElementById("sheet-body"),
-        sheetColumn1: document.getElementById("sheet-column-1"),
-        sheetColumn2: document.getElementById("sheet-column-2"),
-        timer: document.getElementById("timer-display"),
-        btnPrev: document.getElementById("btn-prev"),
-        btnNext: document.getElementById("btn-next"),
-        btnFlag: document.getElementById("btn-flag"),
-      };
+  /* =========================================
+   3. DOM ELEMENTS
+   ========================================= */
+  const els = {
+    qNum: document.getElementById("display-q-num"),
+    qContent: document.getElementById("q-content-area"),
+    //sheetBody: document.getElementById("sheet-body"),
+    sheetColumn1: document.getElementById("sheet-column-1"),
+    sheetColumn2: document.getElementById("sheet-column-2"),
+    timer: document.getElementById("timer-display"),
+    btnPrev: document.getElementById("btn-prev"),
+    btnNext: document.getElementById("btn-next"),
+    btnFlag: document.getElementById("btn-flag"),
+  };
 
-      /* =========================================
-       4. HÀM RENDER (HIỂN THỊ)
-       ========================================= */
+  /* =========================================
+   4. HÀM RENDER (HIỂN THỊ)
+   ========================================= */
 
-      // Khởi tạo bảng trả lời (Chạy 1 lần đầu)
-      // function initSheet() {
-      //   els.sheetBody.innerHTML = examData
-      //     .map(
-      //       (q, idx) => `
-      //       <tr id="row-${q.id}">
-      //           <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${idx + 1}</td>
-      //           ${[0, 1, 2, 3]
-      //             .map(
-      //               (optIdx) => `
-      //               <td>
-      //                   <span class="sheet-check"
-      //                         id="cell-${q.id}-${optIdx}"
-      //                         onclick="selectAnswer(${q.id}, ${optIdx})"></span>
-      //               </td>
-      //           `
-      //             )
-      //             .join("")}
-      //       </tr>
-      //   `
-      //     )
-      //     .join("");
-      // }
+  // Khởi tạo bảng trả lời (Chạy 1 lần đầu)
+  // function initSheet() {
+  //   els.sheetBody.innerHTML = examData
+  //     .map(
+  //       (q, idx) => `
+  //       <tr id="row-${q.id}">
+  //           <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${idx + 1}</td>
+  //           ${[0, 1, 2, 3]
+  //             .map(
+  //               (optIdx) => `
+  //               <td>
+  //                   <span class="sheet-check"
+  //                         id="cell-${q.id}-${optIdx}"
+  //                         onclick="selectAnswer(${q.id}, ${optIdx})"></span>
+  //               </td>
+  //           `
+  //             )
+  //             .join("")}
+  //       </tr>
+  //   `
+  //     )
+  //     .join("");
+  // }
 
-      function initSheet() {
-        const midPoint = Math.ceil(examData.length / 2); // Chia đôi số câu hỏi
+  function initSheet() {
+    const midPoint = Math.ceil(examData.length / 2); // Chia đôi số câu hỏi
 
-        // Cột 1: Câu 1 -> midPoint
-        const column1HTML = examData
-          .slice(0, midPoint)
-          .map((q, idx) => createSheetRow(q, idx))
-          .join("");
+    // Cột 1: Câu 1 -> midPoint
+    const column1HTML = examData
+      .slice(0, midPoint)
+      .map((q, idx) => createSheetRow(q, idx))
+      .join("");
 
-        // Cột 2: Câu midPoint+1 -> hết
-        const column2HTML = examData
-          .slice(midPoint)
-          .map((q, idx) => createSheetRow(q, idx + midPoint))
-          .join("");
+    // Cột 2: Câu midPoint+1 -> hết
+    const column2HTML = examData
+      .slice(midPoint)
+      .map((q, idx) => createSheetRow(q, idx + midPoint))
+      .join("");
 
-        els.sheetColumn1.innerHTML = column1HTML;
-        els.sheetColumn2.innerHTML = column2HTML;
-      }
+    els.sheetColumn1.innerHTML = column1HTML;
+    els.sheetColumn2.innerHTML = column2HTML;
+  }
 
-      // Hàm tạo 1 hàng trong bảng sheet
-      function createSheetRow(q, idx) {
-        return `
+  // Hàm tạo 1 hàng trong bảng sheet
+  function createSheetRow(q, idx) {
+    return `
           <tr id="row-${q.id}">
             <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${idx + 1}</td>
             ${[0, 1, 2, 3]
-              .map(
-                (optIdx) => `
+        .map(
+          (optIdx) => `
                 <td>
                   <span class="sheet-check"
                         id="cell-${q.id}-${optIdx}"
                         onclick="selectAnswer(${q.id}, ${optIdx})"></span>
                 </td>
               `
-              )
-              .join("")}
+        )
+        .join("")}
           </tr>
         `;
-      }
+  }
 
-      // Hiển thị câu hỏi chi tiết ở giữa
-      function renderQuestion(idx) {
-        currentIdx = idx;
-        const q = examData[idx];
+  // Hiển thị câu hỏi chi tiết ở giữa
+  function renderQuestion(idx) {
+    currentIdx = idx;
+    const q = examData[idx];
 
-        // Update Tiêu đề
-        els.qNum.innerText = `Nội dung câu hỏi ${idx + 1}`;
+    // Update Tiêu đề
+    els.qNum.innerText = `Nội dung câu hỏi ${idx + 1}`;
 
-        // Update nội dung & đáp án (Radio buttons)
-        const savedAns = userAnswers[q.id];
+    // Update nội dung & đáp án (Radio buttons)
+    const savedAns = userAnswers[q.id];
 
-        const optionsHTML = q.options
-          .map(
-            (opt, i) => `
+    const optionsHTML = q.options
+      .map(
+        (opt, i) => `
             <label class="option-item">
                 <input type="radio" name="currentQuestion" class="option-radio form-check-input"
                        value="${i}"
@@ -248,227 +250,227 @@
                 <span class="option-text"><b>${String.fromCharCode(65 + i)}.</b> ${opt}</span>
             </label>
         `
-          )
-          .join("");
+      )
+      .join("");
 
-        els.qContent.innerHTML = `
+    els.qContent.innerHTML = `
             <div class="q-content-text">${q.content}</div>
             <div class="q-options-list">${optionsHTML}</div>
         `;
 
-        // Update nút Điều hướng
-        els.btnPrev.disabled = idx === 0;
-        els.btnNext.disabled = idx === examData.length - 1;
+    // Update nút Điều hướng
+    els.btnPrev.disabled = idx === 0;
+    els.btnNext.disabled = idx === examData.length - 1;
 
-        // Update nút Flag
-        updateFlagButtonUI();
+    // Update nút Flag
+    updateFlagButtonUI();
 
-        // Highlight dòng đang chọn bên bảng Sheet
-        document.querySelectorAll(".sheet-q-num").forEach((el) => el.classList.remove("active"));
-        document.getElementById(`q-label-${idx}`).classList.add("active");
+    // Highlight dòng đang chọn bên bảng Sheet
+    document.querySelectorAll(".sheet-q-num").forEach((el) => el.classList.remove("active"));
+    document.getElementById(`q-label-${idx}`).classList.add("active");
 
-        // Cuộn bảng sheet đến câu đang làm
-        document.getElementById(`row-${q.id}`).scrollIntoView({ behavior: "smooth", block: "center" });
-      }
+    // Cuộn bảng sheet đến câu đang làm
+    document.getElementById(`row-${q.id}`).scrollIntoView({ behavior: "smooth", block: "center" });
+  }
 
-      /* =========================================
-       5. LOGIC XỬ LÝ (ACTION)
-       ========================================= */
+  /* =========================================
+   5. LOGIC XỬ LÝ (ACTION)
+   ========================================= */
 
-      // Xử lý khi chọn đáp án
-      function selectAnswer(qId, optIdx) {
-        userAnswers[qId] = optIdx;
+  // Xử lý khi chọn đáp án
+  function selectAnswer(qId, optIdx) {
+    userAnswers[qId] = optIdx;
 
-        // Cập nhật UI Bảng Sheet
-        [0, 1, 2, 3].forEach((i) => {
-          const cell = document.getElementById(`cell-${qId}-${i}`);
-          if (cell) cell.classList.remove("checked");
-        });
+    // Cập nhật UI Bảng Sheet
+    [0, 1, 2, 3].forEach((i) => {
+      const cell = document.getElementById(`cell-${qId}-${i}`);
+      if (cell) cell.classList.remove("checked");
+    });
 
-        const selectedCell = document.getElementById(`cell-${qId}-${optIdx}`);
-        if (selectedCell) selectedCell.classList.add("checked");
+    const selectedCell = document.getElementById(`cell-${qId}-${optIdx}`);
+    if (selectedCell) selectedCell.classList.add("checked");
 
-        // Tick radio button nếu đang ở câu đó
-        if (examData[currentIdx].id === qId) {
-          const radios = document.getElementsByName("currentQuestion");
-          if (radios[optIdx]) radios[optIdx].checked = true;
+    // Tick radio button nếu đang ở câu đó
+    if (examData[currentIdx].id === qId) {
+      const radios = document.getElementsByName("currentQuestion");
+      if (radios[optIdx]) radios[optIdx].checked = true;
+    }
+  }
+
+  // Chuyển câu hỏi
+  function changeQuestion(step) {
+    const newIdx = currentIdx + step;
+    if (newIdx >= 0 && newIdx < examData.length) {
+      renderQuestion(newIdx);
+    }
+  }
+
+  // Nhảy đến câu bất kỳ
+  function goToQuestion(idx) {
+    renderQuestion(idx);
+  }
+
+  // Đánh dấu (Flag)
+  function toggleFlag() {
+    const qId = examData[currentIdx].id;
+    if (flaggedSet.has(qId)) {
+      flaggedSet.delete(qId);
+    } else {
+      flaggedSet.add(qId);
+    }
+    updateFlagButtonUI();
+    updateSheetFlagUI(qId);
+  }
+
+  function updateFlagButtonUI() {
+    const qId = examData[currentIdx].id;
+    if (flaggedSet.has(qId)) {
+      els.btnFlag.classList.remove("btn-outline-warning");
+      els.btnFlag.classList.add("btn-warning");
+      els.btnFlag.innerHTML = '<i class="bi bi-flag-fill"></i> Đã đánh dấu';
+    } else {
+      els.btnFlag.classList.add("btn-outline-warning");
+      els.btnFlag.classList.remove("btn-warning");
+      els.btnFlag.innerHTML = '<i class="bi bi-flag"></i> Đánh dấu';
+    }
+  }
+
+  function updateSheetFlagUI(qId) {
+    const label = document.getElementById(`q-label-${currentIdx}`);
+    if (label) {
+      if (flaggedSet.has(qId)) {
+        label.style.backgroundColor = "#ffc107";
+      } else {
+        label.style.backgroundColor = "";
+        if (currentIdx === examData.findIndex(q => q.id === qId)) {
+          label.classList.add("active");
         }
       }
+    }
+  }
 
-      // Chuyển câu hỏi
-      function changeQuestion(step) {
-        const newIdx = currentIdx + step;
-        if (newIdx >= 0 && newIdx < examData.length) {
-          renderQuestion(newIdx);
-        }
-      }
-
-      // Nhảy đến câu bất kỳ
-      function goToQuestion(idx) {
-        renderQuestion(idx);
-      }
-
-      // Đánh dấu (Flag)
-      function toggleFlag() {
-        const qId = examData[currentIdx].id;
-        if (flaggedSet.has(qId)) {
-          flaggedSet.delete(qId);
-        } else {
-          flaggedSet.add(qId);
-        }
-        updateFlagButtonUI();
-        updateSheetFlagUI(qId);
-      }
-
-      function updateFlagButtonUI() {
-        const qId = examData[currentIdx].id;
-        if (flaggedSet.has(qId)) {
-          els.btnFlag.classList.remove("btn-outline-warning");
-          els.btnFlag.classList.add("btn-warning");
-          els.btnFlag.innerHTML = '<i class="bi bi-flag-fill"></i> Đã đánh dấu';
-        } else {
-          els.btnFlag.classList.add("btn-outline-warning");
-          els.btnFlag.classList.remove("btn-warning");
-          els.btnFlag.innerHTML = '<i class="bi bi-flag"></i> Đánh dấu';
-        }
-      }
-
-      function updateSheetFlagUI(qId) {
-        const label = document.getElementById(`q-label-${currentIdx}`);
-        if (label) {
-          if (flaggedSet.has(qId)) {
-            label.style.backgroundColor = "#ffc107";
-          } else {
-            label.style.backgroundColor = "";
-            if (currentIdx === examData.findIndex(q => q.id === qId)) {
-              label.classList.add("active");
-            }
-          }
-        }
-      }
-
-      /* =========================================
-       6. TIMER VÀ SUBMIT
-       ========================================= */
-      function startTimer() {
-        timerInterval = setInterval(() => {
-          if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            alert("Hết giờ làm bài! Bài thi sẽ tự động nộp.");
-            submitExam();
-            return;
-          }
-          timeLeft--;
-          const m = Math.floor(timeLeft / 45).toString().padStart(2, "0");
-          const s = (timeLeft % 45).toString().padStart(2, "0");
-          els.timer.innerText = `${m}:${s}`;
-        }, 1000);
-      }
-
-      function confirmSubmit() {
-        const doneCount = Object.keys(userAnswers).length;
-        const modalDone = document.getElementById("modal-done");
-        const modalRemain = document.getElementById("modal-remain");
-
-        if (modalDone) modalDone.innerText = doneCount;
-        if (modalRemain) modalRemain.innerText = TOTAL_QUESTIONS - doneCount;
-
-        const myModal = new bootstrap.Modal(document.getElementById("submitModal"));
-        myModal.show();
-      }
-
-      // Hàm này được gọi từ nút "Xác nhận nộp bài" trong modal
-      window.submitExam = submitExam;
-
-      /* =========================================
-       7. CHẤM ĐIỂM VÀ LƯU KẾT QUẢ
-       ========================================= */
-      function submitExam() {
+  /* =========================================
+   6. TIMER VÀ SUBMIT
+   ========================================= */
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      if (timeLeft <= 0) {
         clearInterval(timerInterval);
-
-        // Tính điểm
-        let correctCount = 0;
-        let wrongCount = 0;
-        let skippedCount = 0;
-
-        const detailedResults = examData.map((question, idx) => {
-          const userAnswer = userAnswers[question.id];
-          const isCorrect = userAnswer === question.correctAnswer;
-
-          if (userAnswer === undefined) {
-            skippedCount++;
-            return {
-              questionNumber: idx + 1,
-              questionId: question.id,
-              questionContent: question.content,
-              userAnswer: null,
-              correctAnswer: question.correctAnswer,
-              isCorrect: false,
-              status: 'skipped'
-            };
-          } else if (isCorrect) {
-            correctCount++;
-            return {
-              questionNumber: idx + 1,
-              questionId: question.id,
-              questionContent: question.content,
-              userAnswer: userAnswer,
-              correctAnswer: question.correctAnswer,
-              isCorrect: true,
-              status: 'correct'
-            };
-          } else {
-            wrongCount++;
-            return {
-              questionNumber: idx + 1,
-              questionId: question.id,
-              questionContent: question.content,
-              userAnswer: userAnswer,
-              correctAnswer: question.correctAnswer,
-              isCorrect: false,
-              status: 'wrong'
-            };
-          }
-        });
-
-        // Tính điểm số
-        const score = (correctCount / TOTAL_QUESTIONS) * examDataFromDB.total_score;
-        const percentage = (correctCount / TOTAL_QUESTIONS) * 100;
-        const timeSpent = EXAM_DURATION - timeLeft;
-        const isPassed = score >= examDataFromDB.passing_score;
-
-        // Lưu kết quả vào object
-        const examResult = {
-          examId: examDataFromDB.id,
-          examTitle: examDataFromDB.title,
-          examCode: examDataFromDB.code,
-          totalQuestions: TOTAL_QUESTIONS,
-          correctCount: correctCount,
-          wrongCount: wrongCount,
-          skippedCount: skippedCount,
-          score: score.toFixed(2),
-          totalScore: examDataFromDB.total_score,
-          passingScore: examDataFromDB.passing_score,
-          percentage: percentage.toFixed(2),
-          isPassed: isPassed,
-          timeSpent: timeSpent,
-          duration: EXAM_DURATION,
-          submittedAt: new Date().toISOString(),
-          detailedResults: detailedResults
-        };
-
-        // Lưu vào biến tạm (có thể dùng sessionStorage hoặc chuyển sang trang kết quả)
-        sessionStorage.setItem('examResult', JSON.stringify(examResult));
-
-        // Chuyển sang trang kết quả hoặc hiển thị modal kết quả
-        showResultModal(examResult);
+        alert("Hết giờ làm bài! Bài thi sẽ tự động nộp.");
+        submitExam();
+        return;
       }
+      timeLeft--;
+      const m = Math.floor(timeLeft / 45).toString().padStart(2, "0");
+      const s = (timeLeft % 45).toString().padStart(2, "0");
+      els.timer.innerText = `${m}:${s}`;
+    }, 1000);
+  }
 
-      /* =========================================
-       8. HIỂN THỊ KẾT QUẢ
-       ========================================= */
-      function showResultModal(result) {
-        const resultHTML = `
+  function confirmSubmit() {
+    const doneCount = Object.keys(userAnswers).length;
+    const modalDone = document.getElementById("modal-done");
+    const modalRemain = document.getElementById("modal-remain");
+
+    if (modalDone) modalDone.innerText = doneCount;
+    if (modalRemain) modalRemain.innerText = TOTAL_QUESTIONS - doneCount;
+
+    const myModal = new bootstrap.Modal(document.getElementById("submitModal"));
+    myModal.show();
+  }
+
+  // Hàm này được gọi từ nút "Xác nhận nộp bài" trong modal
+  window.submitExam = submitExam;
+
+  /* =========================================
+   7. CHẤM ĐIỂM VÀ LƯU KẾT QUẢ
+   ========================================= */
+  function submitExam() {
+    clearInterval(timerInterval);
+
+    // Tính điểm
+    let correctCount = 0;
+    let wrongCount = 0;
+    let skippedCount = 0;
+
+    const detailedResults = examData.map((question, idx) => {
+      const userAnswer = userAnswers[question.id];
+      const isCorrect = userAnswer === question.correctAnswer;
+
+      if (userAnswer === undefined) {
+        skippedCount++;
+        return {
+          questionNumber: idx + 1,
+          questionId: question.id,
+          questionContent: question.content,
+          userAnswer: null,
+          correctAnswer: question.correctAnswer,
+          isCorrect: false,
+          status: 'skipped'
+        };
+      } else if (isCorrect) {
+        correctCount++;
+        return {
+          questionNumber: idx + 1,
+          questionId: question.id,
+          questionContent: question.content,
+          userAnswer: userAnswer,
+          correctAnswer: question.correctAnswer,
+          isCorrect: true,
+          status: 'correct'
+        };
+      } else {
+        wrongCount++;
+        return {
+          questionNumber: idx + 1,
+          questionId: question.id,
+          questionContent: question.content,
+          userAnswer: userAnswer,
+          correctAnswer: question.correctAnswer,
+          isCorrect: false,
+          status: 'wrong'
+        };
+      }
+    });
+
+    // Tính điểm số
+    const score = (correctCount / TOTAL_QUESTIONS) * examDataFromDB.total_score;
+    const percentage = (correctCount / TOTAL_QUESTIONS) * 100;
+    const timeSpent = EXAM_DURATION - timeLeft;
+    const isPassed = score >= examDataFromDB.passing_score;
+
+    // Lưu kết quả vào object
+    const examResult = {
+      examId: examDataFromDB.id,
+      examTitle: examDataFromDB.title,
+      examCode: examDataFromDB.code,
+      totalQuestions: TOTAL_QUESTIONS,
+      correctCount: correctCount,
+      wrongCount: wrongCount,
+      skippedCount: skippedCount,
+      score: score.toFixed(2),
+      totalScore: examDataFromDB.total_score,
+      passingScore: examDataFromDB.passing_score,
+      percentage: percentage.toFixed(2),
+      isPassed: isPassed,
+      timeSpent: timeSpent,
+      duration: EXAM_DURATION,
+      submittedAt: new Date().toISOString(),
+      detailedResults: detailedResults
+    };
+
+    // Lưu vào biến tạm (có thể dùng sessionStorage hoặc chuyển sang trang kết quả)
+    sessionStorage.setItem('examResult', JSON.stringify(examResult));
+
+    // Chuyển sang trang kết quả hoặc hiển thị modal kết quả
+    showResultModal(examResult);
+  }
+
+  /* =========================================
+   8. HIỂN THỊ KẾT QUẢ
+   ========================================= */
+  function showResultModal(result) {
+    const resultHTML = `
           <div class="modal fade" id="resultModal" tabindex="-1" data-bs-backdrop="static">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
@@ -536,9 +538,9 @@
                   </div>
 
                   ${result.isPassed ?
-                    '<div class="alert alert-success"><i class="bi bi-trophy"></i> Chúc mừng! Bạn đã vượt qua bài thi!</div>' :
-                    '<div class="alert alert-danger"><i class="bi bi-emoji-frown"></i> Bạn chưa đạt điểm! Điểm cần đạt: ' + result.passingScore + '</div>'
-                  }
+        '<div class="alert alert-success"><i class="bi bi-trophy"></i> Chúc mừng! Bạn đã vượt qua bài thi!</div>' :
+        '<div class="alert alert-danger"><i class="bi bi-emoji-frown"></i> Bạn chưa đạt điểm! Điểm cần đạt: ' + result.passingScore + '</div>'
+      }
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-primary" onclick="viewDetailedResults()">
@@ -556,21 +558,21 @@
           </div>
         `;
 
-        // Thêm modal vào body
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = resultHTML;
-        document.body.appendChild(tempDiv.firstElementChild);
+    // Thêm modal vào body
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = resultHTML;
+    document.body.appendChild(tempDiv.firstElementChild);
 
-        // Hiển thị modal
-        const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
-        resultModal.show();
-      }
+    // Hiển thị modal
+    const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+    resultModal.show();
+  }
 
-      // Xem chi tiết từng câu
-      function viewDetailedResults() {
-        const result = JSON.parse(sessionStorage.getItem('examResult'));
+  // Xem chi tiết từng câu
+  function viewDetailedResults() {
+    const result = JSON.parse(sessionStorage.getItem('examResult'));
 
-        let detailHTML = `
+    let detailHTML = `
           <!DOCTYPE html>
           <html lang="vi">
           <head>
@@ -590,11 +592,11 @@
               </div>
         `;
 
-        result.detailedResults.forEach((item) => {
-          const statusClass = item.status === 'correct' ? 'success' : (item.status === 'wrong' ? 'danger' : 'warning');
-          const statusIcon = item.status === 'correct' ? 'check-circle' : (item.status === 'wrong' ? 'x-circle' : 'dash-circle');
+    result.detailedResults.forEach((item) => {
+      const statusClass = item.status === 'correct' ? 'success' : (item.status === 'wrong' ? 'danger' : 'warning');
+      const statusIcon = item.status === 'correct' ? 'check-circle' : (item.status === 'wrong' ? 'x-circle' : 'dash-circle');
 
-          detailHTML += `
+      detailHTML += `
             <div class="card mb-3 border-${statusClass}">
               <div class="card-header bg-${statusClass} bg-opacity-10">
                 <strong>Câu ${item.questionNumber}</strong>
@@ -618,9 +620,9 @@
               </div>
             </div>
           `;
-        });
+    });
 
-        detailHTML += `
+    detailHTML += `
               <div class="text-center mb-4">
                 <button class="btn btn-secondary" onclick="window.close()">Đóng</button>
               </div>
@@ -629,231 +631,240 @@
           </html>
         `;
 
-        // Mở cửa sổ mới để hiển thị chi tiết
-        const detailWindow = window.open('', '_blank');
-        detailWindow.document.write(detailHTML);
-        detailWindow.document.close();
-      }
+    // Mở cửa sổ mới để hiển thị chi tiết
+    const detailWindow = window.open('', '_blank');
+    detailWindow.document.write(detailHTML);
+    detailWindow.document.close();
+  }
 
-      /* =========================================
-       9. EXPORT FUNCTIONS TO GLOBAL SCOPE
-       ========================================= */
-      // Để các hàm có thể gọi từ onclick trong HTML
-      window.changeQuestion = changeQuestion;
-      window.goToQuestion = goToQuestion;
-      window.selectAnswer = selectAnswer;
-      window.toggleFlag = toggleFlag;
-      window.confirmSubmit = confirmSubmit;
-      window.submitExam = submitExam;
-      window.viewDetailedResults = viewDetailedResults;
+  /* =========================================
+   9. EXPORT FUNCTIONS TO GLOBAL SCOPE
+   ========================================= */
+  // Để các hàm có thể gọi từ onclick trong HTML
+  window.changeQuestion = changeQuestion;
+  window.goToQuestion = goToQuestion;
+  window.selectAnswer = selectAnswer;
+  window.toggleFlag = toggleFlag;
+  window.confirmSubmit = confirmSubmit;
+  window.submitExam = submitExam;
+  window.viewDetailedResults = viewDetailedResults;
 
-      /* =========================================
-       10. MAIN RUN
-       ========================================= */
-      if (examData && examData.length > 0) {
-        initSheet();
-        renderQuestion(0);
-        startTimer();
-      } else {
-        alert('Không tìm thấy dữ liệu đề thi!');
-      }
-      function submitExam() {
-        clearInterval(timerInterval); // Dừng timer
-
-        let correctCount = 0;
-        let wrongCount = 0;
-        let skippedCount = 0;
-
-        // Duyệt qua tất cả câu hỏi để tính điểm
-        examData.forEach(q => {
-            const selectedId = userAnswers[q.id];
-            if (selectedId === undefined) {
-                skippedCount++;
-            } else {
-                const selectedOpt = q.options.find(opt => opt.id === selectedId);
-                if (selectedOpt && selectedOpt.is_correct) {
-                    correctCount++;
-                } else {
-                    wrongCount++;
-                }
-            }
-        });
-
-        const score = correctCount;
-        const totalScore = TOTAL_QUESTIONS; // Giả sử mỗi câu 1 điểm
-        const percentage = ((correctCount / TOTAL_QUESTIONS) * 100).toFixed(2);
-        const isPassed = score >= {{ $exam->passing_score ?? 80 }};
-
-        // Hiển thị kết quả trong modal
-        document.getElementById("result-score").innerText = `${score} / ${totalScore}`;
-        document.getElementById("result-status").innerText = isPassed ? "Đạt" : "Không đạt";
-        document.getElementById("result-title").innerText = isPassed ? "Chúc mừng!" : "Cố lên nhé!";
-
-        // Đóng modal submit và mở modal kết quả
-        const submitModal = bootstrap.Modal.getInstance(document.getElementById("submitModal"));
-        submitModal.hide();
-
-        const resultModal = new bootstrap.Modal(document.getElementById("resultModal"));
-        resultModal.show();
-    }
-
-    /* =========================================
-    7. MAIN RUN
-    ========================================= */
+  /* =========================================
+   10. MAIN RUN
+   ========================================= */
+  if (examData && examData.length > 0) {
     initSheet();
     renderQuestion(0);
     startTimer();
+  } else {
+    alert('Không tìm thấy dữ liệu đề thi!');
+  }
+  function submitExam() {
+    clearInterval(timerInterval); // Dừng timer
+
+    let correctCount = 0;
+    let wrongCount = 0;
+    let skippedCount = 0;
+
+    // Duyệt qua tất cả câu hỏi để tính điểm
+    examData.forEach(q => {
+      const selectedId = userAnswers[q.id];
+      if (selectedId === undefined) {
+        skippedCount++;
+      } else {
+        const selectedOpt = q.options.find(opt => opt.id === selectedId);
+        if (selectedOpt && selectedOpt.is_correct) {
+          correctCount++;
+        } else {
+          wrongCount++;
+        }
+      }
+    });
+
+    const score = correctCount;
+    const totalScore = TOTAL_QUESTIONS; // Giả sử mỗi câu 1 điểm
+    const percentage = ((correctCount / TOTAL_QUESTIONS) * 100).toFixed(2);
+    const isPassed = score >= {{ $exam-> passing_score ?? 80
+  }};
+
+  // Hiển thị kết quả trong modal
+  document.getElementById("result-score").innerText = `${score} / ${totalScore}`;
+  document.getElementById("result-status").innerText = isPassed ? "Đạt" : "Không đạt";
+  document.getElementById("result-title").innerText = isPassed ? "Chúc mừng!" : "Cố lên nhé!";
+
+  // Đóng modal submit và mở modal kết quả
+  const submitModal = bootstrap.Modal.getInstance(document.getElementById("submitModal"));
+  submitModal.hide();
+
+  const resultModal = new bootstrap.Modal(document.getElementById("resultModal"));
+  resultModal.show();
+    }
+
+  /* =========================================
+  7. MAIN RUN
+  ========================================= */
+  initSheet();
+  renderQuestion(0);
+  startTimer();
 </script> --}}
 
 
 <div class="container-fluid py-4">
-    <div class="row">
-        <!-- Phần hiển thị câu hỏi -->
-        <div class="col-lg-9 col-md-8 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="mb-0" id="display-q-num">Đang tải câu hỏi...</h5>
-                        <small>{{ $exam->title }} - {{ $exam->code }}</small>
-                    </div>
-                    <div class="text-end">
-                        <div class="fs-4" id="timer-display">
-                            <i class="bi bi-clock"></i>
-                            <span>{{ str_pad(floor($exam->duration_minutes), 2, '0', STR_PAD_LEFT) }}:00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body p-4" style="min-height: 400px;">
-                    <div id="q-content-area">
-                        <div class="text-center py-5">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Đang tải...</span>
-                            </div>
-                            <p class="mt-3">Đang chuẩn bị đề thi...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer bg-light">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <button id="btn-prev" class="btn btn-secondary" onclick="changeQuestion(-1)" disabled>
-                            <i class="bi bi-arrow-left"></i> Câu trước
-                        </button>
-
-                        <button id="btn-flag" class="btn btn-outline-warning" onclick="toggleFlag()">
-                            <i class="bi bi-flag"></i> Đánh dấu
-                        </button>
-
-                        <button id="btn-next" class="btn btn-primary" onclick="changeQuestion(1)">
-                            Câu sau <i class="bi bi-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
+  <div class="row">
+    <!-- Phần hiển thị câu hỏi -->
+    <div class="col-lg-9 col-md-8 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="mb-0" id="display-q-num">Đang tải câu hỏi...</h5>
+            <small>{{ $exam->title }} - {{ $exam->code }}</small>
+          </div>
+          <div class="text-end">
+            <div class="fs-4" id="timer-display">
+              <i class="bi bi-clock"></i>
+              <span>{{ str_pad(floor($exam->duration_minutes), 2, '0', STR_PAD_LEFT) }}:00</span>
             </div>
+          </div>
         </div>
-
-        <!-- Bảng câu hỏi 2 cột -->
-        <div class="col-lg-3 col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white text-center py-2">
-                    <h6 class="mb-0">Bảng câu hỏi</h6>
-                </div>
-                <div class="card-body p-2" style="max-height: 70vh; overflow-y: auto;">
-                    <div class="row g-2">
-                        <!-- Cột 1 -->
-                        <div class="col-6">
-                            <table class="table table-bordered table-sm m-0 sheet-table">
-                                <thead>
-                                    <tr class="bg-light">
-                                        <th>Câu</th>
-                                        <th>A</th>
-                                        <th>B</th>
-                                        <th>C</th>
-                                        <th>D</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="sheet-column-1"></tbody>
-                            </table>
-                        </div>
-                        <!-- Cột 2 -->
-                        <div class="col-6">
-                            <table class="table table-bordered table-sm m-0 sheet-table">
-                                <thead>
-                                    <tr class="bg-light">
-                                        <th>Câu</th>
-                                        <th>A</th>
-                                        <th>B</th>
-                                        <th>C</th>
-                                        <th>D</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="sheet-column-2"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-center p-2">
-                    <button class="btn btn-success btn-sm w-100" onclick="confirmSubmit()">
-                        <i class="bi bi-check-circle"></i> Nộp bài
-                    </button>
-                </div>
+        <div class="card-body p-4" style="min-height: 400px;">
+          <div id="q-content-area">
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Đang tải...</span>
+              </div>
+              <p class="mt-3">Đang chuẩn bị đề thi...</p>
             </div>
+          </div>
         </div>
+        <div class="card-footer bg-light">
+          <div class="d-flex justify-content-between align-items-center">
+            <button id="btn-prev" class="btn btn-secondary" onclick="changeQuestion(-1)" disabled>
+              <i class="bi bi-arrow-left"></i> Câu trước
+            </button>
+
+            <button id="btn-flag" class="btn btn-outline-warning" onclick="toggleFlag()">
+              <i class="bi bi-flag"></i> Đánh dấu
+            </button>
+
+            <button id="btn-next" class="btn btn-primary" onclick="changeQuestion(1)">
+              Câu sau <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Bảng câu hỏi 2 cột -->
+    <div class="col-lg-3 col-md-4 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center py-2">
+          <h6 class="mb-0">Bảng câu hỏi</h6>
+        </div>
+        <div class="card-body p-2" style="max-height: 70vh; overflow-y: auto;">
+          <div class="row g-2">
+            <!-- Cột 1 -->
+            <div class="col-6">
+              <table class="table table-bordered table-sm m-0 sheet-table">
+                <thead>
+                  <tr class="bg-light">
+                    <th>Câu</th>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>C</th>
+                    <th>D</th>
+                  </tr>
+                </thead>
+                <tbody id="sheet-column-1"></tbody>
+              </table>
+            </div>
+            <!-- Cột 2 -->
+            <div class="col-6">
+              <table class="table table-bordered table-sm m-0 sheet-table">
+                <thead>
+                  <tr class="bg-light">
+                    <th>Câu</th>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>C</th>
+                    <th>D</th>
+                  </tr>
+                </thead>
+                <tbody id="sheet-column-2"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-center p-2">
+          <button class="btn btn-success btn-sm w-100" onclick="confirmSubmit()">
+            <i class="bi bi-check-circle"></i> Nộp bài
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal xác nhận nộp bài -->
 <div class="modal fade" id="submitModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Xác nhận nộp bài</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Bạn đã hoàn thành <strong id="modal-done">0</strong> câu</p>
-                <p>Còn lại <strong id="modal-remain">0</strong> câu chưa làm</p>
-                <p class="text-danger">Bạn có chắc chắn muốn nộp bài?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-primary" onclick="submitExam()" data-bs-dismiss="modal">
-                    Xác nhận nộp bài
-                </button>
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xác nhận nộp bài</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn đã hoàn thành <strong id="modal-done">0</strong> câu</p>
+        <p>Còn lại <strong id="modal-remain">0</strong> câu chưa làm</p>
+        <p class="text-danger">Bạn có chắc chắn muốn nộp bài?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" onclick="submitExam()" data-bs-dismiss="modal">
+          Xác nhận nộp bài
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
 <style>
-/* Style cho bảng câu hỏi 2 cột */
-.sheet-table { font-size: 0.85rem; }
-.sheet-table th {
+  /* Style cho bảng câu hỏi 2 cột */
+  .sheet-table {
+    font-size: 0.85rem;
+  }
+
+  .sheet-table th {
     padding: 0.3rem !important;
     text-align: center;
     font-weight: 600;
     font-size: 0.75rem;
-}
-.sheet-table td {
+  }
+
+  .sheet-table td {
     padding: 0.2rem !important;
     text-align: center;
     vertical-align: middle;
-}
-.sheet-q-num {
+  }
+
+  .sheet-q-num {
     cursor: pointer;
     font-weight: 600;
     background-color: #f8f9fa;
     transition: all 0.2s;
     min-width: 35px;
-}
-.sheet-q-num:hover {
+  }
+
+  .sheet-q-num:hover {
     background-color: #e9ecef;
     transform: scale(1.05);
-}
-.sheet-q-num.active {
+  }
+
+  .sheet-q-num.active {
     background-color: #0d6efd !important;
     color: white !important;
-}
-.sheet-check {
+  }
+
+  .sheet-check {
     display: inline-block;
     width: 20px;
     height: 20px;
@@ -861,17 +872,20 @@
     border-radius: 3px;
     cursor: pointer;
     transition: all 0.2s;
-}
-.sheet-check:hover {
+  }
+
+  .sheet-check:hover {
     border-color: #0d6efd;
     transform: scale(1.1);
-}
-.sheet-check.checked {
+  }
+
+  .sheet-check.checked {
     background-color: #198754;
     border-color: #198754;
     position: relative;
-}
-.sheet-check.checked::after {
+  }
+
+  .sheet-check.checked::after {
     content: "✓";
     color: white;
     position: absolute;
@@ -880,23 +894,25 @@
     transform: translate(-50%, -50%);
     font-size: 14px;
     font-weight: bold;
-}
+  }
 
-/* Style cho câu hỏi */
-.q-content-text {
+  /* Style cho câu hỏi */
+  .q-content-text {
     font-size: 1.1rem;
     line-height: 1.8;
     margin-bottom: 1.5rem;
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 0.5rem;
-}
-.q-options-list {
+  }
+
+  .q-options-list {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-}
-.option-item {
+  }
+
+  .option-item {
     display: flex;
     align-items: center;
     padding: 1rem;
@@ -904,28 +920,33 @@
     border-radius: 0.5rem;
     cursor: pointer;
     transition: all 0.2s;
-}
-.option-item:hover {
+  }
+
+  .option-item:hover {
     border-color: #0d6efd;
     background-color: #f8f9fa;
-}
-.option-item input[type="radio"] {
+  }
+
+  .option-item input[type="radio"] {
     margin-right: 0.75rem;
     cursor: pointer;
     width: 20px;
     height: 20px;
-}
-.option-item input[type="radio"]:checked ~ .option-text {
+  }
+
+  .option-item input[type="radio"]:checked~.option-text {
     color: #0d6efd;
     font-weight: 600;
-}
-.option-text {
+  }
+
+  .option-text {
     flex: 1;
     font-size: 1rem;
-}
+  }
 </style>
 
-<script>
+@section('scripts')
+  <script>
     // Truyền exam ID từ Laravel sang JavaScript
     const EXAM_ID = {{ $exam->id }};
 
@@ -941,43 +962,43 @@
     const EXAM_CODE = "{{ $exam->code }}";
 
     const els = {
-        qNum: document.getElementById("display-q-num"),
-        qContent: document.getElementById("q-content-area"),
-        sheetColumn1: document.getElementById("sheet-column-1"),
-        sheetColumn2: document.getElementById("sheet-column-2"),
-        timer: document.getElementById("timer-display").querySelector('span'),
-        btnPrev: document.getElementById("btn-prev"),
-        btnNext: document.getElementById("btn-next"),
-        btnFlag: document.getElementById("btn-flag"),
+      qNum: document.getElementById("display-q-num"),
+      qContent: document.getElementById("q-content-area"),
+      sheetColumn1: document.getElementById("sheet-column-1"),
+      sheetColumn2: document.getElementById("sheet-column-2"),
+      timer: document.getElementById("timer-display").querySelector('span'),
+      btnPrev: document.getElementById("btn-prev"),
+      btnNext: document.getElementById("btn-next"),
+      btnFlag: document.getElementById("btn-flag"),
     };
 
     // Load đề thi đã trộn ngẫu nhiên từ API
     async function loadExam() {
-        try {
-            const response = await fetch(`/exams/${EXAM_ID}/randomized`);
-            const data = await response.json();
+      try {
+        const response = await fetch(`/exams/${EXAM_ID}/randomized`);
+        const data = await response.json();
 
-            examData = data.questions.map((q, idx) => ({
-                id: q.id,
-                content: q.content,
-                options: q.options.map(opt => opt.content),
-                correctAnswer: q.options.findIndex(opt => opt.is_correct === 1)
-            }));
+        examData = data.questions.map((q, idx) => ({
+          id: q.id,
+          content: q.content,
+          options: q.options.map(opt => opt.content),
+          correctAnswer: q.options.findIndex(opt => opt.is_correct === 1)
+        }));
 
-            console.log('Đề thi đã load và trộn:', examData);
+        console.log('Đề thi đã load và trộn:', examData);
 
-            initSheet();
-            renderQuestion(0);
-            startTimer();
-        } catch (error) {
-            console.error('Lỗi load đề thi:', error);
-            els.qContent.innerHTML = '<div class="alert alert-danger">Không thể tải đề thi. Vui lòng thử lại!</div>';
-        }
+        initSheet();
+        renderQuestion(0);
+        startTimer();
+      } catch (error) {
+        console.error('Lỗi load đề thi:', error);
+        els.qContent.innerHTML = '<div class="alert alert-danger">Không thể tải đề thi. Vui lòng thử lại!</div>';
+      }
     }
 
     // Các hàm khác giống như script trước...
     // (Copy phần còn lại từ script đã gửi trước)
-</script>
+  </script>
 
-<script src="{{ asset('js/exam-test.js') }}"></script>
+  <script src="{{ asset('js/exam-test.js') }}"></script>
 @endsection
