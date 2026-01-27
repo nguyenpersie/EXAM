@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hệ thống ôn thi trắc nghiệm</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
 
-    @include('partials.style')
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hệ thống ôn thi trắc nghiệm</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
 
-  </head>
-  <body>
+  @include('partials.style')
 
-    @yield('content')
+</head>
 
-    @include('partials.footer')
+<body>
 
-    <div class="modal fade" id="submitModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Xác nhận nộp bài</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <p>Bạn chắc chắn muốn kết thúc bài thi?</p>
-            <ul>
-              <li>Số câu đã làm: <strong id="modal-done">0</strong></li>
-              <li>Số câu chưa làm: <strong id="modal-remain">0</strong></li>
-            </ul>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Làm tiếp</button>
-            <button type="button" class="btn btn-primary" onclick="alert('Đã nộp bài thành công!')">Đồng ý nộp</button>
-          </div>
+  @yield('content')
+
+  @include('partials.footer')
+
+  <div class="modal fade" id="submitModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Xác nhận nộp bài</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Bạn chắc chắn muốn kết thúc bài thi?</p>
+          <ul>
+            <li>Số câu đã làm: <strong id="modal-done">0</strong></li>
+            <li>Số câu chưa làm: <strong id="modal-remain">0</strong></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Làm tiếp</button>
+          <button type="button" class="btn btn-primary" onclick="alert('Đã nộp bài thành công!')">Đồng ý nộp</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- <script>
       /* =========================================
        1. SINH DỮ LIỆU GIẢ (40 CÂU HỎI)
        ========================================= */
@@ -266,6 +268,7 @@
       initSheet() // Vẽ bảng 40 câu
       renderQuestion(0) // Vào câu 1
       startTimer() // Đếm giờ
-    </script>
-  </body>
+    </script> -->
+</body>
+
 </html>
