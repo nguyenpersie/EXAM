@@ -133,20 +133,20 @@ function updateSheetFlagUI(qId) {
 }
 
 // Timer
-function startTimer() {
-    timerInterval = setInterval(() => {
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            alert("Hết giờ! Bài thi tự động nộp.");
-            submitExam();
-            return;
-        }
-        timeLeft--;
-        const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
-        const s = (timeLeft % 60).toString().padStart(2, "0");
-        els.timer.innerText = `${m}:${s}`;
-    }, 1000);
-}
+// function startTimer() {
+//     timerInterval = setInterval(() => {
+//         if (timeLeft <= 0) {
+//             clearInterval(timerInterval);
+//             alert("Hết giờ! Bài thi tự động nộp.");
+//             submitExam();
+//             return;
+//         }
+//         timeLeft--;
+//         const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+//         const s = (timeLeft % 60).toString().padStart(2, "0");
+//         els.timer.innerText = `${m}:${s}`;
+//     }, 1000);
+// }
 
 // Confirm submit
 function confirmSubmit() {
@@ -325,7 +325,7 @@ async function loadExam() {
             //window.EXAM_DURATION_SECONDS = timeLeft; // Lưu thời gian ban đầu
             initSheet();
             renderQuestion(0);
-            startTimer();
+            //startTimer();
         } else {
             els.qContent.innerHTML = '<div class="alert alert-warning">Chưa có câu hỏi nào!</div>';
         }
