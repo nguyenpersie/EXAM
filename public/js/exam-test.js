@@ -160,7 +160,7 @@ function confirmSubmit() {
 
 // Submit và chấm điểm
 function submitExam() {
-    clearInterval(timerInterval);
+    //clearInterval(timerInterval);
 
     let correctCount = 0;
     const detailedResults = examData.map((q, idx) => {
