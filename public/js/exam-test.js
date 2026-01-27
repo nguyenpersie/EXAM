@@ -322,7 +322,7 @@ async function loadExam() {
         console.log('Đã load:', examData);
 
         if (examData.length > 0) {
-            window.EXAM_DURATION_SECONDS = timeLeft; // Lưu thời gian ban đầu
+            //window.EXAM_DURATION_SECONDS = timeLeft; // Lưu thời gian ban đầu
             initSheet();
             renderQuestion(0);
             startTimer();
