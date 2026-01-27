@@ -192,13 +192,12 @@ function submitExam() {
         passingScore: PASSING_SCORE,
         percentage: ((correctCount / examData.length) * 100).toFixed(2),
         isPassed: score >= PASSING_SCORE,
-        timeSpent: {{ $exam-> duration_minutes * 60
-}} - timeLeft,
-    detailedResults: detailedResults
+        timeSpent: (window.EXAM_DURATION_SECONDS || 3600) - timeLeft,
+        detailedResults: detailedResults
     };
 
-sessionStorage.setItem('examResult', JSON.stringify(result));
-showResultModal(result);
+    sessionStorage.setItem('examResult', JSON.stringify(result));
+    showResultModal(result);
 }
 
 // Hiển thị kết quả
