@@ -132,21 +132,21 @@ function updateSheetFlagUI(qId) {
     }
 }
 
-// Timer
-// function startTimer() {
-//     timerInterval = setInterval(() => {
-//         if (timeLeft <= 0) {
-//             clearInterval(timerInterval);
-//             alert("Hết giờ! Bài thi tự động nộp.");
-//             submitExam();
-//             return;
-//         }
-//         timeLeft--;
-//         const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
-//         const s = (timeLeft % 60).toString().padStart(2, "0");
-//         els.timer.innerText = `${m}:${s}`;
-//     }, 1000);
-// }
+Timer
+function startTimer() {
+    timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            alert("Hết giờ! Bài thi tự động nộp.");
+            submitExam();
+            return;
+        }
+        timeLeft--;
+        const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+        const s = (timeLeft % 60).toString().padStart(2, "0");
+        els.timer.innerText = `${m}:${s}`;
+    }, 1000);
+}
 
 // Confirm submit
 function confirmSubmit() {
@@ -160,7 +160,7 @@ function confirmSubmit() {
 
 // Submit và chấm điểm
 function submitExam() {
-    //clearInterval(timerInterval);
+    clearInterval(timerInterval);
 
     let correctCount = 0;
     const detailedResults = examData.map((q, idx) => {
