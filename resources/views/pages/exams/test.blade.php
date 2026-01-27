@@ -211,21 +211,21 @@
     // Hàm tạo 1 hàng trong bảng sheet
     function createSheetRow(q, idx) {
       return `
-                                        <tr id="row-${q.id}">
-                                          <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${idx + 1}</td>
-                                          ${[0, 1, 2, 3]
+                                                <tr id="row-${q.id}">
+                                                  <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${idx + 1}</td>
+                                                  ${[0, 1, 2, 3]
           .map(
             (optIdx) => `
-                                              <td>
-                                                <span class="sheet-check"
-                                                      id="cell-${q.id}-${optIdx}"
-                                                      onclick="selectAnswer(${q.id}, ${optIdx})"></span>
-                                              </td>
-                                            `
+                                                      <td>
+                                                        <span class="sheet-check"
+                                                              id="cell-${q.id}-${optIdx}"
+                                                              onclick="selectAnswer(${q.id}, ${optIdx})"></span>
+                                                      </td>
+                                                    `
           )
           .join("")}
-                                        </tr>
-                                      `;
+                                                </tr>
+                                              `;
     }
 
     // Hiển thị câu hỏi chi tiết ở giữa
@@ -242,21 +242,21 @@
       const optionsHTML = q.options
         .map(
           (opt, i) => `
-                                          <label class="option-item">
-                                              <input type="radio" name="currentQuestion" class="option-radio form-check-input"
-                                                     value="${i}"
-                                                     ${savedAns === i ? "checked" : ""}
-                                                     onchange="selectAnswer(${q.id}, ${i})">
-                                              <span class="option-text"><b>${String.fromCharCode(65 + i)}.</b> ${opt}</span>
-                                          </label>
-                                      `
+                                                  <label class="option-item">
+                                                      <input type="radio" name="currentQuestion" class="option-radio form-check-input"
+                                                             value="${i}"
+                                                             ${savedAns === i ? "checked" : ""}
+                                                             onchange="selectAnswer(${q.id}, ${i})">
+                                                      <span class="option-text"><b>${String.fromCharCode(65 + i)}.</b> ${opt}</span>
+                                                  </label>
+                                              `
         )
         .join("");
 
       els.qContent.innerHTML = `
-                                          <div class="q-content-text">${q.content}</div>
-                                          <div class="q-options-list">${optionsHTML}</div>
-                                      `;
+                                                  <div class="q-content-text">${q.content}</div>
+                                                  <div class="q-options-list">${optionsHTML}</div>
+                                              `;
 
       // Update nút Điều hướng
       els.btnPrev.disabled = idx === 0;
@@ -471,92 +471,92 @@
      ========================================= */
     function showResultModal(result) {
       const resultHTML = `
-                                        <div class="modal fade" id="resultModal" tabindex="-1" data-bs-backdrop="static">
-                                          <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                              <div class="modal-header bg-${result.isPassed ? 'success' : 'danger'} text-white">
-                                                <h5 class="modal-title">
-                                                  <i class="bi bi-${result.isPassed ? 'check-circle' : 'x-circle'}"></i>
-                                                  Kết quả bài thi
-                                                </h5>
-                                              </div>
-                                              <div class="modal-body">
-                                                <div class="text-center mb-4">
-                                                  <h3>${result.examTitle}</h3>
-                                                  <p class="text-muted">Mã đề: ${result.examCode}</p>
-                                                </div>
-
-                                                <div class="row text-center mb-4">
-                                                  <div class="col-md-6">
-                                                    <div class="card bg-light">
-                                                      <div class="card-body">
-                                                        <h1 class="display-4 text-${result.isPassed ? 'success' : 'danger'}">
-                                                          ${result.score}/${result.totalScore}
-                                                        </h1>
-                                                        <p class="mb-0">Điểm số</p>
+                                                <div class="modal fade" id="resultModal" tabindex="-1" data-bs-backdrop="static">
+                                                  <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                      <div class="modal-header bg-${result.isPassed ? 'success' : 'danger'} text-white">
+                                                        <h5 class="modal-title">
+                                                          <i class="bi bi-${result.isPassed ? 'check-circle' : 'x-circle'}"></i>
+                                                          Kết quả bài thi
+                                                        </h5>
                                                       </div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="col-md-6">
-                                                    <div class="card bg-light">
-                                                      <div class="card-body">
-                                                        <h1 class="display-4 text-primary">${result.percentage}%</h1>
-                                                        <p class="mb-0">Tỷ lệ đúng</p>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                </div>
+                                                      <div class="modal-body">
+                                                        <div class="text-center mb-4">
+                                                          <h3>${result.examTitle}</h3>
+                                                          <p class="text-muted">Mã đề: ${result.examCode}</p>
+                                                        </div>
 
-                                                <div class="row mb-4">
-                                                  <div class="col-4 text-center">
-                                                    <div class="text-success">
-                                                      <i class="bi bi-check-circle fs-3"></i>
-                                                      <p class="mb-0"><strong>${result.correctCount}</strong></p>
-                                                      <small>Câu đúng</small>
-                                                    </div>
-                                                  </div>
-                                                  <div class="col-4 text-center">
-                                                    <div class="text-danger">
-                                                      <i class="bi bi-x-circle fs-3"></i>
-                                                      <p class="mb-0"><strong>${result.wrongCount}</strong></p>
-                                                      <small>Câu sai</small>
-                                                    </div>
-                                                  </div>
-                                                  <div class="col-4 text-center">
-                                                    <div class="text-warning">
-                                                      <i class="bi bi-dash-circle fs-3"></i>
-                                                      <p class="mb-0"><strong>${result.skippedCount}</strong></p>
-                                                      <small>Bỏ qua</small>
-                                                    </div>
-                                                  </div>
-                                                </div>
+                                                        <div class="row text-center mb-4">
+                                                          <div class="col-md-6">
+                                                            <div class="card bg-light">
+                                                              <div class="card-body">
+                                                                <h1 class="display-4 text-${result.isPassed ? 'success' : 'danger'}">
+                                                                  ${result.score}/${result.totalScore}
+                                                                </h1>
+                                                                <p class="mb-0">Điểm số</p>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                            <div class="card bg-light">
+                                                              <div class="card-body">
+                                                                <h1 class="display-4 text-primary">${result.percentage}%</h1>
+                                                                <p class="mb-0">Tỷ lệ đúng</p>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
 
-                                                <div class="alert alert-info">
-                                                  <i class="bi bi-clock"></i> Thời gian làm bài:
-                                                  <strong>${Math.floor(result.timeSpent / 60)} phút ${result.timeSpent % 60} giây</strong>
-                                                  / ${Math.floor(result.duration / 60)} phút
-                                                </div>
+                                                        <div class="row mb-4">
+                                                          <div class="col-4 text-center">
+                                                            <div class="text-success">
+                                                              <i class="bi bi-check-circle fs-3"></i>
+                                                              <p class="mb-0"><strong>${result.correctCount}</strong></p>
+                                                              <small>Câu đúng</small>
+                                                            </div>
+                                                          </div>
+                                                          <div class="col-4 text-center">
+                                                            <div class="text-danger">
+                                                              <i class="bi bi-x-circle fs-3"></i>
+                                                              <p class="mb-0"><strong>${result.wrongCount}</strong></p>
+                                                              <small>Câu sai</small>
+                                                            </div>
+                                                          </div>
+                                                          <div class="col-4 text-center">
+                                                            <div class="text-warning">
+                                                              <i class="bi bi-dash-circle fs-3"></i>
+                                                              <p class="mb-0"><strong>${result.skippedCount}</strong></p>
+                                                              <small>Bỏ qua</small>
+                                                            </div>
+                                                          </div>
+                                                        </div>
 
-                                                ${result.isPassed ?
+                                                        <div class="alert alert-info">
+                                                          <i class="bi bi-clock"></i> Thời gian làm bài:
+                                                          <strong>${Math.floor(result.timeSpent / 60)} phút ${result.timeSpent % 60} giây</strong>
+                                                          / ${Math.floor(result.duration / 60)} phút
+                                                        </div>
+
+                                                        ${result.isPassed ?
           '<div class="alert alert-success"><i class="bi bi-trophy"></i> Chúc mừng! Bạn đã vượt qua bài thi!</div>' :
           '<div class="alert alert-danger"><i class="bi bi-emoji-frown"></i> Bạn chưa đạt điểm! Điểm cần đạt: ' + result.passingScore + '</div>'
         }
-                                              </div>
-                                              <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" onclick="viewDetailedResults()">
-                                                  <i class="bi bi-eye"></i> Xem chi tiết
-                                                </button>
-                                                <button type="button" class="btn btn-secondary" onclick="location.reload()">
-                                                  <i class="bi bi-arrow-clockwise"></i> Làm lại
-                                                </button>
-                                                <button type="button" class="btn btn-success" onclick="window.close()">
-                                                  <i class="bi bi-check-lg"></i> Hoàn thành
-                                                </button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      `;
+                                                      </div>
+                                                      <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" onclick="viewDetailedResults()">
+                                                          <i class="bi bi-eye"></i> Xem chi tiết
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary" onclick="location.reload()">
+                                                          <i class="bi bi-arrow-clockwise"></i> Làm lại
+                                                        </button>
+                                                        <button type="button" class="btn btn-success" onclick="window.close()">
+                                                          <i class="bi bi-check-lg"></i> Hoàn thành
+                                                        </button>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              `;
 
       // Thêm modal vào body
       const tempDiv = document.createElement('div');
@@ -573,63 +573,63 @@
       const result = JSON.parse(sessionStorage.getItem('examResult'));
 
       let detailHTML = `
-                                        <!DOCTYPE html>
-                                        <html lang="vi">
-                                        <head>
-                                          <meta charset="UTF-8">
-                                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                          <title>Chi tiết bài thi - ${result.examTitle}</title>
-                                          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                                          <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-                                        </head>
-                                        <body class="bg-light">
-                                          <div class="container py-4">
-                                            <div class="card mb-4">
-                                              <div class="card-header bg-primary text-white">
-                                                <h4 class="mb-0">Chi tiết bài làm - ${result.examTitle}</h4>
-                                                <small>Điểm: ${result.score}/${result.totalScore} (${result.percentage}%)</small>
-                                              </div>
-                                            </div>
-                                      `;
+                                                <!DOCTYPE html>
+                                                <html lang="vi">
+                                                <head>
+                                                  <meta charset="UTF-8">
+                                                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                                  <title>Chi tiết bài thi - ${result.examTitle}</title>
+                                                  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                                                  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+                                                </head>
+                                                <body class="bg-light">
+                                                  <div class="container py-4">
+                                                    <div class="card mb-4">
+                                                      <div class="card-header bg-primary text-white">
+                                                        <h4 class="mb-0">Chi tiết bài làm - ${result.examTitle}</h4>
+                                                        <small>Điểm: ${result.score}/${result.totalScore} (${result.percentage}%)</small>
+                                                      </div>
+                                                    </div>
+                                              `;
 
       result.detailedResults.forEach((item) => {
         const statusClass = item.status === 'correct' ? 'success' : (item.status === 'wrong' ? 'danger' : 'warning');
         const statusIcon = item.status === 'correct' ? 'check-circle' : (item.status === 'wrong' ? 'x-circle' : 'dash-circle');
 
         detailHTML += `
-                                          <div class="card mb-3 border-${statusClass}">
-                                            <div class="card-header bg-${statusClass} bg-opacity-10">
-                                              <strong>Câu ${item.questionNumber}</strong>
-                                              <span class="badge bg-${statusClass} float-end">
-                                                <i class="bi bi-${statusIcon}"></i>
-                                                ${item.status === 'correct' ? 'Đúng' : (item.status === 'wrong' ? 'Sai' : 'Bỏ qua')}
-                                              </span>
-                                            </div>
-                                            <div class="card-body">
-                                              <p><strong>Câu hỏi:</strong> ${item.questionContent}</p>
-                                              <p class="mb-1"><strong>Đáp án của bạn:</strong>
-                                                <span class="text-${statusClass}">
-                                                  ${item.userAnswer !== null ? String.fromCharCode(65 + item.userAnswer) : 'Không trả lời'}
-                                                </span>
-                                              </p>
-                                              ${item.status !== 'correct' ? `
-                                                <p class="mb-0"><strong>Đáp án đúng:</strong>
-                                                  <span class="text-success">${String.fromCharCode(65 + item.correctAnswer)}</span>
-                                                </p>
-                                              ` : ''}
-                                            </div>
-                                          </div>
-                                        `;
+                                                  <div class="card mb-3 border-${statusClass}">
+                                                    <div class="card-header bg-${statusClass} bg-opacity-10">
+                                                      <strong>Câu ${item.questionNumber}</strong>
+                                                      <span class="badge bg-${statusClass} float-end">
+                                                        <i class="bi bi-${statusIcon}"></i>
+                                                        ${item.status === 'correct' ? 'Đúng' : (item.status === 'wrong' ? 'Sai' : 'Bỏ qua')}
+                                                      </span>
+                                                    </div>
+                                                    <div class="card-body">
+                                                      <p><strong>Câu hỏi:</strong> ${item.questionContent}</p>
+                                                      <p class="mb-1"><strong>Đáp án của bạn:</strong>
+                                                        <span class="text-${statusClass}">
+                                                          ${item.userAnswer !== null ? String.fromCharCode(65 + item.userAnswer) : 'Không trả lời'}
+                                                        </span>
+                                                      </p>
+                                                      ${item.status !== 'correct' ? `
+                                                        <p class="mb-0"><strong>Đáp án đúng:</strong>
+                                                          <span class="text-success">${String.fromCharCode(65 + item.correctAnswer)}</span>
+                                                        </p>
+                                                      ` : ''}
+                                                    </div>
+                                                  </div>
+                                                `;
       });
 
       detailHTML += `
-                                            <div class="text-center mb-4">
-                                              <button class="btn btn-secondary" onclick="window.close()">Đóng</button>
-                                            </div>
-                                          </div>
-                                        </body>
-                                        </html>
-                                      `;
+                                                    <div class="text-center mb-4">
+                                                      <button class="btn btn-secondary" onclick="window.close()">Đóng</button>
+                                                    </div>
+                                                  </div>
+                                                </body>
+                                                </html>
+                                              `;
 
       // Mở cửa sổ mới để hiển thị chi tiết
       const detailWindow = window.open('', '_blank');
@@ -698,7 +698,7 @@
 
     const resultModal = new bootstrap.Modal(document.getElementById("resultModal"));
     resultModal.show();
-                                  }
+                                          }
 
     /* =========================================
     7. MAIN RUN
@@ -1001,5 +1001,5 @@
     });
   </script>
 
-  <!-- <script src="{{ asset('js/exam-test.js') }}"></script> -->
+  <script src="{{ asset('js/exam-test.js') }}"></script>
 @endsection
