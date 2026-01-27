@@ -245,20 +245,20 @@
     let currentIdx = 0;
     let userAnswers = {};
     let flaggedSet = new Set();
-    //let timeLeft = 45 * 60;
-    //let timerInterval;
+    let timeLeft = 45 * 60;
+    let timerInterval;
     const TOTAL_SCORE = {{ $exam->total_score }};
     const PASSING_SCORE = {{ $exam->passing_score }};
     const EXAM_TITLE = "{{ $exam->title }}";
     const EXAM_CODE = "{{ $exam->code }}";
-    //const EXAM_DURATION_SECONDS = 45 * 60; // Cố định 45 phút
+    const EXAM_DURATION_SECONDS = 45 * 60; // Cố định 45 phút
 
     const els = {
       qNum: document.getElementById("display-q-num"),
       qContent: document.getElementById("q-content-area"),
       sheetColumn1: document.getElementById("sheet-column-1"),
       sheetColumn2: document.getElementById("sheet-column-2"),
-      //timer: document.getElementById("timer-display").querySelector('span'),
+      timer: document.getElementById("timer-display").querySelector('span'),
       btnPrev: document.getElementById("btn-prev"),
       btnNext: document.getElementById("btn-next"),
       btnFlag: document.getElementById("btn-flag"),

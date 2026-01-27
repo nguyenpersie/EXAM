@@ -132,7 +132,7 @@ function updateSheetFlagUI(qId) {
     }
 }
 
-Timer
+//Timer
 function startTimer() {
     timerInterval = setInterval(() => {
         if (timeLeft <= 0) {
@@ -322,10 +322,10 @@ async function loadExam() {
         console.log('Đã load:', examData);
 
         if (examData.length > 0) {
-            //window.EXAM_DURATION_SECONDS = timeLeft; // Lưu thời gian ban đầu
+            window.EXAM_DURATION_SECONDS = timeLeft; // Lưu thời gian ban đầu
             initSheet();
             renderQuestion(0);
-            //startTimer();
+            startTimer();
         } else {
             els.qContent.innerHTML = '<div class="alert alert-warning">Chưa có câu hỏi nào!</div>';
         }
