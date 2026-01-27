@@ -133,20 +133,20 @@ function updateSheetFlagUI(qId) {
 }
 
 //Timer
-function startTimer() {
-    timerInterval = setInterval(() => {
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            alert("Hết giờ! Bài thi tự động nộp.");
-            submitExam();
-            return;
-        }
-        timeLeft--;
-        const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
-        const s = (timeLeft % 60).toString().padStart(2, "0");
-        els.timer.innerText = `${m}:${s}`;
-    }, 1000);
-}
+// function startTimer() {
+//     timerInterval = setInterval(() => {
+//         if (timeLeft <= 0) {
+//             clearInterval(timerInterval);
+//             alert("Hết giờ! Bài thi tự động nộp.");
+//             submitExam();
+//             return;
+//         }
+//         timeLeft--;
+//         const m = Math.floor(timeLeft / 60).toString().padStart(2, "0");
+//         const s = (timeLeft % 60).toString().padStart(2, "0");
+//         els.timer.innerText = `${m}:${s}`;
+//     }, 1000);
+// }
 
 // Confirm submit
 function confirmSubmit() {
