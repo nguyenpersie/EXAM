@@ -325,7 +325,7 @@ async function loadExam() {
             window.EXAM_DURATION_SECONDS = timeLeft; // Lưu thời gian ban đầu
             initSheet();
             renderQuestion(0);
-            startTimer();
+            //startTimer();
         } else {
             els.qContent.innerHTML = '<div class="alert alert-warning">Chưa có câu hỏi nào!</div>';
         }
