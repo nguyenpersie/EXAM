@@ -6,7 +6,7 @@ function createSheetRow(q, idx) {
       <tr id="row-${q.id}">
         <td class="sheet-q-num" onclick="goToQuestion(${idx})" id="q-label-${idx}">${idx + 1}</td>
         ${[0, 1, 2, 3]
-          .map(optIdx => `
+            .map(optIdx => `
             <td>
               <span class="sheet-check" id="cell-${q.id}-${optIdx}" onclick="selectAnswer(${q.id}, ${optIdx})"></span>
             </td>
@@ -192,12 +192,13 @@ function submitExam() {
         passingScore: PASSING_SCORE,
         percentage: ((correctCount / examData.length) * 100).toFixed(2),
         isPassed: score >= PASSING_SCORE,
-        timeSpent: {{ $exam->duration_minutes * 60 }} - timeLeft,
-        detailedResults: detailedResults
+        timeSpent: {{ $exam-> duration_minutes * 60
+}} - timeLeft,
+    detailedResults: detailedResults
     };
 
-    sessionStorage.setItem('examResult', JSON.stringify(result));
-    showResultModal(result);
+sessionStorage.setItem('examResult', JSON.stringify(result));
+showResultModal(result);
 }
 
 // Hiển thị kết quả
@@ -239,9 +240,9 @@ function showResultModal(result) {
                         </div>
                     </div>
                     ${result.isPassed ?
-                        '<div class="alert alert-success"><i class="bi bi-trophy"></i> Chúc mừng! Bạn đã đạt!</div>' :
-                        '<div class="alert alert-danger"><i class="bi bi-emoji-frown"></i> Chưa đạt! Cần: ' + result.passingScore + '</div>'
-                    }
+            '<div class="alert alert-success"><i class="bi bi-trophy"></i> Chúc mừng! Bạn đã đạt!</div>' :
+            '<div class="alert alert-danger"><i class="bi bi-emoji-frown"></i> Chưa đạt! Cần: ' + result.passingScore + '</div>'
+        }
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" onclick="viewDetailedResults()">
@@ -306,5 +307,36 @@ window.confirmSubmit = confirmSubmit;
 window.submitExam = submitExam;
 window.viewDetailedResults = viewDetailedResults;
 
+// Load đề thi từ API
+async function loadExam() {
+    try {
+        const response = await fetch(`/exams/${EXAM_ID}/randomized?limit=30`);
+        const data = await response.json();
+
+        examData = data.questions.map((q) => ({
+            id: q.id,
+            content: q.content,
+            options: q.options.map(opt => opt.content),
+            correctAnswer: q.options.findIndex(opt => opt.is_correct === 1)
+        }));
+
+        console.log('Đã load:', examData);
+
+        if (examData.length > 0) {
+            window.EXAM_DURATION_SECONDS = timeLeft; // Lưu thời gian ban đầu
+            initSheet();
+            renderQuestion(0);
+            startTimer();
+        } else {
+            els.qContent.innerHTML = '<div class="alert alert-warning">Chưa có câu hỏi nào!</div>';
+        }
+    } catch (error) {
+        console.error('Lỗi:', error);
+        els.qContent.innerHTML = '<div class="alert alert-danger">Lỗi load đề thi!</div>';
+    }
+}
+
 // Auto load khi trang sẵn sàng
-document.addEventListener('DOMContentLoaded', loadExam);
+document.addEventListener('DOMContentLoaded', function () {
+    loadExam();
+});
