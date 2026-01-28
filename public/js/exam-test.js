@@ -207,8 +207,8 @@ function showResultModal(result) {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-${result.isPassed ? 'success' : 'danger'} text-white">
-                    <h5 class="modal-title"><i class="bi bi-${result.isPassed ? 'check-circle' : 'x-circle'}"></i> Kết quả bài thi</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button> Kết quả bài thi</h5>
                 </div>
                 <div class="modal-body">
                     <div class="text-center mb-3">
