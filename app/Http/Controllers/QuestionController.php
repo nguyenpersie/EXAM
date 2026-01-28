@@ -64,7 +64,7 @@ class QuestionController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.questions.edit', compact('question'));
+        return view('admin.questions.modals.edit', compact('question'));
     }
 
     /**
