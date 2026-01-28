@@ -13,14 +13,16 @@ class Question extends Model
     protected $table = 'questions';
 
     protected $fillable = [
-       'exam_id',
+        'exam_id',
         'content',
+        'image', // THÊM
+        'category', // THÊM
         'section',
         'level',
     ];
 
     // Quan hệ với đáp án
-   public function exam()
+    public function exam()
     {
         return $this->belongsTo(Exam::class);
     }

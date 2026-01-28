@@ -15,11 +15,12 @@ class Option extends Model
     protected $fillable = [
         'question_id',
         'content',
+        'image', // THÊM
         'is_correct',
     ];
 
     // Quan hệ ngược lại với câu hỏi
-   public function question()
+    public function question()
     {
         return $this->belongsTo(Question::class);
     }

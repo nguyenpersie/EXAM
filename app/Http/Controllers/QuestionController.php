@@ -127,30 +127,44 @@ class QuestionController extends Controller
 
             foreach ($data as $row) {
                 // Bỏ qua câu hỏi trống
-                if (empty($row['question']))
+                if (empty($row['question'])) {
                     continue;
+                }
 
+                // Tạo câu hỏi
                 $question = Question::create([
                     'exam_id' => $exam->id,
                     'content' => $row['question'],
-                    'section' => $row['section'] ?? null,
-                    'level' => $row['level'] ?? 'medium',
-                    'category' => $category ?? $row['category'] ?? null,
+                    'category' => $category,
                 ]);
 
-                // Tạo 4 đáp án
-                foreach (['A', 'B', 'C', 'D'] as $index => $letter) {
-                    if (!empty($row['option_' . strtolower($letter)])) {
+                // Tạo đáp án A B C D
+                foreach (['A', 'B', 'C', 'D'] as $letter) {
+                    $key = 'option_' . strtolower($letter);
+
+                    if (!empty($row[$key])) {
                         Option::create([
                             'question_id' => $question->id,
-                            'content' => $row['option_' . strtolower($letter)],
-                            'is_correct' => (strtoupper($row['correct_answer']) === $letter),
+                            'content' => $row[$key],
+                            'is_correct' => strtoupper($row['correct_answer']) === $letter,
                         ]);
                     }
                 }
 
                 $importedCount++;
             }
+
+            //     if (!empty($row['option_' . strtolower($letter)])) {
+            //             Option::create([
+            //                 'question_id' => $question->id,
+            //                 'content' => $row['option_' . strtolower($letter)],
+            //                 'is_correct' => (strtoupper($row['correct_answer']) === $letter),
+            //             ]);
+            //         }
+            //     }
+
+            //     $importedCount++;
+            // }
 
             DB::commit();
 
@@ -234,9 +248,78 @@ class QuestionController extends Controller
     /**
      * Parse 1 block câu hỏi
      */
+    // private function parseQuestionBlock($block)
+    // {
+    //     $lines = explode("\n", $block);
+    //     $data = [
+    //         'question' => '',
+    //         'option_a' => '',
+    //         'option_b' => '',
+    //         'option_c' => '',
+    //         'option_d' => '',
+    //         'correct_answer' => '',
+    //         'section' => null,
+    //         'level' => '2',
+    //         'category' => null,
+    //     ];
+
+    //     $questionLines = [];
+
+    //     foreach ($lines as $line) {
+    //         $line = trim($line);
+    //         if (empty($line))
+    //             continue;
+
+    //         // Đáp án A, B, C, D
+    //         if (preg_match('/^([A-D])[.\)]\s*(.+)$/i', $line, $matches)) {
+    //             $letter = strtoupper($matches[1]);
+    //             $data['option_' . strtolower($letter)] = trim($matches[2]);
+    //         }
+    //         // Đáp án đúng
+    //         elseif (preg_match('/^(Đáp án|ĐA|Correct|Answer)[\s:]+([A-D])/i', $line, $matches)) {
+    //             $data['correct_answer'] = strtoupper($matches[2]);
+    //         }
+    //         // Phần
+    //         elseif (preg_match('/^(Phần|Section)[\s:]+(.+)$/i', $line, $matches)) {
+    //             $data['section'] = trim($matches[2]);
+    //         }
+    //         // Độ khó
+    //         elseif (preg_match('/^(Độ khó|Level)[\s:]+(easy|medium|hard|dễ|trung bình|khó)/i', $line, $matches)) {
+    //             $level = strtolower($matches[2]);
+    //             if (in_array($level, ['1', '1']))
+    //                 $data['level'] = '1';
+    //             elseif (in_array($level, ['3', '3']))
+    //                 $data['level'] = '3';
+    //             else
+    //                 $data['level'] = '2';
+    //         }
+    //         // Danh mục
+    //         elseif (preg_match('/^(Danh mục|Category)[\s:]+(.+)$/i', $line, $matches)) {
+    //             $data['category'] = trim($matches[2]);
+    //         }
+    //         // Nội dung câu hỏi
+    //         else {
+    //             $questionLines[] = $line;
+    //         }
+    //     }
+
+    //     $data['question'] = implode(' ', $questionLines);
+
+    //     // Validate: phải có câu hỏi và ít nhất 2 đáp án
+    //     if (
+    //         empty($data['question']) ||
+    //         (empty($data['option_a']) && empty($data['option_b']))
+    //     ) {
+    //         return null;
+    //     }
+
+    //     return $data;
+    // }
+
     private function parseQuestionBlock($block)
     {
-        $lines = explode("\n", $block);
+        $lines = array_filter(array_map('trim', explode("\n", $block)));
+
         $data = [
             'question' => '',
             'option_a' => '',
@@ -245,21 +328,26 @@ class QuestionController extends Controller
             'option_d' => '',
             'correct_answer' => '',
             'section' => null,
-            'level' => '2',
+            'level' => 'medium',
             'category' => null,
         ];
 
         $questionLines = [];
+        $foundOptions = false;
 
         foreach ($lines as $line) {
-            $line = trim($line);
-            if (empty($line))
+            // Bỏ qua dòng trống và dấu phân cách
+            if (empty($line) || preg_match('/^-{3,}|^={3,}/', $line))
                 continue;
+
+            // Bỏ số câu hỏi nếu có
+            $line = preg_replace('/^Câu\s+\d+[:.]\s*/i', '', $line);
 
             // Đáp án A, B, C, D
             if (preg_match('/^([A-D])[.\)]\s*(.+)$/i', $line, $matches)) {
                 $letter = strtoupper($matches[1]);
                 $data['option_' . strtolower($letter)] = trim($matches[2]);
+                $foundOptions = true;
             }
             // Đáp án đúng
             elseif (preg_match('/^(Đáp án|ĐA|Correct|Answer)[\s:]+([A-D])/i', $line, $matches)) {
@@ -271,20 +359,20 @@ class QuestionController extends Controller
             }
             // Độ khó
             elseif (preg_match('/^(Độ khó|Level)[\s:]+(easy|medium|hard|dễ|trung bình|khó)/i', $line, $matches)) {
-                $level = strtolower($matches[2]);
-                if (in_array($level, ['1', '1']))
-                    $data['level'] = '1';
-                elseif (in_array($level, ['3', '3']))
-                    $data['level'] = '3';
+                $level = strtolower(trim($matches[2]));
+                if (in_array($level, ['dễ', 'easy']))
+                    $data['level'] = 'easy';
+                elseif (in_array($level, ['khó', 'hard']))
+                    $data['level'] = 'hard';
                 else
-                    $data['level'] = '2';
+                    $data['level'] = 'medium';
             }
             // Danh mục
             elseif (preg_match('/^(Danh mục|Category)[\s:]+(.+)$/i', $line, $matches)) {
                 $data['category'] = trim($matches[2]);
             }
-            // Nội dung câu hỏi
-            else {
+            // Nội dung câu hỏi (chỉ lấy trước khi gặp đáp án)
+            elseif (!$foundOptions) {
                 $questionLines[] = $line;
             }
         }
@@ -292,10 +380,18 @@ class QuestionController extends Controller
         $data['question'] = implode(' ', $questionLines);
 
         // Validate: phải có câu hỏi và ít nhất 2 đáp án
-        if (
-            empty($data['question']) ||
-            (empty($data['option_a']) && empty($data['option_b']))
-        ) {
+        if (empty($data['question'])) {
+            return null;
+        }
+
+        // Đếm số đáp án
+        $optionCount = 0;
+        foreach (['a', 'b', 'c', 'd'] as $letter) {
+            if (!empty($data['option_' . $letter]))
+                $optionCount++;
+        }
+
+        if ($optionCount < 2) {
             return null;
         }
 

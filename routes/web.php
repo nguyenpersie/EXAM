@@ -62,16 +62,15 @@ Route::prefix('questions')->name('questions.')->group(function () {
     Route::get('/exam/{examId}/create', [QuestionController::class, 'create'])->name('create');
     Route::post('/exam/{examId}', [QuestionController::class, 'store'])->name('store');
 
-    // Chỉnh sửa câu hỏi
+    // CRUD câu hỏi đơn lẻ
     Route::get('/{id}/edit', [QuestionController::class, 'edit'])->name('edit');
     Route::put('/{id}', [QuestionController::class, 'update'])->name('update');
-
-    // Xóa câu hỏi
     Route::delete('/{id}', [QuestionController::class, 'destroy'])->name('destroy');
+
     // Xóa tất cả câu hỏi của 1 đề
     Route::delete('/exam/{examId}/destroy-all', [QuestionController::class, 'destroyAll'])->name('destroyAll');
 
-    // Import câu hỏi từ Excel/CSV
+    // Import câu hỏi từ Word
     Route::post('/exam/{examId}/import', [QuestionController::class, 'import'])->name('import');
 });
 
