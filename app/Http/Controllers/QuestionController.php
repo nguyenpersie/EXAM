@@ -64,7 +64,7 @@ class QuestionController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.questions.modals.edit', compact('question'));
+        return view('admin.questions.modals.edit', compact('questions'));
     }
 
     /**
@@ -360,12 +360,12 @@ class QuestionController extends Controller
             // Độ khó
             elseif (preg_match('/^(Độ khó|Level)[\s:]+(easy|medium|hard|dễ|trung bình|khó)/i', $line, $matches)) {
                 $level = strtolower(trim($matches[2]));
-                if (in_array($level, ['dễ', 'easy']))
-                    $data['level'] = 'easy';
-                elseif (in_array($level, ['khó', 'hard']))
-                    $data['level'] = 'hard';
+                if (in_array($level, ['1', '1']))
+                    $data['level'] = '1';
+                elseif (in_array($level, ['3', '3']))
+                    $data['level'] = '3';
                 else
-                    $data['level'] = 'medium';
+                    $data['level'] = '2';
             }
             // Danh mục
             elseif (preg_match('/^(Danh mục|Category)[\s:]+(.+)$/i', $line, $matches)) {
