@@ -132,28 +132,50 @@ class QuestionController extends Controller
                     continue;
                 }
 
-                // Tạo câu hỏi
                 $question = Question::create([
                     'exam_id' => $exam->id,
                     'content' => $row['question'],
-                    'category' => $category,
+                    'section' => $row['section'] ?? null,
+                    'level' => $row['level'] ?? 'medium',
+                    'category' => $category ?? $row['category'] ?? null,
                 ]);
 
-                // Tạo đáp án A B C D
-                foreach (['A', 'B', 'C', 'D'] as $letter) {
-                    $key = 'option_' . strtolower($letter);
-
-                    if (!empty($row[$key])) {
+                // Tạo 4 đáp án
+                foreach (['A', 'B', 'C', 'D'] as $index => $letter) {
+                    if (!empty($row['option_' . strtolower($letter)])) {
                         Option::create([
                             'question_id' => $question->id,
-                            'content' => $row[$key],
-                            'is_correct' => strtoupper($row['correct_answer']) === $letter,
+                            'content' => $row['option_' . strtolower($letter)],
+                            'is_correct' => (strtoupper($row['correct_answer']) === $letter),
                         ]);
                     }
                 }
 
                 $importedCount++;
             }
+
+            //     // Tạo câu hỏi
+            //     $question = Question::create([
+            //         'exam_id' => $exam->id,
+            //         'content' => $row['question'],
+            //         'category' => $category,
+            //     ]);
+
+            //     // Tạo đáp án A B C D
+            //     foreach (['A', 'B', 'C', 'D'] as $letter) {
+            //         $key = 'option_' . strtolower($letter);
+
+            //         if (!empty($row[$key])) {
+            //             Option::create([
+            //                 'question_id' => $question->id,
+            //                 'content' => $row[$key],
+            //                 'is_correct' => strtoupper($row['correct_answer']) === $letter,
+            //             ]);
+            //         }
+            //     }
+
+            //     $importedCount++;
+            // }
 
             //     if (!empty($row['option_' . strtolower($letter)])) {
             //             Option::create([
