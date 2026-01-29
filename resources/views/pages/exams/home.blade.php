@@ -95,9 +95,6 @@
         <p class="text-muted">Chọn đề thi và bắt đầu ôn luyện</p>
       </div>
       <div class="col-md-4 text-end">
-        <a href="{{ route('questions.index', $exam->id) }}" class="btn btn-outline-primary w-100">
-          <i class="bi bi-list-check"></i> Quản lý câu hỏi ({{ $exam->questions->count() }})
-        </a>
         <a href="{{ route('exams.create') }}" class="btn btn-primary">
           <i class="bi bi-plus-circle"></i> Tạo đề thi mới
         </a>

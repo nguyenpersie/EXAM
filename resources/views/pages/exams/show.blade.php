@@ -228,6 +228,9 @@
                             <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-primary">
                                 <i class="bi bi-pencil"></i> Chỉnh sửa thông tin đề thi
                             </a>
+                            <a href="{{ route('questions.index', $exam->id) }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-list-check"></i> Quản lý câu hỏi ({{ $exam->questions->count() }})
+                            </a>
 
                             @if($exam->questions->count() > 0)
                                 <form action="{{ route('questions.destroyAll', $exam->id) }}" method="POST"
