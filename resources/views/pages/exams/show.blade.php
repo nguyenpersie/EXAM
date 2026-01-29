@@ -225,7 +225,7 @@
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-2">
-                            <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-outline-primary">
+                            <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-primary">
                                 <i class="bi bi-pencil"></i> Chỉnh sửa thông tin đề thi
                             </a>
 
