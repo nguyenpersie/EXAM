@@ -21,10 +21,16 @@ class QuestionController extends Controller
     {
         $this->questionService = $questionService;
     }
-    public function index(): View
+    public function index($examId): View
     {
-        $questions = $this->questionService->getPaginatedQuestions();
-        return view('admin.questions.index', compact('questions'));
+        $exam = Exam::findOrFail($examId);
+        $questions = $exam->questions()->with('options')->paginate(20);
+
+        // Lấy danh sách categories và sections từ câu hỏi của đề thi này
+        $categories = $exam->questions()->whereNotNull('category')->distinct()->pluck('category');
+        $sections = $exam->questions()->whereNotNull('section')->distinct()->pluck('section');
+
+        return view('admin.questions.index', compact('exam', 'questions', 'categories', 'sections'));
     }
 
     /**
