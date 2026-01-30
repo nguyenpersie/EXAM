@@ -16,7 +16,6 @@ Route::get('/', [UserController::class, 'ViewLogin'])->name('admin.login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('questions', [QuestionController::class, 'index'])->name('admin.questions');
 Route::get('options', [OptionController::class, 'index'])->name('admin.options');
 
 //Route::get('/exams-{id}/test', [ExamController::class, 'test'])->name('exams.test');

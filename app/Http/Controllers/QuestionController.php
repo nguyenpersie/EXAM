@@ -70,18 +70,18 @@ class QuestionController extends Controller
     {
         $request->validate([
             'content' => 'required',
-            'section' => 'required|in:I,II,III',
+            'section' => 'nullable|string',
             'level' => 'required|integer|min:1|max:5',
             'options' => 'required|array|min:4|max:4',
             'options.*.content' => 'required',
-            'correct_option' => 'required|integer|min:0|max:3',
+            'correct_answer' => 'required|integer|min:0|max:3',
         ]);
 
         $question = $this->questionService->updateQuestionWithOptions(
             $id,
             $request->only(['content', 'section', 'level']),
             $request->options,
-            $request->correct_option
+            $request->correct_answer
         );
 
         return redirect()

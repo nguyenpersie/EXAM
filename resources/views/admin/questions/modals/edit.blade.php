@@ -131,9 +131,11 @@
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Độ khó</label>
                                 <select class="form-select" name="level">
-                                    <option value="easy" {{ $question->level == 'easy' ? 'selected' : '' }}>Dễ</option>
-                                    <option value="medium" {{ $question->level == 'medium' ? 'selected' : '' }}>Trung bình</option>
-                                    <option value="hard" {{ $question->level == 'hard' ? 'selected' : '' }}>Khó</option>
+                                    <option value="1" {{ $question->level == '1' ? 'selected' : '' }}>Độ 1 (Dễ nhất)</option>
+                                    <option value="2" {{ $question->level == '2' ? 'selected' : '' }}>Độ 2</option>
+                                    <option value="3" {{ $question->level == '3' ? 'selected' : '' }}>Độ 3</option>
+                                    <option value="4" {{ $question->level == '4' ? 'selected' : '' }}>Độ 4</option>
+                                    <option value="5" {{ $question->level == '5' ? 'selected' : '' }}>Độ 5 (Khó nhất)</option>
                                 </select>
                             </div>
 
