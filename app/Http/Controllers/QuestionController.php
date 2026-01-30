@@ -82,6 +82,7 @@ class QuestionController extends Controller
             'correct_option' => 'required|integer|min:0|max:3',
         ]);
 
+        $question = Question::findOrFail($id);
         $question->update($request->only(['content', 'section', 'level']));
 
         $question->options()->delete(); // Xóa đáp án cũ
@@ -101,6 +102,7 @@ class QuestionController extends Controller
      */
     public function destroy(string $id)
     {
+        $question = Question::findOrFail($id);
         $question->delete();
         return redirect()->route('questions.index')->with('success', 'Câu hỏi đã được xóa!');
     }
