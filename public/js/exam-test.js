@@ -65,8 +65,7 @@ function renderQuestion(idx) {
     const currentLabel = document.getElementById(`q-label-${idx}`);
     if (currentLabel) currentLabel.classList.add("active");
 
-    const currentRow = document.getElementById(`row-${q.id}`);
-    if (currentRow) currentRow.scrollIntoView({ behavior: "smooth", block: "center" });
+    // Đã bỏ auto-scroll theo yêu cầu
 }
 
 // Chọn đáp án
