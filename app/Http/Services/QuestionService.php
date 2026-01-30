@@ -124,7 +124,7 @@ class QuestionService
                     'exam_id' => $exam->id,
                     'content' => $row['question'],
                     'section' => $row['section'] ?? null,
-                    'level' => $row['level'] ?? 'medium',
+                    'level' => $row['level'] ?? '2',
                     'category' => $category ?? $row['category'] ?? null,
                 ]);
 
