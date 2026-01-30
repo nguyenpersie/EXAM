@@ -10,6 +10,8 @@
 
   @include('partials.style')
 
+  @yield('styles')
+
 </head>
 
 <body>
