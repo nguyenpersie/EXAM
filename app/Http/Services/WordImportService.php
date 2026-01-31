@@ -19,8 +19,16 @@ class WordImportService
             $fullText .= $this->readSection($section);
         }
 
-        // Tách theo "Câu [số]:" hoặc dấu phân cách
-        $blocks = preg_split('/(?=Câu\s+\d+[:.])/', $fullText, -1, PREG_SPLIT_NO_EMPTY);
+        // Tách theo "Câu [số]:", "Câu [số].", "Question [số]", hoặc "[số]." ở đầu dòng
+        // Regex giải thích:
+        // (?=...) : Lookahead để giữ lại delimiter
+        // (?:^|\n): Bắt đầu string hoặc dòng mới
+        // \s*: Có thể có khoảng trắng đầu dòng
+        // (?:Câu|Cau|Question)?: Có thể có từ khóa "Câu", "Cau", "Question" (không bắt buộc)
+        // \s*: Khoảng trắng
+        // \d+: Số thứ tự
+        // [:.)]: Dấu phân cách (2 chấm, chấm, đóng ngoặc)
+        $blocks = preg_split('/(?=(?:^|\n)\s*(?:Câu|Cau|Question)?\s*\d+[:.)])/ui', $fullText, -1, PREG_SPLIT_NO_EMPTY);
 
         $data = [];
         foreach ($blocks as $block) {
@@ -29,12 +37,18 @@ class WordImportService
                 continue;
             }
 
-            // Nếu có dấu phân cách ---, tách tiếp
+            // Nếu block quá ngắn (vd do lỡ cắt nhầm), bỏ qua hoặc gộp (ở đây bỏ qua rác)
+            if (mb_strlen($block) < 10) {
+                continue;
+            }
+
+            // Nếu có dấu phân cách ---, tách tiếp (đề phòng)
             $subBlocks = preg_split('/-{3,}|={3,}/', $block, -1, PREG_SPLIT_NO_EMPTY);
 
             foreach ($subBlocks as $subBlock) {
                 $question = $this->parseQuestionBlock(trim($subBlock));
-                if ($question && !empty($question['question'])) {
+                // Validate kỹ hơn: data phải có giá trị
+                if ($question && !empty($question['question']) && !empty($question['option_a']) && !empty($question['option_b'])) {
                     $data[] = $question;
                 }
             }
@@ -103,18 +117,18 @@ class WordImportService
                 continue;
             }
 
-            // Bỏ số câu hỏi nếu có
-            $line = preg_replace('/^Câu\s+\d+[:.]\s*/i', '', $line);
+            // Bỏ số câu hỏi nếu có (VD: "Câu 1:", "1.", "Question 1:")
+            $line = preg_replace('/^(?:Câu|Cau|Question)?\s*\d+[:.)]\s*/ui', '', $line);
 
-            // Đáp án A, B, C, D
-            if (preg_match('/^([A-D])[.\)]\s*(.+)$/i', $line, $matches)) {
+            // Đáp án A, B, C, D (VD: "A. Nội dung", "a) Nội dung")
+            if (preg_match('/^([A-D])[.:)]\s*(.+)$/i', $line, $matches)) {
                 $letter = strtoupper($matches[1]);
                 $data['option_' . strtolower($letter)] = trim($matches[2]);
                 $foundOptions = true;
             }
-            // Đáp án đúng
-            elseif (preg_match('/^(Đáp án|ĐA|Correct|Answer)[\s:]+([A-D])/i', $line, $matches)) {
-                $data['correct_answer'] = strtoupper($matches[2]);
+            // Đáp án đúng (VD: "Đáp án: A", "ĐA: A", "Correct: A")
+            elseif (preg_match('/^(?:Đáp án|ĐA|Correct|Answer|Key)[\s:]+([A-D])/i', $line, $matches)) {
+                $data['correct_answer'] = strtoupper($matches[1]);
             }
             // Phần
             elseif (preg_match('/^(Phần|Section)[\s:]+(.+)$/i', $line, $matches)) {
