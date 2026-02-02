@@ -163,7 +163,7 @@
                 <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-outline-primary">
                   <i class="bi bi-eye"></i>
                 </a>
-                <a href="{{ route('questions.edit', $exam->id) }}" class="btn btn-outline-secondary">
+                <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-secondary">
                   <i class="bi bi-pencil"></i>
                 </a>
               </div>
