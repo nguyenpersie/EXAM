@@ -106,6 +106,7 @@ class WordImportService
     private function parseQuestionBlock(string $block): ?array
     {
         $lines = array_filter(array_map('trim', explode("\n", $block)));
+        $lines = array_values($lines); // Re-index keys
 
         $data = [
             'question' => '',
@@ -115,73 +116,99 @@ class WordImportService
             'option_d' => '',
             'correct_answer' => '',
             'section' => null,
-            'level' => 'medium',
+            'level' => '1',
             'category' => null,
         ];
 
-        $questionLines = [];
-        $foundOptions = false;
+        $contentLines = [];
 
+        // 1. Tách Metadata và Nội dung
         foreach ($lines as $line) {
-            // Bỏ qua dòng trống và dấu phân cách
-            if (empty($line) || preg_match('/^-{3,}|^={3,}/', $line)) {
+            // Bỏ qua separator nếu còn sót
+            if (preg_match('/^-{3,}|^={3,}/', $line)) {
                 continue;
             }
 
-            // Bỏ số câu hỏi nếu có (VD: "Câu 1:", "1.", "Question 1:")
-            $line = preg_replace('/^(?:Câu|Cau|Question)?\s*\d+[:.)]\s*/ui', '', $line);
-
-            // Đáp án A, B, C, D (VD: "A. Nội dung", "a) Nội dung")
-            if (preg_match('/^([A-D])[.:)]\s*(.+)$/i', $line, $matches)) {
-                $letter = strtoupper($matches[1]);
-                $data['option_' . strtolower($letter)] = trim($matches[2]);
-                $foundOptions = true;
-            }
-            // Đáp án đúng (VD: "Đáp án: A", "ĐA: A", "Correct: A")
-            elseif (preg_match('/^(?:Đáp án|ĐA|Correct|Answer|Key)[\s:]+([A-D])/i', $line, $matches)) {
+            // Đáp án đúng
+            if (preg_match('/^(?:Đáp án|ĐA|Correct|Answer|Key)[\s:]+([A-D])/i', $line, $matches)) {
                 $data['correct_answer'] = strtoupper($matches[1]);
+                continue;
             }
             // Phần
-            elseif (preg_match('/^(Phần|Section)[\s:]+(.+)$/i', $line, $matches)) {
+            if (preg_match('/^(?:Phần|Section)[\s:]+(.+)$/i', $line, $matches)) {
                 $data['section'] = trim($matches[2]);
+                continue;
             }
             // Độ khó
-            elseif (preg_match('/^(Độ khó|Level)[\s:]+(easy|medium|hard|dễ|trung bình|khó)/i', $line, $matches)) {
-                $level = strtolower(trim($matches[2]));
-                if (in_array($level, ['easy', 'dễ'])) {
+            if (preg_match('/^(?:Độ khó|Level)[\s:]+(.+)$/i', $line, $matches)) {
+                $levelRaw = strtolower(trim($matches[1]));
+                if (in_array($levelRaw, ['easy', 'dễ', '1'])) {
                     $data['level'] = '1';
-                } elseif (in_array($level, ['hard', 'khó'])) {
+                } elseif (in_array($levelRaw, ['hard', 'khó', '3'])) {
                     $data['level'] = '3';
                 } else {
                     $data['level'] = '2';
                 }
+                continue;
             }
             // Danh mục
-            elseif (preg_match('/^(Danh mục|Category)[\s:]+(.+)$/i', $line, $matches)) {
+            if (preg_match('/^(?:Danh mục|Category)[\s:]+(.+)$/i', $line, $matches)) {
                 $data['category'] = trim($matches[2]);
+                continue;
             }
-            // Nội dung câu hỏi (chỉ lấy trước khi gặp đáp án)
-            elseif (!$foundOptions) {
-                $questionLines[] = $line;
+
+            // Dòng nội dung (Câu hỏi hoặc Đáp án)
+            $contentLines[] = $line;
+        }
+
+        // 2. Parse Question & Options từ ContentLines
+        $tempOptions = [];
+        $questionParts = [];
+        $hasExplicitOptions = false;
+
+        foreach ($contentLines as $line) {
+            // Check Explicit Option (A. ...)
+            if (preg_match('/^([A-D])[.:)]\s*(.+)$/i', $line, $matches)) {
+                $letter = strtolower($matches[1]);
+                $tempOptions[$letter] = trim($matches[2]);
+                $hasExplicitOptions = true;
+            } else {
+                // Nếu đã tìm thấy option rồi mà gặp dòng không khớp -> có thể là option tiếp theo bị lỗi format hoặc garbage.
+                // Nhưng trong logic đơn giản, nếu chưa thấy option thì nó là câu hỏi.
+                if (!$hasExplicitOptions) {
+                    $questionParts[] = $line;
+                }
             }
         }
 
-        $data['question'] = implode(' ', $questionLines);
-
-        // Validate: phải có câu hỏi
-        if (empty($data['question'])) {
-            return null;
-        }
-
-        // Đếm số đáp án (phải có ít nhất 2)
-        $optionCount = 0;
-        foreach (['a', 'b', 'c', 'd'] as $letter) {
-            if (!empty($data['option_' . $letter])) {
-                $optionCount++;
+        // 3. Xử lý kết quả
+        if ($hasExplicitOptions && count($tempOptions) >= 2) {
+            // Case 1: Có đáp án rõ ràng (A., B...)
+            foreach ($tempOptions as $k => $v) {
+                $data['option_' . $k] = $v;
+            }
+            $data['question'] = implode(' ', $questionParts);
+        } else {
+            // Case 2: Fallback - Không có prefix A,B,C,D -> Lấy 4 dòng cuối cùng làm đáp án
+            // Yêu cầu tối thiểu 5 dòng (1 câu hỏi + 4 đáp án)
+            if (count($contentLines) >= 5) {
+                $data['option_d'] = array_pop($contentLines);
+                $data['option_c'] = array_pop($contentLines);
+                $data['option_b'] = array_pop($contentLines);
+                $data['option_a'] = array_pop($contentLines);
+                $data['question'] = implode(' ', $contentLines);
+            } else {
+                // Không đủ dữ liệu -> Bỏ qua
+                return null;
             }
         }
 
-        if ($optionCount < 2) {
+        // 4. Cleanup Question Text
+        // Xóa "Câu 1:" ở đầu câu hỏi nếu có
+        $data['question'] = preg_replace('/^(?:Câu|Cau|Question)?\s*\d+[:.)]\s*/ui', '', $data['question']);
+
+        // Validate final data
+        if (empty($data['question']) || empty($data['option_a']) || empty($data['option_b'])) {
             return null;
         }
 
