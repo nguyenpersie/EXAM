@@ -6,17 +6,11 @@ use PhpOffice\PhpWord\IOFactory;
 
 class WordImportService
 {
-    private $skippedQuestions = [];
-    private $errors = [];
-
     /**
      * Parse file Word (.docx) thành danh sách câu hỏi
      */
     public function parseFile($file): array
     {
-        $this->skippedQuestions = [];
-        $this->errors = [];
-
         $phpWord = IOFactory::load($file->getRealPath());
         $fullText = '';
 
@@ -25,65 +19,51 @@ class WordImportService
             $fullText .= $this->readSection($section);
         }
 
-        \Log::info('Full text length: ' . mb_strlen($fullText));
-        \Log::info('First 500 chars: ' . mb_substr($fullText, 0, 500));
+        return $this->parseText($fullText);
+    }
 
-        // Tách theo nhiều pattern khác nhau
-        // Pattern 1: "Câu 1:", "Câu 1.", "Question 1:"
-        // Pattern 2: "1.", "1)", "1:"
-        // Pattern 3: Dấu phân cách --- hoặc ===
-        $blocks = preg_split(
-            '/(?=(?:^|\n)\s*(?:Câu|Cau|Question|Q)?\s*\d+[:.)])|(?:\n-{3,})|(?:\n={3,})/ui',
-            $fullText,
-            -1,
-            PREG_SPLIT_NO_EMPTY
-        );
+    /**
+     * Parse text thành danh sách câu hỏi
+     * Check separator --- hoặc === trước
+     */
+    public function parseText(string $fullText): array
+    {
+        // 1. Thử tách bằng dấu phân cách --- hoặc ===
+        // Sử dụng PREG_SPLIT_NO_EMPTY để loại bỏ phần rỗng
+        $blocks = preg_split('/-{3,}|={3,}/', $fullText, -1, PREG_SPLIT_NO_EMPTY);
 
-        \Log::info('Total blocks after split: ' . count($blocks));
+        // Nếu chỉ tìm thấy 1 block (có thể là không có dấu phân cách hoặc chỉ có 1 câu),
+        // và block đó chứa pattern "Câu [số]" hoặc "Question [số]", ta thử fallback về cách cũ.
+        // Tuy nhiên, để an toàn cho trường hợp user KHÔNG dùng "Câu số",
+        // ta chỉ fallback nếu thực sự tìm thấy pattern chia câu Ở ĐẦU DÒNG.
 
-        $data = [];
-        foreach ($blocks as $index => $block) {
-            $block = trim($block);
+        // Logic cũ: Regex split
+        $regexOld = '/(?=(?:^|\n)\s*(?:Câu|Cau|Question)?\s*\d+[:.)])/ui';
 
-            if (empty($block)) {
-                continue;
-            }
-
-            // KHÔNG bỏ qua block ngắn nữa - để parse thử xem
-            \Log::info("Parsing block {$index}, length: " . mb_strlen($block));
-            \Log::info("Block preview: " . mb_substr($block, 0, 200));
-
-            $question = $this->parseQuestionBlock($block, $index);
-
-            if ($question) {
-                // Validate có ít nhất câu hỏi và 2 đáp án
-                if (
-                    !empty($question['question']) &&
-                    !empty($question['option_a']) &&
-                    !empty($question['option_b'])
-                ) {
-                    $data[] = $question;
-                    \Log::info("✓ Block {$index} parsed successfully");
-                } else {
-                    $this->skippedQuestions[] = [
-                        'block' => $index,
-                        'reason' => 'Missing question or options',
-                        'data' => $question
-                    ];
-                    \Log::warning("✗ Block {$index} skipped: Missing required fields");
-                }
-            } else {
-                $this->skippedQuestions[] = [
-                    'block' => $index,
-                    'reason' => 'Parse failed',
-                    'preview' => mb_substr($block, 0, 100)
-                ];
-                \Log::warning("✗ Block {$index} parse failed");
+        // Nếu không tách được bằng --- (tức là chỉ có < 2 block hoặc user không dùng ---)
+        // Ta kiểm tra xem có nên dùng cách cũ không.
+        // Lưu ý: Nếu user dùng format mới (không "Câu số") mà không có ---, thì sẽ coi là 1 câu hỏi duy nhất.
+        // Để hỗ trợ backward compatible tốt nhất:
+        // Nếu số block < 2, ta thử split bằng regex cũ. Nếu regex cũ ra > 1 block thì dùng regex cũ.
+        if (count($blocks) < 2) {
+            $blocksOld = preg_split($regexOld, $fullText, -1, PREG_SPLIT_NO_EMPTY);
+            if (count($blocksOld) > 1) {
+                $blocks = $blocksOld;
             }
         }
 
-        \Log::info("Successfully parsed: " . count($data) . " questions");
-        \Log::info("Skipped: " . count($this->skippedQuestions) . " blocks");
+        $data = [];
+        foreach ($blocks as $block) {
+            $block = trim($block);
+            if (empty($block) || mb_strlen($block) < 10) {
+                continue;
+            }
+
+            $question = $this->parseQuestionBlock($block);
+            if ($question && !empty($question['question']) && !empty($question['option_a']) && !empty($question['option_b'])) {
+                $data[] = $question;
+            }
+        }
 
         return $data;
     }
@@ -123,7 +103,7 @@ class WordImportService
     /**
      * Parse 1 block câu hỏi
      */
-    private function parseQuestionBlock(string $block, int $blockIndex): ?array
+    private function parseQuestionBlock(string $block): ?array
     {
         $lines = array_filter(array_map('trim', explode("\n", $block)));
 
@@ -135,100 +115,76 @@ class WordImportService
             'option_d' => '',
             'correct_answer' => '',
             'section' => null,
-            'level' => '2',
+            'level' => 'medium',
             'category' => null,
         ];
 
         $questionLines = [];
         $foundOptions = false;
 
-        foreach ($lines as $lineIndex => $line) {
-            if (empty($line))
-                continue;
-
-            // Bỏ dấu phân cách
-            if (preg_match('/^-{3,}|^={3,}/', $line)) {
+        foreach ($lines as $line) {
+            // Bỏ qua dòng trống và dấu phân cách
+            if (empty($line) || preg_match('/^-{3,}|^={3,}/', $line)) {
                 continue;
             }
 
-            // Bỏ số câu hỏi nếu có
-            $cleanLine = preg_replace('/^(?:Câu|Cau|Question|Q)?\s*\d+[:.)]\s*/ui', '', $line);
+            // Bỏ số câu hỏi nếu có (VD: "Câu 1:", "1.", "Question 1:")
+            $line = preg_replace('/^(?:Câu|Cau|Question)?\s*\d+[:.)]\s*/ui', '', $line);
 
-            // Đáp án A, B, C, D - RELAXED PATTERN
-            // Chấp nhận: "A.", "A)", "A:", "A -", "a.", "a)"
-            if (preg_match('/^([A-Da-d])\s*[.:)\-–—]\s*(.+)$/u', $cleanLine, $matches)) {
+            // Đáp án A, B, C, D (VD: "A. Nội dung", "a) Nội dung")
+            if (preg_match('/^([A-D])[.:)]\s*(.+)$/i', $line, $matches)) {
                 $letter = strtoupper($matches[1]);
-                $content = trim($matches[2]);
-
-                if (!empty($content)) {
-                    $data['option_' . strtolower($letter)] = $content;
-                    $foundOptions = true;
-                    \Log::debug("Found option {$letter}: " . mb_substr($content, 0, 50));
-                }
+                $data['option_' . strtolower($letter)] = trim($matches[2]);
+                $foundOptions = true;
             }
-            // Đáp án đúng - nhiều pattern hơn
-            elseif (preg_match('/(?:Đáp án|ĐA|DA|Correct|Answer|Key|Dap an)[\s:]*([A-D])/i', $cleanLine, $matches)) {
+            // Đáp án đúng (VD: "Đáp án: A", "ĐA: A", "Correct: A")
+            elseif (preg_match('/^(?:Đáp án|ĐA|Correct|Answer|Key)[\s:]+([A-D])/i', $line, $matches)) {
                 $data['correct_answer'] = strtoupper($matches[1]);
-                \Log::debug("Found correct answer: " . $data['correct_answer']);
             }
             // Phần
-            elseif (preg_match('/^(Phần|Phan|Section)[\s:]+(.+)$/i', $cleanLine, $matches)) {
+            elseif (preg_match('/^(Phần|Section)[\s:]+(.+)$/i', $line, $matches)) {
                 $data['section'] = trim($matches[2]);
             }
-            // Độ khó - flexible matching
-            elseif (preg_match('/(?:Độ khó|Do kho|Level)[\s:]+(easy|medium|hard|dễ|de|trung bình|tb|khó|kho|[1-5])/i', $cleanLine, $matches)) {
-                $levelStr = strtolower(trim($matches[1]));
-
-                // Map to numeric level
-                if (in_array($levelStr, ['easy', 'dễ', 'de', '1'])) {
+            // Độ khó
+            elseif (preg_match('/^(Độ khó|Level)[\s:]+(easy|medium|hard|dễ|trung bình|khó)/i', $line, $matches)) {
+                $level = strtolower(trim($matches[2]));
+                if (in_array($level, ['easy', 'dễ'])) {
                     $data['level'] = '1';
-                } elseif (in_array($levelStr, ['hard', 'khó', 'kho', '5'])) {
-                    $data['level'] = '5';
-                } elseif (in_array($levelStr, ['3'])) {
+                } elseif (in_array($level, ['hard', 'khó'])) {
                     $data['level'] = '3';
-                } elseif (in_array($levelStr, ['4'])) {
-                    $data['level'] = '4';
                 } else {
                     $data['level'] = '2';
                 }
             }
             // Danh mục
-            elseif (preg_match('/^(Danh mục|Danh muc|Category)[\s:]+(.+)$/i', $cleanLine, $matches)) {
+            elseif (preg_match('/^(Danh mục|Category)[\s:]+(.+)$/i', $line, $matches)) {
                 $data['category'] = trim($matches[2]);
             }
             // Nội dung câu hỏi (chỉ lấy trước khi gặp đáp án)
-            elseif (!$foundOptions && !empty($cleanLine)) {
-                // Bỏ qua các dòng chỉ là số hoặc ký tự đặc biệt
-                if (!preg_match('/^\d+$/', $cleanLine) && mb_strlen($cleanLine) > 2) {
-                    $questionLines[] = $cleanLine;
-                }
+            elseif (!$foundOptions) {
+                $questionLines[] = $line;
             }
         }
 
         $data['question'] = implode(' ', $questionLines);
 
-        // Nếu không có đáp án đúng, mặc định là A
-        if (empty($data['correct_answer']) && $foundOptions) {
-            $data['correct_answer'] = 'A';
-            \Log::warning("Block {$blockIndex}: No correct answer specified, defaulting to A");
+        // Validate: phải có câu hỏi
+        if (empty($data['question'])) {
+            return null;
+        }
+
+        // Đếm số đáp án (phải có ít nhất 2)
+        $optionCount = 0;
+        foreach (['a', 'b', 'c', 'd'] as $letter) {
+            if (!empty($data['option_' . $letter])) {
+                $optionCount++;
+            }
+        }
+
+        if ($optionCount < 2) {
+            return null;
         }
 
         return $data;
-    }
-
-    /**
-     * Lấy danh sách câu hỏi bị skip
-     */
-    public function getSkippedQuestions(): array
-    {
-        return $this->skippedQuestions;
-    }
-
-    /**
-     * Lấy log errors
-     */
-    public function getErrors(): array
-    {
-        return $this->errors;
     }
 }
