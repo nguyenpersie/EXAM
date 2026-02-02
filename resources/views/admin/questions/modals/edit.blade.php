@@ -7,7 +7,7 @@
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Chỉnh sửa câu hỏi #{{ $question->id }}</h4>
+                        <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Chỉnh sửa câu hỏi {{ $question->id }}</h4>
                         <a href="{{ route('questions.index', $question->exam_id) }}" class="btn btn-light btn-sm">
                             <i class="bi bi-arrow-left"></i> Quay lại
                         </a>
