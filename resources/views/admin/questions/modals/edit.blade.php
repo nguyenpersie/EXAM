@@ -158,17 +158,19 @@
                                     <i class="bi bi-x-circle"></i> Hủy
                                 </a>
                             </div>
-                            
-                            <form action="{{ route('questions.destroy', $question->id) }}" method="POST" 
-                                  onsubmit="return confirm('Xóa câu hỏi này?')" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="bi bi-trash"></i> Xóa câu hỏi
-                                </button>
-                            </form>
                         </div>
                     </form>
+
+                    <div class="d-flex justify-content-end mt-n5" style="margin-top: -38px;">
+                         <form action="{{ route('questions.destroy', $question->id) }}" method="POST" 
+                               onsubmit="return confirm('Xóa câu hỏi này?')" class="d-inline">
+                             @csrf
+                             @method('DELETE')
+                             <button type="submit" class="btn btn-danger">
+                                 <i class="bi bi-trash"></i> Xóa câu hỏi
+                             </button>
+                         </form>
+                    </div>
                 </div>
             </div>
         </div>
