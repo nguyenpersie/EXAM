@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laravel\Sanctum\HasApiTokens;
-
-class UserExam extends Authenticatable
-{
-    protected $primaryKey = 'id';
-    use HasApiTokens, Notifiable, HasFactory;
+    use Notifiable, HasFactory;
 
     protected $table = 'users';
 
