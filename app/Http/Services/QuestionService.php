@@ -72,6 +72,22 @@ class QuestionService
     }
 
     /**
+     * Tạo câu hỏi kèm đáp án
+     */
+    public function createQuestionWithOptions(array $data, array $options, int $correctIndex): Question
+    {
+        $formattedOptions = [];
+        foreach ($options as $index => $option) {
+            $formattedOptions[] = [
+                'content' => $option['content'],
+                'is_correct' => $index == $correctIndex,
+            ];
+        }
+
+        return $this->questionRepository->createWithOptions($data, $formattedOptions);
+    }
+
+    /**
      * Cập nhật câu hỏi kèm đáp án
      */
     public function updateQuestionWithOptions(int $id, array $questionData, array $options, int $correctIndex): Question

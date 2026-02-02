@@ -40,20 +40,30 @@ class QuestionController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
+        $request->validate([
             'exam_id' => 'required|exists:exams,id',
             'content' => 'required',
-            'section' => 'required|in:I,II,III',
+            'section' => 'required',
             'level' => 'required|integer|min:1|max:5',
             'image' => 'nullable|image|max:2048',
+            'options' => 'required|array|min:4|max:4',
+            'options.*.content' => 'required',
+            'correct_answer' => 'required|integer|min:0|max:3',
+            'category' => 'nullable|string',
         ]);
+
+        $data = $request->only(['exam_id', 'content', 'section', 'level', 'category']);
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('questions', 'public');
-            $validated['image'] = $path;
+            $data['image'] = $path;
         }
 
-        $this->questionService->createQuestion($validated);
+        $this->questionService->createQuestionWithOptions(
+            $data,
+            $request->options,
+            $request->correct_answer
+        );
 
         return redirect()
             ->route('questions.index', $request->exam_id)
