@@ -73,3 +73,14 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('users', \App\Http\Controllers\AdminUserController::class);
 });
 
+// Temporary route to fix admin password
+Route::get('/fix-admin-password', function () {
+    $user = \App\Models\UserExam::where('student_code', 'admin')->first();
+    if ($user) {
+        $user->password = \Illuminate\Support\Facades\Hash::make('123456');
+        $user->save();
+        return 'Password for "admin" has been updated to "123456" (hashed). You can now login.';
+    }
+    return 'User "admin" not found.';
+});
+
