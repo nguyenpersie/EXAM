@@ -17,22 +17,22 @@
     <div class="container vh-100 d-flex justify-content-center align-items-center">
         <div class="card p-4" style="width: 100%; max-width: 400px;">
             <h2 class="mb-4 text-center">LOGIN</h2>
-            <form id="loginForm" action="#" method="post">
+            <form id="loginForm" action="{{ route('login') }}" method="post">
                 <div class="mb-3">
-                    <label for="account" class="form-label">Tài khoản</label>
-                    <input type="text" class="form-control" name="account" id="account" placeholder="Email">
+                    <label for="student_code" class="form-label">Tài khoản (Mã học viên)</label>
+                    <input type="text" class="form-control" name="student_code" id="student_code" placeholder="Nhập mã học viên">
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Mật khẩu</label>
                     <input type="password" class="form-control" name="password" id="password" placeholder="Mật khẩu">
                 </div>
                 <div class="mb-3 form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember_token">
-                    <label class="form-check-label" for="remember">Remember</label>
+                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                    <label class="form-check-label" for="remember">Ghi nhớ đăng nhập</label>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn btn-primary" style="width: 40%;">Login</button>
+                    <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
                 </div>
                 @csrf
             </form>
