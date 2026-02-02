@@ -39,19 +39,19 @@
                                 <select class="form-select @error('category') is-invalid @enderror" id="category"
                                     name="category" required>
                                     <option value="">-- Chọn hạng thi --</option>
-                                    <option value="LPT" {{ old('category') == 'A1' ? 'selected' : '' }}>LPT</option>
-                                    <option value="TT" {{ old('category') == 'A2' ? 'selected' : '' }}>TT</option>
-                                    <option value="TM" {{ old('category') == 'B1' ? 'selected' : '' }}>TM</option>
-                                    <option value="ĐKCT" {{ old('category') == 'B2' ? 'selected' : '' }}>ĐKCT</option>
-                                    <option value="ATVB" {{ old('category') == 'C' ? 'selected' : '' }}>ATVB</option>
-                                    <option value="ATXD" {{ old('category') == 'D' ? 'selected' : '' }}>ATXD</option>
-                                    <option value="T4" {{ old('category') == 'E' ? 'selected' : '' }}>T4</option>
-                                    <option value="T3" {{ old('category') == 'F' ? 'selected' : '' }}>T3</option>
-                                    <option value="T2" {{ old('category') == 'F' ? 'selected' : '' }}>T2</option>
-                                    <option value="T1" {{ old('category') == 'F' ? 'selected' : '' }}>T1</option>
-                                    <option value="M3" {{ old('category') == 'F' ? 'selected' : '' }}>M3</option>
-                                    <option value="M2" {{ old('category') == 'F' ? 'selected' : '' }}>M2</option>
-                                    <option value="M1" {{ old('category') == 'F' ? 'selected' : '' }}>M1</option>
+                                    <option value="LPT" {{ old('category') == 'LPT' ? 'selected' : '' }}>LPT</option>
+                                    <option value="TT" {{ old('category') == 'TT' ? 'selected' : '' }}>TT</option>
+                                    <option value="TM" {{ old('category') == 'TM' ? 'selected' : '' }}>TM</option>
+                                    <option value="ĐKCT" {{ old('category') == 'ĐKCT' ? 'selected' : '' }}>ĐKCT</option>
+                                    <option value="ATVB" {{ old('category') == 'ATVB' ? 'selected' : '' }}>ATVB</option>
+                                    <option value="ATXD" {{ old('category') == 'ATXD' ? 'selected' : '' }}>ATXD</option>
+                                    <option value="T4" {{ old('category') == 'T4' ? 'selected' : '' }}>T4</option>
+                                    <option value="T3" {{ old('category') == 'T3' ? 'selected' : '' }}>T3</option>
+                                    <option value="T2" {{ old('category') == 'T2' ? 'selected' : '' }}>T2</option>
+                                    <option value="T1" {{ old('category') == 'T1' ? 'selected' : '' }}>T1</option>
+                                    <option value="M3" {{ old('category') == 'M3' ? 'selected' : '' }}>M3</option>
+                                    <option value="M2" {{ old('category') == 'M2' ? 'selected' : '' }}>M2</option>
+                                    <option value="M1" {{ old('category') == 'M1' ? 'selected' : '' }}>M1</option>
                                 </select>
                                 @error('category')
                                     <div class="invalid-feedback">{{ $message }}</div>

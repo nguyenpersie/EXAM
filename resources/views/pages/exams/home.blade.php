@@ -99,10 +99,18 @@
           <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary me-2">
             <i class="bi bi-people"></i> Quản lý học viên
           </a>
-          <a href="{{ route('exams.create') }}" class="btn btn-primary">
+          <a href="{{ route('exams.create') }}" class="btn btn-primary me-2">
             <i class="bi bi-plus-circle"></i> Tạo đề thi mới
           </a>
         @endif
+
+        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+          @csrf
+          <button type="submit" class="btn btn-outline-danger"
+            onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?')">
+            <i class="bi bi-box-arrow-right"></i> Đăng xuất
+          </button>
+        </form>
       </div>
     </div>
 
