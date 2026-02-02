@@ -110,7 +110,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-save"></i> Cập nhật đề thi
                             </button>
-                            <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-secondary">
+                            <a href="{{ route('exams.index') }}" class="btn btn-secondary">
                                 <i class="bi bi-x-circle"></i> Hủy
                             </a>
                         </div>
