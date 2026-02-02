@@ -8,20 +8,15 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/', [UserController::class, 'ViewLogin'])->name('admin.login');
+// Login Route
+Route::get('/login', [UserController::class, 'ViewLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::get('options', [OptionController::class, 'index'])->name('admin.options');
 
-//Route::get('/exams-{id}/test', [ExamController::class, 'test'])->name('exams.test');
-
-// Trang chủ - Danh sách đề thi
-Route::get('/', [ExamController::class, 'index'])->name('home');
+// Trang chủ - Danh sách đề thi (Yêu cầu đăng nhập)
+Route::get('/', [ExamController::class, 'index'])->name('home')->middleware('auth');
 
 // Quản lý đề thi (Exams)
 Route::prefix('exams')->name('exams.')->group(function () {

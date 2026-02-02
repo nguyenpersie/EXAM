@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function ViewLogin(): View
     {
-        return view ('admin.login');
+        return view('admin.login');
     }
 
     public function login(Request $request)
@@ -18,7 +18,7 @@ class UserController extends Controller
         // Validate dữ liệu đầu vào
         $request->validate([
             'student_code' => 'required|string|max:50',
-            'password'     => 'required|string|min:3',
+            'password' => 'required|string|min:3',
         ]);
 
         $credentials = $request->only('student_code', 'password');
@@ -31,14 +31,8 @@ class UserController extends Controller
             $user = Auth::user();
 
             // Phân quyền chuyển hướng
-            if ($user->role === 'admin') {
-                return redirect()->intended(route('admin.questions.index'))
-                    ->with('success', 'Đăng nhập thành công! Chào mừng Admin.');
-            }
-
-            // Học viên (student)
-            return redirect()->intended(route('pages.test'))
-                ->with('success', 'Đăng nhập thành công! Chọn hạng thi của bạn.');
+            return redirect()->intended(route('home'))
+                ->with('success', 'Đăng nhập thành công!');
         }
 
         // Đăng nhập thất bại
