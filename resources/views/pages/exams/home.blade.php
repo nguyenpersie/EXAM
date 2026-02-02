@@ -95,9 +95,14 @@
         <p class="text-muted">Chọn đề thi và bắt đầu ôn luyện</p>
       </div>
       <div class="col-md-4 text-end">
-        <a href="{{ route('exams.create') }}" class="btn btn-primary">
-          <i class="bi bi-plus-circle"></i> Tạo đề thi mới
-        </a>
+        @if(auth()->check() && auth()->user()->isAdmin())
+          <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary me-2">
+            <i class="bi bi-people"></i> Quản lý học viên
+          </a>
+          <a href="{{ route('exams.create') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Tạo đề thi mới
+          </a>
+        @endif
       </div>
     </div>
 
@@ -163,9 +168,11 @@
                 <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-outline-primary">
                   <i class="bi bi-eye"></i>
                 </a>
-                <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-secondary">
-                  <i class="bi bi-pencil"></i>
-                </a>
+                @if(auth()->check() && auth()->user()->isAdmin())
+                  <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                @endif
               </div>
             </div>
           </div>

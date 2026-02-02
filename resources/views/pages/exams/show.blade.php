@@ -145,38 +145,40 @@
 
             <!-- Import câu hỏi -->
             <div class="col-lg-7 mb-4">
-                <div class="card shadow-sm mb-3">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0"><i class="bi bi-upload"></i> Import câu hỏi</h5>
+                @if(auth()->check() && auth()->user()->isAdmin())
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="bi bi-upload"></i> Import câu hỏi</h5>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('questions.import', $exam->id) }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+
+                                <div class="mb-3">
+                                    <label class="form-label">Chọn file Word <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control" name="file" accept=".docx,.doc" required>
+                                    <small class="text-muted">Hỗ trợ: .docx, .doc (tối đa 10MB)</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Danh mục câu hỏi (tùy chọn)</label>
+                                    <input type="text" class="form-control" name="category"
+                                        placeholder="VD: Biển báo, An toàn giao thông...">
+                                    <small class="text-muted">Nếu để trống, sẽ lấy từ trường "Danh mục:" trong file Word</small>
+                                </div>
+
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-upload"></i> Import câu hỏi
+                                </button>
+
+                                <a href="{{ asset('templates/question-template.docx') }}" class="btn btn-outline-primary">
+                                    <i class="bi bi-download"></i> Tải file mẫu
+                                </a>
+                            </form>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <form action="{{ route('questions.import', $exam->id) }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-
-                            <div class="mb-3">
-                                <label class="form-label">Chọn file Word <span class="text-danger">*</span></label>
-                                <input type="file" class="form-control" name="file" accept=".docx,.doc" required>
-                                <small class="text-muted">Hỗ trợ: .docx, .doc (tối đa 10MB)</small>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Danh mục câu hỏi (tùy chọn)</label>
-                                <input type="text" class="form-control" name="category"
-                                    placeholder="VD: Biển báo, An toàn giao thông...">
-                                <small class="text-muted">Nếu để trống, sẽ lấy từ trường "Danh mục:" trong file Word</small>
-                            </div>
-
-                            <button type="submit" class="btn btn-success">
-                                <i class="bi bi-upload"></i> Import câu hỏi
-                            </button>
-
-                            <a href="{{ asset('templates/question-template.docx') }}" class="btn btn-outline-primary">
-                                <i class="bi bi-download"></i> Tải file mẫu
-                            </a>
-                        </form>
-                    </div>
-                </div>
+                @endif
 
                 <!-- Hướng dẫn -->
                 <div class="card shadow-sm mb-3">
@@ -219,41 +221,43 @@
 
 
                 <!-- Quản lý -->
-                <div class="card shadow-sm">
-                    <div class="card-header bg-light">
-                        <h6 class="mb-0"><i class="bi bi-gear"></i> Quản lý</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-primary">
-                                <i class="bi bi-pencil"></i> Chỉnh sửa thông tin đề thi
-                            </a>
-                            <a href="{{ route('questions.index', $exam->id) }}" class="btn btn-outline-primary w-100">
-                                <i class="bi bi-list-check"></i> Quản lý câu hỏi ({{ $exam->questions->count() }})
-                            </a>
+                @if(auth()->check() && auth()->user()->isAdmin())
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="bi bi-gear"></i> Quản lý</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-primary">
+                                    <i class="bi bi-pencil"></i> Chỉnh sửa thông tin đề thi
+                                </a>
+                                <a href="{{ route('questions.index', $exam->id) }}" class="btn btn-outline-primary w-100">
+                                    <i class="bi bi-list-check"></i> Quản lý câu hỏi ({{ $exam->questions->count() }})
+                                </a>
 
-                            @if($exam->questions->count() > 0)
-                                <form action="{{ route('questions.destroyAll', $exam->id) }}" method="POST"
-                                    onsubmit="return confirm('Xóa TẤT CẢ {{ $exam->questions->count() }} câu hỏi? Hành động này không thể hoàn tác!')">
+                                @if($exam->questions->count() > 0)
+                                    <form action="{{ route('questions.destroyAll', $exam->id) }}" method="POST"
+                                        onsubmit="return confirm('Xóa TẤT CẢ {{ $exam->questions->count() }} câu hỏi? Hành động này không thể hoàn tác!')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-warning w-100">
+                                            <i class="bi bi-trash"></i> Xóa tất cả câu hỏi ({{ $exam->questions->count() }})
+                                        </button>
+                                    </form>
+                                @endif
+
+                                <form action="{{ route('exams.destroy', $exam->id) }}" method="POST"
+                                    onsubmit="return confirm('Xóa đề thi này? Tất cả câu hỏi cũng sẽ bị xóa!')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-warning w-100">
-                                        <i class="bi bi-trash"></i> Xóa tất cả câu hỏi ({{ $exam->questions->count() }})
+                                    <button type="submit" class="btn btn-outline-danger w-100">
+                                        <i class="bi bi-trash"></i> Xóa đề thi
                                     </button>
                                 </form>
-                            @endif
-
-                            <form action="{{ route('exams.destroy', $exam->id) }}" method="POST"
-                                onsubmit="return confirm('Xóa đề thi này? Tất cả câu hỏi cũng sẽ bị xóa!')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger w-100">
-                                    <i class="bi bi-trash"></i> Xóa đề thi
-                                </button>
-                            </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>

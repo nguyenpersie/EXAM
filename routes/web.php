@@ -73,3 +73,8 @@ Route::prefix('questions')->name('questions.')->group(function () {
     Route::post('/exam/{examId}/import', [QuestionController::class, 'import'])->name('import');
 });
 
+// Quản lý người dùng (Admin only)
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    Route::resource('users', \App\Http\Controllers\AdminUserController::class);
+});
+

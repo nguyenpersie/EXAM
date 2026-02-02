@@ -1,0 +1,79 @@
+@extends('layouts.master')
+
+@section('title', 'Quản lý học viên')
+
+@section('content')
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2><i class="bi bi-people"></i> Quản lý học viên</h2>
+            </div>
+            <div>
+                <a href="{{ route('home') }}" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-house"></i> Trang chủ
+                </a>
+                <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
+                    <i class="bi bi-person-plus"></i> Thêm học viên
+                </a>
+            </div>
+        </div>
+
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Mã học viên</th>
+                                <th>Họ và tên</th>
+                                <th>Email</th>
+                                <th>Hạng thi</th>
+                                <th>Ngày tạo</th>
+                                <th class="text-end">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($users as $user)
+                                <tr>
+                                    <td>{{ $user->id }}</td>
+                                    <td><strong>{{ $user->student_code }}</strong></td>
+                                    <td>{{ $user->full_name }}</td>
+                                    <td>{{ $user->email ?? '-' }}</td>
+                                    <td><span class="badge bg-info">{{ $user->category }}</span></td>
+                                    <td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
+                                    <td class="text-end">
+                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                                            class="d-inline"
+                                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa học viên này?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i> Xóa
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">Chưa có học viên nào.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3">
+                    {{ $users->links() }}
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

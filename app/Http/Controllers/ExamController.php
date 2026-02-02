@@ -15,7 +15,16 @@ class ExamController extends Controller
 
     public function index()
     {
-        $exams = Exam::withCount('questions')->get();
+        $query = Exam::withCount('questions');
+        $user = auth()->user();
+
+        if ($user && !$user->isAdmin()) {
+            if ($user->category) {
+                $query->where('category', $user->category);
+            }
+        }
+
+        $exams = $query->get();
         return view('pages.exams.home', compact('exams'));
     }
 
