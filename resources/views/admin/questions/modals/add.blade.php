@@ -24,7 +24,7 @@
               </div>
             @endif
 
-            <form action="{{ route('questions.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('questions.store', $examId) }}" method="POST" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="exam_id" value="{{ $examId }}">
 
