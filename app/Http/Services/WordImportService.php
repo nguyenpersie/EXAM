@@ -136,7 +136,7 @@ class WordImportService
             }
             // Phần
             if (preg_match('/^(?:Phần|Section)[\s:]+(.+)$/i', $line, $matches)) {
-                $data['section'] = trim($matches[2]);
+                $data['section'] = trim($matches[1]);
                 continue;
             }
             // Độ khó
@@ -153,7 +153,7 @@ class WordImportService
             }
             // Danh mục
             if (preg_match('/^(?:Danh mục|Category)[\s:]+(.+)$/i', $line, $matches)) {
-                $data['category'] = trim($matches[2]);
+                $data['category'] = trim($matches[1]);
                 continue;
             }
 
