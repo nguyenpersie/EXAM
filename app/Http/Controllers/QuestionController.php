@@ -6,6 +6,7 @@ use App\Http\Services\QuestionService;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 
 class QuestionController extends Controller
 {
@@ -44,7 +45,13 @@ class QuestionController extends Controller
             'content' => 'required',
             'section' => 'required|in:I,II,III',
             'level' => 'required|integer|min:1|max:5',
+            'image' => 'nullable|image|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('questions', 'public');
+            $validated['image'] = $path;
+        }
 
         $this->questionService->createQuestion($validated);
 
@@ -75,11 +82,31 @@ class QuestionController extends Controller
             'options' => 'required|array|min:4|max:4',
             'options.*.content' => 'required',
             'correct_answer' => 'required|integer|min:0|max:3',
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $question = $this->questionService->updateQuestionWithOptions(
+        $question = $this->questionService->getQuestionForEdit($id);
+        $data = $request->only(['content', 'section', 'level']);
+
+        // Xử lý hình ảnh
+        if ($request->has('remove_image')) {
+            if ($question->image) {
+                Storage::disk('public')->delete($question->image);
+            }
+            $data['image'] = null;
+        }
+
+        if ($request->hasFile('image')) {
+            if ($question->image) {
+                Storage::disk('public')->delete($question->image);
+            }
+            $path = $request->file('image')->store('questions', 'public');
+            $data['image'] = $path;
+        }
+
+        $this->questionService->updateQuestionWithOptions(
             $id,
-            $request->only(['content', 'section', 'level']),
+            $data,
             $request->options,
             $request->correct_answer
         );
