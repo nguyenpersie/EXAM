@@ -29,9 +29,14 @@
                 <p class="text-muted mb-0">{{ $exam->title }} - Mã: {{ $exam->code }} | Tổng: {{ $questions->total() }}
                     câu</p>
             </div>
-            <a href="{{ route('questions.index', $exam->id) }}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Quay lại
-            </a>
+            <div>
+                <a href="{{ route('questions.create', $exam->id) }}" class="btn btn-success me-2">
+                    <i class="bi bi-plus-circle"></i> Thêm câu hỏi
+                </a>
+                <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Quay lại
+                </a>
+            </div>
         </div>
 
         <!-- Alerts -->
