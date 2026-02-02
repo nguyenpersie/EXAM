@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hệ thống ôn thi trắc nghiệm</title>
@@ -10,15 +11,16 @@
 
     @include('partials.style')
 
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="container vh-100 d-flex justify-content-center align-items-center">
         <div class="card p-4" style="width: 100%; max-width: 400px;">
             <h2 class="mb-4 text-center">LOGIN</h2>
             <form id="loginForm" action="#" method="post">
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                    <label for="account" class="form-label">Tài khoản</label>
+                    <input type="text" class="form-control" name="account" id="account" placeholder="Email">
                 </div>
 
                 <div class="mb-3">
@@ -38,5 +40,6 @@
     </div>
     @include('partials.footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+</body>
+
 </html>
