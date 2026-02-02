@@ -51,8 +51,8 @@ function renderQuestion(idx) {
             </label>
         `).join("");
 
-    const imageHTML = q.image 
-        ? `<div class="text-center mb-3"><img src="/storage/${q.image}" class="img-fluid rounded" style="max-height: 300px;" alt="Hình minh họa"></div>` 
+    const imageHTML = q.image
+        ? `<div class="text-center mb-3"><img src="/storage/${q.image}" class="img-fluid rounded" style="max-height: 300px;" alt="Hình minh họa"></div>`
         : '';
 
     els.qContent.innerHTML = `
