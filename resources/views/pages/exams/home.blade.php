@@ -182,7 +182,7 @@
                 <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-outline-primary">
                   <i class="bi bi-eye"></i>
                 </a>
-                @if(auth()->check() && auth()->user()->isAdmin())
+                @if(auth()->check() && auth()->user()->canManageContent())
                   <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-secondary">
                     <i class="bi bi-pencil"></i>
                   </a>

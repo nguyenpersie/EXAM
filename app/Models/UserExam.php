@@ -34,4 +34,13 @@ class UserExam extends Authenticatable
     {
         return $this->role === 'admin';
     }
+    public function isTeacher()
+    {
+        return $this->role === 'teacher';
+    }
+
+    public function canManageContent()
+    {
+        return $this->role === 'admin' || $this->role === 'teacher';
+    }
 }

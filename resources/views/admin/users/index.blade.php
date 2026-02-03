@@ -12,9 +12,11 @@
                 <a href="{{ route('home') }}" class="btn btn-outline-secondary me-2">
                     <i class="bi bi-house"></i> Trang chủ
                 </a>
+                @if(auth()->user()->isAdmin())
                 <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
-                    <i class="bi bi-person-plus"></i> Thêm học viên
+                    <i class="bi bi-person-plus"></i> Thêm người dùng
                 </a>
+                @endif
             </div>
         </div>
 
@@ -32,9 +34,10 @@
                         <thead class="table-light">
                             <tr>
                                 <th>ID</th>
-                                <th>Mã học viên</th>
+                                <th>Mã người dùng</th>
                                 <th>Họ và tên</th>
                                 <th>Email</th>
+                                <th>Vai trò</th>
                                 <th>Hạng thi</th>
                                 <th>Ngày tạo</th>
                                 <th class="text-end">Hành động</th>
@@ -47,23 +50,34 @@
                                     <td><strong>{{ $user->student_code }}</strong></td>
                                     <td>{{ $user->full_name }}</td>
                                     <td>{{ $user->email ?? '-' }}</td>
+                                    <td>
+                                        @if($user->isAdmin())
+                                            <span class="badge bg-danger">Admin</span>
+                                        @elseif($user->isTeacher())
+                                            <span class="badge bg-warning text-dark">Giáo viên</span>
+                                        @else
+                                            <span class="badge bg-secondary">Học viên</span>
+                                        @endif
+                                    </td>
                                     <td><span class="badge bg-info">{{ $user->category }}</span></td>
                                     <td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
                                     <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-outline-warning me-1"
+                                        @if(auth()->user()->isAdmin())
+                                        <button type="button" class="btn btn-sm btn-outline-warning me-1" 
                                             onclick="openResetModal('{{ $user->id }}', '{{ $user->full_name }}')">
                                             <i class="bi bi-key"></i> Đổi MK
                                         </button>
 
                                         <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
                                             class="d-inline"
-                                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa học viên này?')">
+                                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-outline-danger">
                                                 <i class="bi bi-trash"></i> Xóa
                                             </button>
                                         </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
