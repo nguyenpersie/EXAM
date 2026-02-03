@@ -46,6 +46,11 @@ class AdminUserController extends Controller
             return back()->withErrors(['category' => 'Hạng thi là bắt buộc đối với học viên.'])->withInput();
         }
 
+        // Handle NOT NULL constraint for non-students
+        if ($validated['role'] !== 'student' && empty($validated['category'])) {
+            $validated['category'] = '';
+        }
+
         $validated['password'] = Hash::make($validated['password']);
 
         UserExam::create($validated);
