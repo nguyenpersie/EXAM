@@ -15,13 +15,13 @@ class QuestionController extends Controller
     public function __construct(QuestionService $questionService)
     {
         $this->questionService = $questionService;
+    }
 
-        $this->middleware(function ($request, $next) {
-            if (!auth()->check() || !auth()->user()->canManageContent()) {
-                abort(403, 'Bạn không có quyền truy cập chức năng này.');
-            }
-            return $next($request);
-        });
+    private function checkPermission()
+    {
+        if (!auth()->check() || !auth()->user()->canManageContent()) {
+            abort(403, 'Bạn không có quyền truy cập chức năng này.');
+        }
     }
 
     /**
@@ -29,6 +29,7 @@ class QuestionController extends Controller
      */
     public function index(int $examId): View
     {
+        $this->checkPermission();
         $data = $this->questionService->getQuestionsByExam($examId);
 
         return view('admin.questions.index', $data);
@@ -39,6 +40,7 @@ class QuestionController extends Controller
      */
     public function create(int $examId): View
     {
+        $this->checkPermission();
         return view('admin.questions.modals.add', compact('examId'));
     }
 
@@ -47,6 +49,7 @@ class QuestionController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $this->checkPermission();
         $request->validate([
             'exam_id' => 'required|exists:exams,id',
             'content' => 'required',
@@ -82,6 +85,7 @@ class QuestionController extends Controller
      */
     public function edit(int $id): View
     {
+        $this->checkPermission();
         $question = $this->questionService->getQuestionForEdit($id);
 
         return view('admin.questions.modals.edit', compact('question'));
@@ -92,6 +96,7 @@ class QuestionController extends Controller
      */
     public function update(Request $request, int $id): RedirectResponse
     {
+        $this->checkPermission();
         $request->validate([
             'content' => 'required',
             'section' => 'nullable|string',
@@ -138,6 +143,7 @@ class QuestionController extends Controller
      */
     public function destroy(int $id): RedirectResponse
     {
+        $this->checkPermission();
         $question = $this->questionService->getQuestionForEdit($id);
         $examId = $question->exam_id;
 
@@ -153,6 +159,7 @@ class QuestionController extends Controller
      */
     public function import(Request $request, int $examId): RedirectResponse
     {
+        $this->checkPermission();
         $request->validate([
             'file' => 'required|mimes:docx,doc',
             'category' => 'nullable|string',
@@ -179,6 +186,7 @@ class QuestionController extends Controller
      */
     public function destroyAll(int $examId): RedirectResponse
     {
+        $this->checkPermission();
         $count = $this->questionService->deleteQuestionsByExam($examId);
 
         return redirect()
