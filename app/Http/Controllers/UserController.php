@@ -52,11 +52,18 @@ class UserController extends Controller
     }
     public function showChangePasswordForm(): View
     {
+        if (!Auth::user()->isAdmin()) {
+            abort(403, 'Bạn không có quyền thực hiện hành động này.');
+        }
         return view('auth.change-password');
     }
 
     public function changePassword(Request $request)
     {
+        if (!Auth::user()->isAdmin()) {
+            abort(403, 'Bạn không có quyền thực hiện hành động này.');
+        }
+
         $request->validate([
             'current_password' => 'required',
             'new_password' => 'required|string|min:6|confirmed|different:current_password',
