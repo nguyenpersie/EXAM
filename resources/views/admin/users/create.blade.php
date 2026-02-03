@@ -35,9 +35,18 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="role" class="form-label">Vai trò <span class="text-danger">*</span></label>
+                                <select class="form-select" id="role" name="role" required onchange="toggleCategory()">
+                                    <option value="student" selected>Học viên</option>
+                                    <option value="teacher">Giáo viên</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3" id="category-group">
                                 <label for="category" class="form-label">Hạng thi <span class="text-danger">*</span></label>
                                 <select class="form-select @error('category') is-invalid @enderror" id="category"
-                                    name="category" required>
+                                    name="category">
                                     <option value="">-- Chọn hạng thi --</option>
                                     <option value="LPT" {{ old('category') == 'LPT' ? 'selected' : '' }}>LPT</option>
                                     <option value="TT" {{ old('category') == 'TT' ? 'selected' : '' }}>TT</option>
@@ -56,6 +65,7 @@
                                 @error('category')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                <div class="form-text">Chỉ bắt buộc đối với Học viên.</div>
                             </div>
 
                             <div class="mb-3">
@@ -82,7 +92,7 @@
                                     <i class="bi bi-x-circle"></i> Hủy
                                 </a>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-save"></i> Lưu học viên
+                                    <i class="bi bi-save"></i> Tạo tài khoản
                                 </button>
                             </div>
                         </form>
@@ -91,4 +101,26 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleCategory() {
+            var role = document.getElementById('role').value;
+            var categoryGroup = document.getElementById('category-group');
+            var categorySelect = document.getElementById('category');
+            
+            if (role === 'student') {
+                categoryGroup.style.display = 'block';
+                categorySelect.setAttribute('required', 'required');
+            } else {
+                categoryGroup.style.display = 'none';
+                categorySelect.removeAttribute('required');
+                categorySelect.value = '';
+            }
+        }
+        
+        // Run on load
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleCategory();
+        });
+    </script>
 @endsection

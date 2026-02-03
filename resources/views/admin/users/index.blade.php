@@ -13,9 +13,9 @@
                     <i class="bi bi-house"></i> Trang chủ
                 </a>
                 @if(auth()->user()->isAdmin())
-                <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
-                    <i class="bi bi-person-plus"></i> Thêm người dùng
-                </a>
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
+                        <i class="bi bi-person-plus"></i> Thêm người dùng
+                    </a>
                 @endif
             </div>
         </div>
@@ -60,23 +60,23 @@
                                         @endif
                                     </td>
                                     <td><span class="badge bg-info">{{ $user->category }}</span></td>
-                                    <td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ optional($user->created_at)->format('d/m/Y H:i') ?? '-' }}</td>
                                     <td class="text-end">
                                         @if(auth()->user()->isAdmin())
-                                        <button type="button" class="btn btn-sm btn-outline-warning me-1" 
-                                            onclick="openResetModal('{{ $user->id }}', '{{ $user->full_name }}')">
-                                            <i class="bi bi-key"></i> Đổi MK
-                                        </button>
-
-                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
-                                            class="d-inline"
-                                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                <i class="bi bi-trash"></i> Xóa
+                                            <button type="button" class="btn btn-sm btn-outline-warning me-1"
+                                                onclick="openResetModal('{{ $user->id }}', '{{ $user->full_name }}')">
+                                                <i class="bi bi-key"></i> Đổi MK
                                             </button>
-                                        </form>
+
+                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                                                class="d-inline"
+                                                onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-trash"></i> Xóa
+                                                </button>
+                                            </form>
                                         @endif
                                     </td>
                                 </tr>
