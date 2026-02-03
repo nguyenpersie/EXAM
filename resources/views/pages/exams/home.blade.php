@@ -90,24 +90,29 @@
 
   <div class="container py-4">
     <div class="row mb-4">
-      <div class="col-md-8">
+      <div class="col-md-7">
         <h2><i class="bi bi-journal-text"></i> Danh sách đề thi ôn tập</h2>
         <p class="text-muted">Chọn đề thi và bắt đầu ôn luyện</p>
       </div>
-      <div class="col-md-4 text-end">
+      <div class="col-md-5 text-end d-flex justify-content-end align-items-center gap-2">
         @if(auth()->check() && auth()->user()->isAdmin())
-          <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary me-2">
-            <i class="bi bi-people"></i> Quản lý học viên
+          <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary" title="Quản lý học viên">
+            <i class="bi bi-people"></i>
           </a>
-          <a href="{{ route('exams.create') }}" class="btn btn-primary me-2">
-            <i class="bi bi-plus-circle"></i> Tạo đề thi mới
+          <a href="{{ route('exams.create') }}" class="btn btn-primary" title="Tạo đề thi mới">
+            <i class="bi bi-plus-circle"></i> Tạo đề
           </a>
         @endif
+
+        <a href="{{ route('change-password') }}" class="btn btn-outline-secondary" title="Đổi mật khẩu">
+          <i class="bi bi-key"></i>
+        </a>
+
         <form action="{{ route('logout') }}" method="POST" class="d-inline">
           @csrf
           <button type="submit" class="btn btn-outline-danger"
-            onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?')">
-            <i class="bi bi-box-arrow-right"></i> Đăng xuất
+            onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?')" title="Đăng xuất">
+            <i class="bi bi-box-arrow-right"></i>
           </button>
         </form>
       </div>
