@@ -75,6 +75,7 @@ Route::prefix('questions')->name('questions.')->group(function () {
 // Quản lý người dùng (Admin only)
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('users', \App\Http\Controllers\AdminUserController::class);
+    Route::post('users/{id}/reset-password', [\App\Http\Controllers\AdminUserController::class, 'resetPassword'])->name('users.reset-password');
 });
 
 

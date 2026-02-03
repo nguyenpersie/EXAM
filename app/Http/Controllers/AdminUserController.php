@@ -50,4 +50,21 @@ class AdminUserController extends Controller
 
         return redirect()->route('admin.users.index')->with('success', 'Xóa tài khoản thành công!');
     }
+    public function resetPassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6',
+        ]);
+
+        $user = UserExam::findOrFail($id);
+
+        if ($user->isAdmin()) {
+            return back()->with('error', 'Không thể đổi mật khẩu tài khoản Admin tại đây.');
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return back()->with('success', 'Đổi mật khẩu thành công cho học viên: ' . $user->full_name);
+    }
 }

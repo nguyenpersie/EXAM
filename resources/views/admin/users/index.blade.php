@@ -50,6 +50,11 @@
                                     <td><span class="badge bg-info">{{ $user->category }}</span></td>
                                     <td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
                                     <td class="text-end">
+                                        <button type="button" class="btn btn-sm btn-outline-warning me-1"
+                                            onclick="openResetModal('{{ $user->id }}', '{{ $user->full_name }}')">
+                                            <i class="bi bi-key"></i> Đổi MK
+                                        </button>
+
                                         <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
                                             class="d-inline"
                                             onsubmit="return confirm('Bạn có chắc chắn muốn xóa học viên này?')">
@@ -76,4 +81,48 @@
             </div>
         </div>
     </div>
+
+    <!-- Reset Password Modal -->
+    <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="resetPasswordForm" method="POST" action="">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">Đổi mật khẩu cho: <span id="modalUserName" class="fw-bold"></span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                            <input type="text" class="form-control" id="newPassword" name="password" required minlength="6"
+                                placeholder="Nhập mật khẩu mới...">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openResetModal(userId, userName) {
+            // Set action url
+            let form = document.getElementById('resetPasswordForm');
+            form.action = "{{ route('admin.users.index') }}/" + userId + "/reset-password";
+
+            // Set user name
+            document.getElementById('modalUserName').innerText = userName;
+
+            // Clear input
+            document.getElementById('newPassword').value = '';
+
+            // Show modal
+            var myModal = new bootstrap.Modal(document.getElementById('resetPasswordModal'));
+            myModal.show();
+        }
+    </script>
 @endsection
