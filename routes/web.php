@@ -13,6 +13,10 @@ Route::get('/login', [UserController::class, 'ViewLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
+// Change Password
+Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('change-password')->middleware('auth');
+Route::post('/change-password', [UserController::class, 'changePassword'])->name('change-password.post')->middleware('auth');
+
 Route::get('options', [OptionController::class, 'index'])->name('admin.options');
 
 // Trang chủ - Danh sách đề thi (Yêu cầu đăng nhập)

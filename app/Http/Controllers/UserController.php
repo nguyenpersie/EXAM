@@ -50,4 +50,31 @@ class UserController extends Controller
 
         return redirect('/')->with('success', 'Đã đăng xuất thành công.');
     }
+    public function showChangePasswordForm(): View
+    {
+        return view('auth.change-password');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:6|confirmed|different:current_password',
+        ], [
+            'new_password.confirmed' => 'Mật khẩu xác nhận không khớp.',
+            'new_password.different' => 'Mật khẩu mới không được trùng với mật khẩu cũ.',
+            'new_password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự.'
+        ]);
+
+        $user = Auth::user();
+
+        if (!\Illuminate\Support\Facades\Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không đúng.']);
+        }
+
+        $user->password = \Illuminate\Support\Facades\Hash::make($request->new_password);
+        $user->save();
+
+        return back()->with('success', 'Đổi mật khẩu thành công!');
+    }
 }
