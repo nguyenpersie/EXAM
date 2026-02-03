@@ -52,7 +52,7 @@ class UserController extends Controller
     }
     public function showChangePasswordForm(): View
     {
-        if (!Auth::user()->canManageContent()) {
+        if (!Auth::user()->isAdmin()) {
             abort(403, 'Bạn không có quyền thực hiện hành động này.');
         }
         return view('auth.change-password');
@@ -60,7 +60,7 @@ class UserController extends Controller
 
     public function changePassword(Request $request)
     {
-        if (!Auth::user()->canManageContent()) {
+        if (!Auth::user()->isAdmin()) {
             abort(403, 'Bạn không có quyền thực hiện hành động này.');
         }
 

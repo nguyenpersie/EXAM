@@ -95,7 +95,7 @@
         <p class="text-muted">Chọn đề thi và bắt đầu ôn luyện</p>
       </div>
       <div class="col-md-5 text-end d-flex justify-content-end align-items-center gap-2">
-        @if(auth()->check() && auth()->user()->isAdmin())
+        @if(auth()->check() && auth()->user()->canManageContent())
           <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary" title="Quản lý học viên">
             <i class="bi bi-people"></i>
           </a>
@@ -104,9 +104,11 @@
           </a>
         @endif
 
-        <a href="{{ route('change-password') }}" class="btn btn-outline-secondary" title="Đổi mật khẩu">
-          <i class="bi bi-key"></i>
-        </a>
+        @if(auth()->check() && auth()->user()->isAdmin())
+          <a href="{{ route('change-password') }}" class="btn btn-outline-secondary" title="Đổi mật khẩu">
+            <i class="bi bi-key"></i>
+          </a>
+        @endif
 
         <form action="{{ route('logout') }}" method="POST" class="d-inline">
           @csrf
