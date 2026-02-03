@@ -13,6 +13,7 @@
 
     .sheet-panel {
       width: 350px;
+      /* <--- CHỈNH CHIỀU RỘNG BẢNG CÂU HỎI TẠI ĐÂY (VD: 400px, 30%) */
     }
 
     .q-content-text {
@@ -90,6 +91,7 @@
 
     .sheet-wrapper {
       max-height: 400px;
+      /* <--- CHỈNH CHIỀU CAO HIỂN THỊ BẢNG CÂU HỎI TẠI ĐÂY */
       overflow-y: auto;
     }
   </style>
