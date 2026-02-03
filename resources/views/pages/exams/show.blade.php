@@ -145,7 +145,7 @@
 
             <!-- Import câu hỏi -->
             <div class="col-lg-7 mb-4">
-                @if(auth()->check() && auth()->user()->isAdmin())
+                @if(auth()->check() && auth()->user()->canManageContent())
                     <div class="card shadow-sm mb-3">
                         <div class="card-header bg-success text-white">
                             <h5 class="mb-0"><i class="bi bi-upload"></i> Import câu hỏi</h5>
@@ -221,7 +221,7 @@
 
 
                 <!-- Quản lý -->
-                @if(auth()->check() && auth()->user()->isAdmin())
+                @if(auth()->check() && auth()->user()->canManageContent())
                     <div class="card shadow-sm">
                         <div class="card-header bg-light">
                             <h6 class="mb-0"><i class="bi bi-gear"></i> Quản lý</h6>

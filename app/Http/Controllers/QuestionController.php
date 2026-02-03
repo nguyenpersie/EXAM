@@ -15,6 +15,13 @@ class QuestionController extends Controller
     public function __construct(QuestionService $questionService)
     {
         $this->questionService = $questionService;
+
+        $this->middleware(function ($request, $next) {
+            if (!auth()->check() || !auth()->user()->canManageContent()) {
+                abort(403, 'Bạn không có quyền truy cập chức năng này.');
+            }
+            return $next($request);
+        });
     }
 
     /**
