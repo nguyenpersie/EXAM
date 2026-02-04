@@ -56,8 +56,8 @@ function renderQuestion(idx) {
         : '';
 
     els.qContent.innerHTML = `
-        ${imageHTML}
         <div class="q-content-text">${q.content}</div>
+        ${imageHTML}
         <div class="q-options-list">${optionsHTML}</div>
     `;
 
