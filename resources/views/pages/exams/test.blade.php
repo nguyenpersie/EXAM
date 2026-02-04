@@ -124,7 +124,7 @@
 @endsection
 
 @section('content')
-  <div class="container-fluid py-3">
+  <div class="container py-3">
     <div class="row g-3">
       <div class="col-12">
         <div class="student-card d-flex align-items-center gap-3 p-3">
@@ -143,15 +143,15 @@
                 <span class="info-label text-muted">Họ tên:</span>
                 <span class="info-value text-uppercase fw-bold text-primary">Đặng Thành Nguyên</span>
               </div>
-              <div>
-                <span class="info-label text-muted">Giới tính:</span>
-                <span class="info-value">Nam</span>
-              </div>
             </div>
             <div class="d-flex flex-wrap gap-4 align-items-center">
               <div>
                 <span class="info-label text-muted">Ngày sinh:</span>
                 <span class="info-value">26/02/2026</span>
+              </div>
+              <div>
+                <span class="info-label text-muted">Giới tính:</span>
+                <span class="info-value">Nam</span>
               </div>
               <div>
                 <span class="info-label text-muted">Đơn vị:</span>
@@ -162,6 +162,7 @@
         </div>
       </div>
     </div>
+  </div>
     <div class="container py-4">
       <div class="card shadow mb-4">
         <div class="card-header bg-primary text-white">
