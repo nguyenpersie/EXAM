@@ -125,8 +125,8 @@
 
 @section('content')
   <div class="container-fluid py-3">
-    <div class="row g-3" style="width: 100%;">
-      <div class="col-lg-3 col-md-3">
+    <div class="row g-3">
+      <div class="col-lg-3 col-md-3" style="width: 100%;">
         <div class="student-card">
           <div class="row">
             <div class="col-4 px-1">
