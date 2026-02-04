@@ -126,28 +126,36 @@
 @section('content')
   <div class="container-fluid py-3">
     <div class="row g-3">
-      <div class="col-lg-3 col-md-3" style="width: 100%;">
-        <div class="student-card">
-          <div class="row">
-            <div class="col-4 px-1">
-              <img
-                src="https://cafefcdn.com/thumb_w/640/203337114487263232/2022/3/3/photo1646280815645-1646280816151764748403.jpg"
-                class="student-avatar" alt="Avatar" />
+      <div class="col-12">
+        <div class="student-card d-flex align-items-center gap-3 p-3">
+          <div class="student-avatar-wrapper" style="width: 100px; flex-shrink: 0;">
+            <img
+              src="https://cafefcdn.com/thumb_w/640/203337114487263232/2022/3/3/photo1646280815645-1646280816151764748403.jpg"
+              class="student-avatar w-100 h-auto rounded" alt="Avatar" style="object-fit: cover;" />
+          </div>
+          <div class="student-info flex-grow-1">
+            <div class="d-flex flex-wrap gap-4 mb-2 align-items-center">
+              <div>
+                <span class="info-label text-muted">Số báo danh:</span> 
+                <span class="info-value fw-bold">LPT.SH.001</span>
+              </div>
+              <div>
+                <span class="info-label text-muted">Họ tên:</span>
+                <span class="info-value text-uppercase fw-bold text-primary">Đặng Thành Nguyên</span>
+              </div>
             </div>
-            <div class="col-8">
-              <div class="mb-1">
-                <span class="info-label">Số báo danh:</span> <span class="info-value">LPT.SH.001</span>
+            <div class="d-flex flex-wrap gap-4 align-items-center">
+              <div>
+                <span class="info-label text-muted">Giới tính:</span> 
+                <span class="info-value">Nam</span>
               </div>
-              <div class="mb-1">
-                <span class="info-label">Họ tên:</span>
-                <span class="info-value text-uppercase">Đặng Thành Nguyên</span>
+              <div>
+                <span class="info-label text-muted">Ngày sinh:</span> 
+                <span class="info-value">26/02/2026</span>
               </div>
-              <div class="mb-1"><span class="info-label">Giới tính:</span> <span class="info-value">Nam</span></div>
-              <div class="mb-1">
-                <span class="info-label">Ngày sinh:</span> <span class="info-value">26/02/2026</span>
-              </div>
-              <div class="mb-1">
-                <span class="info-label">Đơn vị:</span> <span class="info-value">TTDN Đường Thủy Sông Hậu</span>
+              <div>
+                <span class="info-label text-muted">Đơn vị:</span> 
+                <span class="info-value">TTDN Đường Thủy Sông Hậu</span>
               </div>
             </div>
           </div>
