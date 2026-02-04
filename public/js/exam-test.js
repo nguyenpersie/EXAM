@@ -253,9 +253,6 @@ function showResultModal(result) {
                     <button class="btn btn-primary" onclick="viewDetailedResults()">
                         <i class="bi bi-eye"></i> Xem chi tiết
                     </button>
-                    // <button class="btn btn-secondary" onclick="location.reload()">
-                    //     <i class="bi bi-arrow-clockwise"></i> Làm lại
-                    // </button>
                     <a href="/" class="btn btn-success">
                         <i class="bi bi-house"></i> Về trang chủ
                     </a>
