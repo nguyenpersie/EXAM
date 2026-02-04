@@ -90,9 +90,35 @@
     }
 
     .sheet-wrapper {
-      max-height: 400px;
-      /* <--- CHỈNH CHIỀU CAO HIỂN THỊ BẢNG CÂU HỎI TẠI ĐÂY */
-      overflow-y: auto;
+      max-height: none;
+      /* Hiển thị toàn bộ chiều cao theo yêu cầu */
+      overflow-y: visible;
+    }
+
+    /* Responsive styles for Mobile */
+    @media (max-width: 768px) {
+      .exam-container {
+        flex-direction: column;
+      }
+
+      .question-panel {
+        order: 1;
+        /* Câu hỏi hiện trước */
+      }
+
+      .sheet-panel {
+        width: 100%;
+        /* Full width trên mobile */
+        order: 2;
+        /* Bảng trả lời hiện sau */
+        margin-top: 20px;
+      }
+
+      .sheet-wrapper {
+        max-height: none;
+        /* Hiển thị full chiều cao trên mobile luôn */
+        overflow-y: visible;
+      }
     }
   </style>
 @endsection
