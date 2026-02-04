@@ -136,25 +136,25 @@
           <div class="student-info flex-grow-1">
             <div class="d-flex flex-wrap gap-4 mb-2 align-items-center">
               <div>
-                <span class="info-label text-muted">Số báo danh:</span> 
+                <span class="info-label text-muted">Số báo danh:</span>
                 <span class="info-value fw-bold">LPT.SH.001</span>
               </div>
               <div>
                 <span class="info-label text-muted">Họ tên:</span>
                 <span class="info-value text-uppercase fw-bold text-primary">Đặng Thành Nguyên</span>
               </div>
+              <div>
+                <span class="info-label text-muted">Giới tính:</span>
+                <span class="info-value">Nam</span>
+              </div>
             </div>
             <div class="d-flex flex-wrap gap-4 align-items-center">
               <div>
-                <span class="info-label text-muted">Giới tính:</span> 
-                <span class="info-value">Nam</span>
-              </div>
-              <div>
-                <span class="info-label text-muted">Ngày sinh:</span> 
+                <span class="info-label text-muted">Ngày sinh:</span>
                 <span class="info-value">26/02/2026</span>
               </div>
               <div>
-                <span class="info-label text-muted">Đơn vị:</span> 
+                <span class="info-label text-muted">Đơn vị:</span>
                 <span class="info-value">TTDN Đường Thủy Sông Hậu</span>
               </div>
             </div>
