@@ -89,16 +89,34 @@
       border-color: #0d6efd;
     }
 
-    .sheet-check.correct {
-      content: "✓ ";
+    .sheet-check {
+      position: relative;
+      padding-left: 20px;
+      /* Tạo khoảng trống cho icon */
+    }
+
+    .sheet-check.correct::before,
+    .sheet-check.incorrect::before {
+      position: absolute;
+      left: 5px;
+      font-weight: bold;
       color: white;
+    }
+
+    .sheet-check.correct::before {
+      content: "✓";
+    }
+
+    .sheet-check.correct {
       background-color: #198754 !important;
       border-color: #198754 !important;
     }
 
+    .sheet-check.incorrect::before {
+      content: "✗";
+    }
+
     .sheet-check.incorrect {
-      content: "✗ ";
-      color: white;
       background-color: #dc3545 !important;
       border-color: #dc3545 !important;
     }
