@@ -27,10 +27,12 @@ class QuestionController extends Controller
     /**
      * Hiển thị danh sách câu hỏi của đề thi
      */
-    public function index(int $examId): View
+    public function index(Request $request, int $examId): View
     {
         $this->checkPermission();
-        $data = $this->questionService->getQuestionsByExam($examId);
+
+        $filters = $request->only(['search', 'category', 'level', 'section']);
+        $data = $this->questionService->getQuestionsByExam($examId, $filters);
 
         return view('admin.questions.index', $data);
     }
@@ -133,8 +135,15 @@ class QuestionController extends Controller
             $request->correct_answer
         );
 
-        return redirect()
-            ->route('questions.index', $question->exam_id)
+        // Build redirect URL with preserved filters and page
+        $redirectUrl = route('questions.index', $question->exam_id);
+        $queryParams = $request->only(['page', 'search', 'category', 'level', 'section']);
+
+        if (!empty($queryParams)) {
+            $redirectUrl .= '?' . http_build_query($queryParams);
+        }
+
+        return redirect($redirectUrl)
             ->with('success', 'Câu hỏi đã được cập nhật!');
     }
 

@@ -152,7 +152,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('questions.edit', $question->id) }}"
+                                        <a href="{{ route('questions.edit', $question->id) }}?{{ http_build_query(request()->only(['page', 'search', 'category', 'level', 'section'])) }}"
                                             class="btn btn-outline-primary" title="Sửa">
                                             <i class="bi bi-pencil"></i>
                                         </a>

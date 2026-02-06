@@ -30,11 +30,32 @@ class QuestionRepository
     /**
      * Lấy câu hỏi theo đề thi (phân trang)
      */
-    public function getByExamId(int $examId, int $perPage = 20): LengthAwarePaginator
+    public function getByExamId(int $examId, array $filters = [], int $perPage = 20): LengthAwarePaginator
     {
-        return $this->model::where('exam_id', $examId)
-            ->with('options')
-            ->paginate($perPage);
+        $query = $this->model::where('exam_id', $examId)
+            ->with('options');
+
+        // Apply search filter
+        if (!empty($filters['search'])) {
+            $query->where('content', 'like', '%' . $filters['search'] . '%');
+        }
+
+        // Apply category filter
+        if (!empty($filters['category'])) {
+            $query->where('category', $filters['category']);
+        }
+
+        // Apply level filter
+        if (!empty($filters['level'])) {
+            $query->where('level', $filters['level']);
+        }
+
+        // Apply section filter
+        if (!empty($filters['section'])) {
+            $query->where('section', $filters['section']);
+        }
+
+        return $query->paginate($perPage);
     }
 
     /**

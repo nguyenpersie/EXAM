@@ -27,13 +27,13 @@ class QuestionService
     /**
      * Lấy dữ liệu cho trang danh sách câu hỏi theo đề thi
      */
-    public function getQuestionsByExam(int $examId): array
+    public function getQuestionsByExam(int $examId, array $filters = []): array
     {
         $exam = Exam::findOrFail($examId);
 
         return [
             'exam' => $exam,
-            'questions' => $this->questionRepository->getByExamId($examId),
+            'questions' => $this->questionRepository->getByExamId($examId, $filters),
             'categories' => $this->questionRepository->getCategoriesByExam($examId),
             'sections' => $this->questionRepository->getSectionsByExam($examId),
         ];
