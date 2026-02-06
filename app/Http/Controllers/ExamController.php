@@ -57,10 +57,7 @@ class ExamController extends Controller
 
         // Trộn đáp án của từng câu
         $questions = $questions->map(function ($question) {
-            // Convert to array, shuffle, then convert back
-            $optionsArray = $question->options->toArray();
-            shuffle($optionsArray);
-            $question->options = collect($optionsArray);
+            $question->options = $question->options->shuffle()->values();
             return $question;
         });
 
