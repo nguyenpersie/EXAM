@@ -277,9 +277,6 @@ function showResultModal(result) {
                     <button class="btn btn-info" onclick="showAnswerReview()">
                         <i class="bi bi-eye-fill"></i> Xem đáp án
                     </button>
-                    <button class="btn btn-primary" onclick="viewDetailedResults()">
-                        <i class="bi bi-eye"></i> Xem chi tiết
-                    </button>
                     <a href="/" class="btn btn-success">
                         <i class="bi bi-house"></i> Về trang chủ
                     </a>
@@ -292,41 +289,6 @@ function showResultModal(result) {
     new bootstrap.Modal(document.getElementById('resultModal')).show();
 }
 
-// Xem chi tiết
-function viewDetailedResults() {
-    const result = JSON.parse(sessionStorage.getItem('examResult'));
-    let html = `<!DOCTYPE html>
-    <html><head><meta charset="UTF-8">
-    <title>Chi tiết - ${result.examTitle}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    </head><body class="bg-light"><div class="container py-4">
-    <div class="card mb-3"><div class="card-header bg-primary text-white">
-    <h4>Chi tiết - ${result.examTitle}</h4>
-    <small>Điểm: ${result.score}/${result.totalScore} (${result.percentage}%)</small>
-    </div></div>`;
-
-    result.detailedResults.forEach(item => {
-        const c = item.status === 'correct' ? 'success' : (item.status === 'wrong' ? 'danger' : 'warning');
-        html += `<div class="card mb-2 border-${c}">
-        <div class="card-header bg-${c} bg-opacity-10">
-            <strong>Câu ${item.questionNumber}</strong>
-            <span class="badge bg-${c} float-end">${item.status === 'correct' ? 'Đúng' : (item.status === 'wrong' ? 'Sai' : 'Bỏ qua')}</span>
-        </div>
-        <div class="card-body">
-            <p><strong>Câu hỏi:</strong> ${item.questionContent}</p>
-            <p><strong>Đáp án của bạn:</strong> <span class="text-${c}">${item.userAnswer !== null && item.userAnswer !== undefined ? String.fromCharCode(65 + item.userAnswer) + '. ' + item.options[item.userAnswer] : 'Không trả lời'}</span></p>
-            ${item.status !== 'correct' ? `<p><strong>Đáp án đúng:</strong> <span class="text-success">${String.fromCharCode(65 + item.correctAnswer)}. ${item.options[item.correctAnswer]}</span></p>` : ''}
-        </div></div>`;
-    });
-
-    html += '<div class="text-center"><button class="btn btn-secondary" onclick="window.close()">Đóng</button></div></div></body></html>';
-
-    const win = window.open('', '_blank');
-    win.document.write(html);
-    win.document.close();
-}
-
 // Export functions
 window.changeQuestion = changeQuestion;
 window.goToQuestion = goToQuestion;
@@ -334,7 +296,6 @@ window.selectAnswer = selectAnswer;
 window.toggleFlag = toggleFlag;
 window.confirmSubmit = confirmSubmit;
 window.submitExam = submitExam;
-window.viewDetailedResults = viewDetailedResults;
 
 // Show answer review mode  
 window.showAnswerReview = function () {
