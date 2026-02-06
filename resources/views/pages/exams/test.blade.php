@@ -90,11 +90,13 @@
     }
 
     .sheet-check.correct {
+      content: "✓ ";
       background-color: #198754 !important;
       border-color: #198754 !important;
     }
 
     .sheet-check.incorrect {
+      content: "✗ ";
       background-color: #dc3545 !important;
       border-color: #dc3545 !important;
     }
