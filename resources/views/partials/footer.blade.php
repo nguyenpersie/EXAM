@@ -3,7 +3,7 @@
     <div class="row align-items-center">
       <div class="col-auto">
         <a href="http://157.66.24.117/">
-          <img src="{{ asset('assets/images/logo-SH.png') }}" class="footer-logo" alt="Logo" />
+          <img src="{{ asset('assets/images/icon-logo.png') }}" class="footer-logo" alt="Logo" />
         </a>
       </div>
       <div class="col">
