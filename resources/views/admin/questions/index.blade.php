@@ -75,7 +75,7 @@
                     <div class="col-md-2">
                         <select name="level" class="form-select">
                             <option value="">Độ khó</option>
-                            @for($i = 1; $i <= 5; $i++)
+                            @for($i = 1; $i <= 3; $i++)
                                 <option value="{{ $i }}" {{ request('level') == $i ? 'selected' : '' }}>
                                     Độ {{ $i }}
                                 </option>
