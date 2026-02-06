@@ -120,9 +120,9 @@
                             <div class="mb-3">
                                 <strong>Theo độ khó:</strong>
                                 <div class="d-flex gap-2 mt-2">
-                                    <span class="badge bg-success">Dễ: {{ $byLevel->get('1,2', collect())->count() }}</span>
-                                    <span class="badge bg-warning">TB: {{ $byLevel->get('3,4', collect())->count() }}</span>
-                                    <span class="badge bg-danger">Khó: {{ $byLevel->get('5', collect())->count() }}</span>
+                                    <span class="badge bg-success">Dễ: {{ $byLevel->get('1', collect())->count() }}</span>
+                                    <span class="badge bg-warning">TB: {{ $byLevel->get('2', collect())->count() }}</span>
+                                    <span class="badge bg-danger">Khó: {{ $byLevel->get('3', collect())->count() }}</span>
                                 </div>
                             </div>
 
