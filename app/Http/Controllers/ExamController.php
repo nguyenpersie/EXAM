@@ -57,7 +57,7 @@ class ExamController extends Controller
 
         // Trộn đáp án của từng câu
         $questions = $questions->map(function ($question) {
-            $question->options = $question->options->shuffle();
+            $question->options = $question->options->shuffle()->values();
             return $question;
         });
 
