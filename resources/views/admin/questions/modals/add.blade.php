@@ -87,9 +87,7 @@
                   <select class="form-select" name="level">
                     <option value="1" {{ old('level') == '1' ? 'selected' : '' }}>Độ 1 (Dễ nhất)</option>
                     <option value="2" {{ old('level') == '2' ? 'selected' : '' }}>Độ 2</option>
-                    <option value="3" {{ old('level') == '3' ? 'selected' : '' }}>Độ 3</option>
-                    <option value="4" {{ old('level') == '4' ? 'selected' : '' }}>Độ 4</option>
-                    <option value="5" {{ old('level') == '5' ? 'selected' : '' }}>Độ 5 (Khó nhất)</option>
+                    <option value="3" {{ old('level') == '3' ? 'selected' : '' }}>Độ 3 (Khó nhất)</option>
                   </select>
                 </div>
 
