@@ -24,16 +24,9 @@
                     </div>
                     @endif
 
-                    <form action="{{ route('questions.update', $question->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('questions.update', $question->id) }}?{{ http_build_query(request()->only(['page', 'search', 'category', 'level', 'section'])) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        
-                        {{-- Hidden fields to preserve pagination and filters --}}
-                        <input type="hidden" name="page" value="{{ request('page') }}">
-                        <input type="hidden" name="search" value="{{ request('search') }}">
-                        <input type="hidden" name="category" value="{{ request('category') }}">
-                        <input type="hidden" name="level" value="{{ request('level') }}">
-                        <input type="hidden" name="section" value="{{ request('section') }}">
 
                         <!-- Nội dung câu hỏi -->
                         <div class="mb-4">
