@@ -89,22 +89,9 @@
       border-color: #0d6efd;
     }
 
-    .sheet-check {
-      position: relative;
-      padding-left: 20px;
-      /* Tạo khoảng trống cho icon */
-    }
-
-    .sheet-check.correct::before,
-    .sheet-check.incorrect::before {
-      position: absolute;
-      left: 5px;
-      font-weight: bold;
-      color: white;
-    }
-
     .sheet-check.correct::before {
-      content: "✓";
+      content: "✓ ";
+      color: white;
     }
 
     .sheet-check.correct {
@@ -113,7 +100,8 @@
     }
 
     .sheet-check.incorrect::before {
-      content: "✗";
+      content: "✗ ";
+      color: white;
     }
 
     .sheet-check.incorrect {
