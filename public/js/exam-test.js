@@ -244,10 +244,10 @@ function showResultModal(result) {
                         <h3>${result.examTitle}</h3>
                         <p class="text-muted">Mã: ${result.examCode}</p>
                     </div>
-                    <div class="text-center mb-4">
+                    <div class="text-center mb-3">
                         <img src="/assets/images/${result.isPassed ? 'catlike' : 'danceshiba'}.gif" 
                              alt="${result.isPassed ? 'Passed' : 'Failed'}" 
-                             style="max-width: 200px; height: auto; border-radius: 10px;">
+                             style="max-width: 150px; height: auto; border-radius: 10px;">
                     </div>
                     <div class="row text-center mb-3">
                         <div class="col-6">
