@@ -91,12 +91,14 @@
 
     .sheet-check.correct {
       content: "✓ ";
+      color: white;
       background-color: #198754 !important;
       border-color: #198754 !important;
     }
 
     .sheet-check.incorrect {
       content: "✗ ";
+      color: white;
       background-color: #dc3545 !important;
       border-color: #dc3545 !important;
     }
