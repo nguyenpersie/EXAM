@@ -121,7 +121,7 @@
                         @forelse($questions as $index => $question)
                             <tr>
                                 <td class="text-center">{{ $questions->firstItem() + $index }}</td>
-                                <td>
+                                <td style="width: 55%;">
                                     <div class="mb-1">
                                         @if($question->category)
                                             <span class="badge bg-info">{{ $question->category }}</span>
