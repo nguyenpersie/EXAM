@@ -137,7 +137,13 @@ class QuestionController extends Controller
 
         // Build redirect URL with preserved filters and page
         $redirectUrl = route('questions.index', $question->exam_id);
-        $queryParams = $request->only(['page', 'search', 'category', 'level', 'section']);
+        $queryParams = array_filter([
+            'page' => $request->query('page'),
+            'search' => $request->query('search'),
+            'category' => $request->query('category'),
+            'level' => $request->query('level'),
+            'section' => $request->query('section'),
+        ]);
 
         if (!empty($queryParams)) {
             $redirectUrl .= '?' . http_build_query($queryParams);
