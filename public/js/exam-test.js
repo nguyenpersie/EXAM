@@ -298,19 +298,19 @@ function showResultModal(result) {
                     <i class="bi bi-${result.isPassed ? 'check-circle' : 'x-circle'}"></i> Kết quả bài thi</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body position-relative" style="background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('${result.isPassed ? 'assets/images/success.png' : 'assets/images/fail.png'}') center/cover; min-height: 400px;">
+                <div class="modal-body">
+                    <!-- GIF động -->
+                    <div class="text-center mb-4">
+                        <img src="${result.isPassed ? 'assets/images/catlike.gif' : 'assets/images/danceshiba.gif'}" 
+                             alt="${result.isPassed ? 'Đạt' : 'Chưa đạt'}" 
+                             class="img-fluid rounded"
+                             style="max-width: 200px; height: auto;">
+                    </div>
                     
-                    <!-- Icon lớn ở giữa -->
                     <div class="text-center mb-3">
-                        <div class="mb-3">
-                            <img src="${result.isPassed ? 'assets/images/catlike.gif' : 'assets/images/danceshiba.gif'}" 
-                                 alt="${result.isPassed ? 'Đạt' : 'Chưa đạt'}" 
-                                 style="width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">
-                        </div>
                         <h3>${result.examTitle}</h3>
                         <p class="text-muted">Mã: ${result.examCode}</p>
                     </div>
-                    
                     <div class="row text-center mb-3">
                         <div class="col-6">
                             <h1 class="display-4 text-${result.isPassed ? 'success' : 'danger'}">${result.score}/${result.totalScore}</h1>
