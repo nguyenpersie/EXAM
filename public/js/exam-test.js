@@ -342,6 +342,38 @@ window.showAnswerReview = function () {
     // Close the modal
     const modal = bootstrap.Modal.getInstance(document.getElementById('resultModal'));
     if (modal) modal.hide();
+
+    // Mark all answer sheet cells with correct/incorrect colors
+    examData.forEach((q, idx) => {
+        const userAns = userAnswers[q.id];
+
+        // Clear all cells for this question first
+        [0, 1, 2, 3].forEach(i => {
+            const cell = document.getElementById(`cell-${q.id}-${i}`);
+            if (cell) {
+                cell.classList.remove('checked', 'correct', 'incorrect');
+            }
+        });
+
+        // Mark the correct answer
+        const correctCell = document.getElementById(`cell-${q.id}-${q.correctAnswer}`);
+        if (correctCell) {
+            correctCell.classList.add('correct');
+        }
+
+        // Mark user's answer if they selected one
+        if (userAns !== undefined) {
+            const userCell = document.getElementById(`cell-${q.id}-${userAns}`);
+            if (userCell) {
+                if (userAns === q.correctAnswer) {
+                    userCell.classList.add('correct');
+                } else {
+                    userCell.classList.add('incorrect');
+                }
+            }
+        }
+    });
+
     // Re-render current question in review mode
     renderQuestion(currentIdx);
 };

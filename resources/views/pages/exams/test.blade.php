@@ -89,6 +89,16 @@
       border-color: #0d6efd;
     }
 
+    .sheet-check.correct {
+      background-color: #198754 !important;
+      border-color: #198754 !important;
+    }
+
+    .sheet-check.incorrect {
+      background-color: #dc3545 !important;
+      border-color: #dc3545 !important;
+    }
+
     .sheet-wrapper {
       max-height: none;
       /* Hiển thị toàn bộ chiều cao theo yêu cầu */
