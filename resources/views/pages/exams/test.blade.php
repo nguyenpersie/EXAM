@@ -281,8 +281,8 @@
     const EXAM_ID = {{ $exam->id }};
     const EXAM_TITLE = "{{ $exam->title }}";
     const EXAM_CODE = "{{ $exam->code }}";
-    const TOTAL_SCORE = 10;
-    const PASSING_SCORE = 5;
+    const TOTAL_SCORE = 30;
+    const PASSING_SCORE = 25;
 
     // State
     let examData = [];
