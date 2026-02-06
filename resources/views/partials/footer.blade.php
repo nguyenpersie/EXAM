@@ -7,7 +7,7 @@
         </a>
       </div>
       <div class="col">
-        <h6 class="fw-bold mb-1 text-uppercase">Trung Tâm Dạy Nghề Đường Thủy Sông Hậu</h6>
+        <h6 class="fw-bold mb-1 text-uppercase">Trung tâm dạy nghề Đường thủy Sông Hậu</h6>
         <p class="mb-0">D30 Đường số 30 khu ĐTM Hưng Phú, Phường Cái Răng, TP. Cần Thơ | Hotline: 0325207333</p>
       </div>
     </div>
