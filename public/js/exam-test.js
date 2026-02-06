@@ -229,6 +229,65 @@ function submitExam() {
 }
 
 // Hiển thị kết quả
+// function showResultModal(result) {
+//     const modal = `
+//     <div class="modal fade" id="resultModal" tabindex="-1" data-bs-backdrop="static">
+//         <div class="modal-dialog modal-lg">
+//             <div class="modal-content">
+//                 <div class="modal-header bg-${result.isPassed ? 'success' : 'danger'} text-white">
+//                     <h5 class="modal-title">
+//                     <i class="bi bi-${result.isPassed ? 'check-circle' : 'x-circle'}"></i> Kết quả bài thi</h5>
+//                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+//                 </div>
+//                 <div class="modal-body">
+//                     <div class="text-center mb-3">
+//                         <h3>${result.examTitle}</h3>
+//                         <p class="text-muted">Mã: ${result.examCode}</p>
+//                     </div>
+//                     <div class="row text-center mb-3">
+//                         <div class="col-6">
+//                             <h1 class="display-4 text-${result.isPassed ? 'success' : 'danger'}">${result.score}/${result.totalScore}</h1>
+//                             <p>Điểm số</p>
+//                         </div>
+//                         <div class="col-6">
+//                             <h1 class="display-4 text-primary">${result.percentage}%</h1>
+//                             <p>Tỷ lệ đúng</p>
+//                         </div>
+//                     </div>
+//                     <div class="row mb-3">
+//                         <div class="col-4 text-center text-success">
+//                             <i class="bi bi-check-circle fs-3"></i>
+//                             <p><strong>${result.correctCount}</strong><br>Đúng</p>
+//                         </div>
+//                         <div class="col-4 text-center text-danger">
+//                             <i class="bi bi-x-circle fs-3"></i>
+//                             <p><strong>${result.wrongCount}</strong><br>Sai</p>
+//                         </div>
+//                         <div class="col-4 text-center text-warning">
+//                             <i class="bi bi-dash-circle fs-3"></i>
+//                             <p><strong>${result.skippedCount}</strong><br>Bỏ qua</p>
+//                         </div>
+//                     </div>
+//                     ${result.isPassed ?
+//             '<div class="alert alert-success"><i class="bi bi-trophy"></i> Chúc mừng! Bạn đã đạt!</div>' :
+//             '<div class="alert alert-danger"><i class="bi bi-emoji-frown"></i> Chưa đạt! Cần: ' + result.passingScore + '</div>'
+//         }
+//                 </div>
+//                 <div class="modal-footer">
+//                     <button class="btn btn-info" onclick="showAnswerReview()">
+//                         <i class="bi bi-eye-fill"></i> Xem đáp án
+//                     </button>
+//                     <a href="/" class="btn btn-success">
+//                         <i class="bi bi-house"></i> Về trang chủ
+//                     </a>
+//                 </div>
+//             </div>
+//         </div>
+//     </div>`;
+
+//     document.body.insertAdjacentHTML('beforeend', modal);
+//     new bootstrap.Modal(document.getElementById('resultModal')).show();
+// }
 function showResultModal(result) {
     const modal = `
     <div class="modal fade" id="resultModal" tabindex="-1" data-bs-backdrop="static">
@@ -239,11 +298,19 @@ function showResultModal(result) {
                     <i class="bi bi-${result.isPassed ? 'check-circle' : 'x-circle'}"></i> Kết quả bài thi</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body position-relative" style="background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('${result.isPassed ? 'assets/images/success.png' : 'assets/images/fail.png'}') center/cover; min-height: 400px;">
+                    
+                    <!-- Icon lớn ở giữa -->
                     <div class="text-center mb-3">
+                        <div class="mb-3">
+                            <img src="${result.isPassed ? 'assets/images/catlike.gif' : 'assets/images/danceshiba.gif'}" 
+                                 alt="${result.isPassed ? 'Đạt' : 'Chưa đạt'}" 
+                                 style="width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">
+                        </div>
                         <h3>${result.examTitle}</h3>
                         <p class="text-muted">Mã: ${result.examCode}</p>
                     </div>
+                    
                     <div class="row text-center mb-3">
                         <div class="col-6">
                             <h1 class="display-4 text-${result.isPassed ? 'success' : 'danger'}">${result.score}/${result.totalScore}</h1>
@@ -288,7 +355,6 @@ function showResultModal(result) {
     document.body.insertAdjacentHTML('beforeend', modal);
     new bootstrap.Modal(document.getElementById('resultModal')).show();
 }
-
 // Export functions
 window.changeQuestion = changeQuestion;
 window.goToQuestion = goToQuestion;
