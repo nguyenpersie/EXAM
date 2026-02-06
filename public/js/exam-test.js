@@ -41,24 +41,48 @@ function renderQuestion(idx) {
     els.qNum.innerText = `Câu hỏi ${idx + 1}/${examData.length}`;
 
     const savedAns = userAnswers[q.id];
+
+    // Generate options HTML with review mode support
     const optionsHTML = q.options
-        .map((opt, i) => `
-            <label class="option-item">
-                <input type="radio" name="currentQuestion" class="option-radio"
-                       value="${i}" ${savedAns === i ? "checked" : ""}
-                       onchange="selectAnswer(${q.id}, ${i})">
-                <span class="option-text"><b>${String.fromCharCode(65 + i)}.</b> ${opt}</span>
-            </label>
-        `).join("");
+        .map((opt, i) => {
+            let classes = 'option-item';
+            let disabled = '';
+
+            if (isReviewMode) {
+                // In review mode, show correct/incorrect feedback
+                if (i === q.correctAnswer) {
+                    classes += ' correct-answer'; // Always mark the correct answer
+                }
+                if (savedAns === i) {
+                    // User selected this option
+                    if (i === q.correctAnswer) {
+                        classes += ' correct';
+                    } else {
+                        classes += ' incorrect';
+                    }
+                }
+                disabled = 'disabled';
+            }
+
+            return `
+                <label class="${classes}">
+                    <input type="radio" name="currentQuestion" class="option-radio"
+                           value="${i}" ${savedAns === i ? "checked" : ""} ${disabled}
+                           onchange="selectAnswer(${q.id}, ${i})">
+                    <span class="option-text"><b>${String.fromCharCode(65 + i)}.</b> ${opt}</span>
+                </label>
+            `;
+        }).join("");
 
     const imageHTML = q.image
         ? `<div class="text-center mb-3"><img src="/storage/${q.image}" class="img-fluid rounded" style="max-height: 300px;" alt="Hình minh họa"></div>`
         : '';
 
+    const containerClass = isReviewMode ? 'q-options-list review-mode' : 'q-options-list';
     els.qContent.innerHTML = `
         <div class="q-content-text">${q.content}</div>
         ${imageHTML}
-        <div class="q-options-list">${optionsHTML}</div>
+        <div class="${containerClass}">${optionsHTML}</div>
     `;
 
     els.btnPrev.disabled = idx === 0;
@@ -250,6 +274,9 @@ function showResultModal(result) {
         }
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-info" onclick="showAnswerReview()">
+                        <i class="bi bi-eye-fill"></i> Xem đáp án
+                    </button>
                     <button class="btn btn-primary" onclick="viewDetailedResults()">
                         <i class="bi bi-eye"></i> Xem chi tiết
                     </button>
@@ -308,6 +335,16 @@ window.toggleFlag = toggleFlag;
 window.confirmSubmit = confirmSubmit;
 window.submitExam = submitExam;
 window.viewDetailedResults = viewDetailedResults;
+
+// Show answer review mode  
+window.showAnswerReview = function () {
+    isReviewMode = true;
+    // Close the modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('resultModal'));
+    if (modal) modal.hide();
+    // Re-render current question in review mode
+    renderQuestion(currentIdx);
+};
 
 // Load đề thi từ API
 async function loadExam() {

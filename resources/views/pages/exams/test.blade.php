@@ -120,6 +120,45 @@
         overflow-y: visible;
       }
     }
+
+    /* Review mode styles */
+    .option-item.correct {
+      background-color: #d1e7dd !important;
+      border-color: #198754 !important;
+      border-width: 2px;
+    }
+
+    .option-item.incorrect {
+      background-color: #f8d7da !important;
+      border-color: #dc3545 !important;
+      border-width: 2px;
+    }
+
+    .option-item.correct-answer {
+      background-color: #d1e7dd !important;
+      border-color: #198754 !important;
+      border-width: 2px;
+    }
+
+    .option-item.correct::before,
+    .option-item.correct-answer::before {
+      content: "✓ ";
+      color: #198754;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+
+    .option-item.incorrect::before {
+      content: "✗ ";
+      color: #dc3545;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+
+    .review-mode .option-item {
+      cursor: default;
+      pointer-events: none;
+    }
   </style>
 @endsection
 
@@ -288,6 +327,7 @@
     let examData = [];
     let currentIdx = 0;
     let userAnswers = {};
+    let isReviewMode = false;
     let flaggedSet = new Set();
     let timeLeft = {{ $exam->duration ?? 3600 }};
 
