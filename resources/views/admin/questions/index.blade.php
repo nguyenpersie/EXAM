@@ -144,7 +144,7 @@
                                     </div>
                                 </td>
                                 <td>{{ $question->section ?? '-' }}</td>
-                                <td>
+                                <td style="width: 10%;">
                                     <span
                                         class="badge bg-{{ $question->level <= 2 ? 'success' : ($question->level <= 4 ? 'warning' : 'danger') }}">
                                         Độ {{ $question->level }}
