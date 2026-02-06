@@ -143,14 +143,14 @@
                                         @endforeach
                                     </div>
                                 </td>
-                                <td>{{ $question->section ?? '-' }}</td>
+                                <td style="width: 20%;">{{ $question->section ?? '-' }}</td>
                                 <td style="width: 10%;">
                                     <span
                                         class="badge bg-{{ $question->level <= 2 ? 'success' : ($question->level <= 4 ? 'warning' : 'danger') }}">
                                         Độ {{ $question->level }}
                                     </span>
                                 </td>
-                                <td>
+                                <td style="width: 10%;">
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('questions.edit', $question->id) }}?{{ http_build_query(request()->only(['page', 'search', 'category', 'level', 'section'])) }}"
                                             class="btn btn-outline-primary" title="Sửa">
