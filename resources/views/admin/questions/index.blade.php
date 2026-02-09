@@ -151,9 +151,9 @@
                                     </span>
                                 </td>
                                 <td style="width: 10%;">
-                                    <div class="btn-group btn-group-sm">
+                                    <div class="btn-group">
                                         <a href="{{ route('questions.edit', $question->id) }}?{{ http_build_query(request()->only(['page', 'search', 'category', 'level', 'section'])) }}"
-                                            class="btn btn-outline-primary" title="Sửa">
+                                            class="btn btn-outline-primary me-1 rounded" title="Sửa">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <form action="{{ route('questions.destroy', $question->id) }}" method="POST"
