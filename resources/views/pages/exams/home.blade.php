@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <!-- Lọc theo danh mục (Chỉ Admin mới thấy) -->
+    <!-- Lọc theo danh mục -->
     @if(auth()->check() && auth()->user()->isAdmin())
       <div class="card mb-4">
         <div class="card-body">
@@ -96,7 +96,7 @@
                   <i class="bi bi-play-circle"></i> Bắt đầu
                 </a>
                 <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-outline-primary">
-                  <i class="bi bi-eye"></i>
+                  <i class="bi bi-eye"></i> Ôn tập
                 </a>
                 @if(auth()->check() && auth()->user()->canManageContent())
                   <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-secondary">
