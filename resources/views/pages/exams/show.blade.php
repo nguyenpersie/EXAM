@@ -56,9 +56,9 @@
                         <div class="card shadow-sm mb-4">
                             <div class="card-body text-center py-5">
                                 <i class="bi bi-trophy text-warning" style="font-size: 4rem;"></i>
-                                <h3 class="mt-3">Thi Thử - 30 Câu Ngẫu Nhiên</h3>
+                                <h3 class="mt-3">Thi Thử - 30 Câu</h3>
                                 <p class="text-muted mb-4">
-                                    Làm bài thi với 30 câu hỏi được chọn ngẫu nhiên, có chấm điểm và đánh giá kết quả
+                                    Làm bài thi với 30 câu hỏi, có chấm điểm và đánh giá kết quả
                                 </p>
                                 <a href="{{ route('exams.test', $exam->id) }}" class="btn btn-success btn-lg">
                                     <i class="bi bi-play-circle"></i> Bắt Đầu Thi Thử
@@ -292,35 +292,35 @@
                 .then(sections => {
                     if (sections.length === 0) {
                         sectionsList.innerHTML = `
-                                                <div class="col-12 text-center py-5">
-                                                    <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
-                                                    <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
-                                                </div>
-                                            `;
+                                                        <div class="col-12 text-center py-5">
+                                                            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                                                            <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
+                                                        </div>
+                                                    `;
                         return;
                     }
 
                     let html = '';
                     sections.forEach(section => {
                         html += `
-                                                <div class="col-md-6 col-lg-4 mb-3">
-                                                    <div class="card h-100 shadow-sm">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">
-                                                                <i class="bi bi-bookmark-fill text-primary"></i>
-                                                                Phần ${section.section}
-                                                            </h5>
-                                                            <p class="card-text text-muted">
-                                                                <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
-                                                            </p>
-                                                            <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
-                                                               class="btn btn-primary btn-sm w-100">
-                                                                <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
-                                                            </a>
+                                                        <div class="col-md-6 col-lg-4 mb-3">
+                                                            <div class="card h-100 shadow-sm">
+                                                                <div class="card-body">
+                                                                    <h5 class="card-title">
+                                                                        <i class="bi bi-bookmark-fill text-primary"></i>
+                                                                        Phần ${section.section}
+                                                                    </h5>
+                                                                    <p class="card-text text-muted">
+                                                                        <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
+                                                                    </p>
+                                                                    <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
+                                                                       class="btn btn-primary btn-sm w-100">
+                                                                        <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
+                                                                    </a>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            `;
+                                                    `;
                     });
 
                     sectionsList.innerHTML = html;
@@ -329,11 +329,11 @@
                 .catch(error => {
                     console.error('Error:', error);
                     sectionsList.innerHTML = `
-                                            <div class="col-12 text-center py-5">
-                                                <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
-                                                <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
-                                            </div>
-                                        `;
+                                                    <div class="col-12 text-center py-5">
+                                                        <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                                                        <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
+                                                    </div>
+                                                `;
                 });
         });
     </script>
