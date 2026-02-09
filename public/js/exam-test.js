@@ -422,6 +422,10 @@ async function loadExam() {
             apiUrl = `/exams/${EXAM_ID}/randomized?mode=practice&section=${practiceSection}`;
         }
 
+        console.log('Practice Mode:', isPracticeMode);
+        console.log('Section:', practiceSection);
+        console.log('API URL:', apiUrl);
+
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -433,26 +437,33 @@ async function loadExam() {
             correctAnswer: q.options.findIndex(opt => opt.is_correct === 1)
         }));
 
-        console.log('Đã load:', examData);
+        console.log('Đã load:', examData.length, 'câu hỏi');
 
         if (examData.length > 0) {
             window.EXAM_DURATION_SECONDS = timeLeft; // Lưu thời gian ban đầu
-            initSheet();
-            renderQuestion(0);
 
-            // Hide submit button in practice mode
+            // Hide answer sheet in practice mode
             if (isPracticeMode) {
-                const submitBtn = document.querySelector('button[onclick="confirmSubmit()"]');
-                if (submitBtn) {
-                    submitBtn.style.display = 'none';
+                const answerSheet = document.querySelector('.answer-sheet');
+                if (answerSheet) {
+                    answerSheet.style.display = 'none';
                 }
                 // Update title to show practice mode
                 const titleEl = document.querySelector('.exam-header h4');
                 if (titleEl) {
                     titleEl.innerHTML = `<i class="bi bi-book"></i> Ôn Tập - Phần ${practiceSection}`;
                 }
+                // Hide submit button
+                const submitBtn = document.querySelector('button[onclick="confirmSubmit()"]');
+                if (submitBtn) {
+                    submitBtn.style.display = 'none';
+                }
             }
-            //startTimer();\n        } else {
+
+            initSheet();
+            renderQuestion(0);
+            //startTimer();
+        } else {
             els.qContent.innerHTML = '<div class="alert alert-warning">Chưa có câu hỏi nào!</div>';
         }
     } catch (error) {

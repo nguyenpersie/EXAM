@@ -76,7 +76,10 @@ class ExamController extends Controller
         // Chỉ trộn đáp án khi là test mode
         if ($mode === 'test') {
             $questions = $questions->map(function ($question) {
-                $question->options = $question->options->shuffle()->values();
+                // Convert to array, shuffle, then back to collection
+                $optionsArray = $question->options->toArray();
+                shuffle($optionsArray);
+                $question->options = collect($optionsArray)->values();
                 return $question;
             });
         }
