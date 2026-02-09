@@ -444,7 +444,7 @@ async function loadExam() {
 
             // Hide answer sheet in practice mode
             if (isPracticeMode) {
-                const answerSheet = document.querySelector('.answer-sheet');
+                const answerSheet = document.querySelector('.sheet-panel');
                 if (answerSheet) {
                     answerSheet.style.display = 'none';
                 }
