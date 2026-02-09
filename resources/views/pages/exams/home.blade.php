@@ -95,10 +95,12 @@
         <p class="text-muted">Chọn đề thi và bắt đầu ôn luyện</p>
       </div>
       <div class="col-md-5 text-end d-flex justify-content-end align-items-center gap-2">
-        @if(auth()->check() && auth()->user()->canManageContent())
+        @if(auth()->check() && auth()->user()->isAdmin())
           <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary" title="Quản lý học viên">
             <i class="bi bi-people"></i>
           </a>
+        @endif
+        @if(auth()->check() && auth()->user()->canManageContent())
           <a href="{{ route('exams.create') }}" class="btn btn-primary" title="Tạo đề thi mới">
             <i class="bi bi-plus-circle"></i> Tạo đề
           </a>
