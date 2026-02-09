@@ -112,7 +112,7 @@
 
         .login h2 {
             font-size: 1.8em;
-            color: #fff;
+            color: #ffffff1a;
             font-weight: 700;
         }
 
@@ -125,8 +125,8 @@
             position: relative;
             width: 100%;
             padding: 10px 18px;
-            background: transparent;
-            border: 2px solid #fff;
+            background: #0000004d;
+            border: 2px solid #fff172;
             border-radius: 40px;
             font-size: 1em;
             color: #fff;
