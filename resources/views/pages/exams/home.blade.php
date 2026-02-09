@@ -93,7 +93,7 @@
             <div class="card-footer bg-light">
               <div class="d-flex gap-2">
                 <a href="{{ route('exams.test', $exam->id) }}" class="btn btn-success flex-fill">
-                  <i class="bi bi-play-circle"></i> Bắt đầu
+                  <i class="bi bi-play-circle"></i> Thi thử
                 </a>
                 <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-outline-primary">
                   <i class="bi bi-eye"></i> Ôn tập
