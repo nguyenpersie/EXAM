@@ -20,6 +20,15 @@
     </script>
 
     <style>
+        /* Ngăn scroll hoàn toàn */
+        html,
+        body {
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
         /* Style cho icon toggle password */
         .password-wrapper {
             position: relative;
@@ -55,12 +64,12 @@
 </head>
 
 <body>
-    <div class="min-h-screen bg-gray-100 py-4 flex flex-col justify-start sm:py-8">
-        <div class="relative py-2 sm:max-w-xl sm:mx-auto mt-8">
+    <div class="h-screen bg-gray-100 flex flex-col justify-center">
+        <div class="relative py-3 sm:max-w-xl sm:mx-auto">
             <div
                 class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
             </div>
-            <div class="relative px-4 py-6 bg-white shadow-lg sm:rounded-3xl sm:p-12">
+            <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
 
                 <div class="max-w-md mx-auto">
                     <div>
@@ -68,7 +77,7 @@
                     </div>
                     <div class="divide-y divide-gray-200">
                         <form id="loginForm" action="{{ route('login') }}" method="post"
-                            class="py-6 text-base leading-6 space-y-5 text-gray-700 sm:text-lg sm:leading-7">
+                            class="py-8 text-base leading-6 space-y-6 text-gray-700 sm:text-lg sm:leading-7">
 
                             <div class="relative">
                                 <input autocomplete="off" id="student_code" name="student_code" type="text"
@@ -105,8 +114,6 @@
 
             </div>
         </div>
-
-        @include('partials.footer')
     </div>
 
     <script>
