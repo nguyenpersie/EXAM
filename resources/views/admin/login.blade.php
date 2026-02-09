@@ -20,16 +20,13 @@
             <form id="loginForm" action="{{ route('login') }}" method="post">
                 <div class="mb-3">
                     <label for="student_code" class="form-label">Tài khoản (Mã học viên)</label>
-                    <input type="text" class="form-control" name="student_code" id="student_code" placeholder="Nhập mã học viên">
+                    <input type="text" class="form-control" name="student_code" id="student_code"
+                        placeholder="Nhập mã học viên">
                 </div>
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Mật khẩu</label>
                     <input type="password" class="form-control" name="password" id="password" placeholder="Mật khẩu">
-                </div>
-                <div class="mb-3 form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                    <label class="form-check-label" for="remember">Ghi nhớ đăng nhập</label>
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
