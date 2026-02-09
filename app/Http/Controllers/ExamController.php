@@ -120,8 +120,8 @@ class ExamController extends Controller
      */
     public function store(Request $request)
     {
-        // Only center can create exams
-        if (auth()->user()->role !== 'center') {
+        // Only admin/center can create exams
+        if (!in_array(auth()->user()->role, ['admin', 'center'])) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -163,8 +163,8 @@ class ExamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Only center can update exams
-        if (auth()->user()->role !== 'center') {
+        // Only admin/center can update exams
+        if (!in_array(auth()->user()->role, ['admin', 'center'])) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -190,8 +190,8 @@ class ExamController extends Controller
      */
     public function destroy($id)
     {
-        //Only center can delete exams
-        if (auth()->user()->role !== 'center') {
+        // Only admin/center can delete exams
+        if (!in_array(auth()->user()->role, ['admin', 'center'])) {
             abort(403, 'Unauthorized action.');
         }
 

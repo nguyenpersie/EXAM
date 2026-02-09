@@ -19,9 +19,9 @@ class QuestionController extends Controller
 
     private function checkPermission()
     {
-        // Only center can manage questions
-        if (!auth()->check() || auth()->user()->role !== 'center') {
-            abort(403, 'Bạn khôngcó quyền truy cập chức năng này.');
+        // Only admin/center can manage questions
+        if (!auth()->check() || !in_array(auth()->user()->role, ['admin', 'center'])) {
+            abort(403, 'Bạn không có quyền truy cập chức năng này.');
         }
     }
 

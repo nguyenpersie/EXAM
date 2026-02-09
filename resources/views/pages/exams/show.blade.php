@@ -198,7 +198,7 @@
 
             <!-- Import câu hỏi -->
             <div class="col-lg-7 mb-4">
-                @if(auth()->check() && auth()->user()->role === 'center')
+                @if(auth()->check() && in_array(auth()->user()->role, ['admin', 'center']))
                     <div class="card shadow-sm mb-3">
                         <div class="card-header bg-success text-white">
                             <h5 class="mb-0"><i class="bi bi-upload"></i> Import câu hỏi</h5>
@@ -238,7 +238,7 @@
 
 
             <!-- Quản lý -->
-            @if(auth()->check() && auth()->user()->role === 'center')
+            @if(auth()->check() && in_array(auth()->user()->role, ['admin', 'center']))
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
                         <h6 class="mb-0"><i class="bi bi-gear"></i> Quản lý</h6>
@@ -292,35 +292,35 @@
                 .then(sections => {
                     if (sections.length === 0) {
                         sectionsList.innerHTML = `
-                                        <div class="col-12 text-center py-5">
-                                            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
-                                            <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
-                                        </div>
-                                    `;
+                                            <div class="col-12 text-center py-5">
+                                                <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                                                <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
+                                            </div>
+                                        `;
                         return;
                     }
 
                     let html = '';
                     sections.forEach(section => {
                         html += `
-                                        <div class="col-md-6 col-lg-4 mb-3">
-                                            <div class="card h-100 shadow-sm">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">
-                                                        <i class="bi bi-bookmark-fill text-primary"></i>
-                                                        Phần ${section.section}
-                                                    </h5>
-                                                    <p class="card-text text-muted">
-                                                        <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
-                                                    </p>
-                                                    <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
-                                                       class="btn btn-primary btn-sm w-100">
-                                                        <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
-                                                    </a>
+                                            <div class="col-md-6 col-lg-4 mb-3">
+                                                <div class="card h-100 shadow-sm">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">
+                                                            <i class="bi bi-bookmark-fill text-primary"></i>
+                                                            Phần ${section.section}
+                                                        </h5>
+                                                        <p class="card-text text-muted">
+                                                            <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
+                                                        </p>
+                                                        <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
+                                                           class="btn btn-primary btn-sm w-100">
+                                                            <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    `;
+                                        `;
                     });
 
                     sectionsList.innerHTML = html;
@@ -329,11 +329,11 @@
                 .catch(error => {
                     console.error('Error:', error);
                     sectionsList.innerHTML = `
-                                    <div class="col-12 text-center py-5">
-                                        <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
-                                        <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
-                                    </div>
-                                `;
+                                        <div class="col-12 text-center py-5">
+                                            <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                                            <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
+                                        </div>
+                                    `;
                 });
         });
     </script>
