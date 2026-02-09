@@ -39,6 +39,7 @@
                                 <select class="form-select" id="role" name="role" required onchange="toggleCategory()">
                                     <option value="student" selected>Học viên</option>
                                     <option value="teacher">Giáo viên</option>
+                                    <option value="center">Trung tâm</option>
                                     <option value="admin">Admin</option>
                                 </select>
                             </div>
@@ -107,7 +108,7 @@
             var role = document.getElementById('role').value;
             var categoryGroup = document.getElementById('category-group');
             var categorySelect = document.getElementById('category');
-            
+
             if (role === 'student') {
                 categoryGroup.style.display = 'block';
                 categorySelect.setAttribute('required', 'required');
@@ -117,9 +118,9 @@
                 categorySelect.value = '';
             }
         }
-        
+
         // Run on load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             toggleCategory();
         });
     </script>

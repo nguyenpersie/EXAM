@@ -38,7 +38,7 @@ class AdminUserController extends Controller
             'full_name' => 'required|string|max:100',
             'email' => 'nullable|email|max:100|unique:users',
             'password' => 'required|string|min:6',
-            'role' => 'required|in:student,teacher,admin',
+            'role' => 'required|in:student,teacher,center,admin',
             'category' => 'nullable|string|max:20',
         ]);
 
