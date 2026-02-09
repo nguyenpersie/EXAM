@@ -103,7 +103,7 @@ function selectAnswer(qId, optIdx) {
 
     [0, 1, 2, 3].forEach(i => {
         const cell = document.getElementById(`cell-${qId}-${i}`);
-        if (cell) cell.classList.remove("checked");
+        if (cell) cell.classList.remove("checked", "correct", "incorrect");
     });
 
     const selectedCell = document.getElementById(`cell-${qId}-${optIdx}`);
@@ -112,7 +112,72 @@ function selectAnswer(qId, optIdx) {
     if (examData[currentIdx].id === qId) {
         const radios = document.getElementsByName("currentQuestion");
         if (radios[optIdx]) radios[optIdx].checked = true;
+
+        // Practice mode: Show immediate feedback
+        if (isPracticeMode) {
+            const q = examData[currentIdx];
+            const isCorrect = optIdx === q.correctAnswer;
+
+            // Update answer sheet cell with correct/incorrect
+            if (isCorrect) {
+                if (selectedCell) selectedCell.classList.add("correct");
+            } else {
+                if (selectedCell) selectedCell.classList.add("incorrect");
+                // Also mark the correct answer
+                const correctCell = document.getElementById(`cell-${qId}-${q.correctAnswer}`);
+                if (correctCell) correctCell.classList.add("correct");
+            }
+
+            // Re-render question to show feedback on options
+            renderQuestionWithFeedback(currentIdx);
+        }
     }
+}
+
+// Render question with immediate feedback (practice mode)
+function renderQuestionWithFeedback(idx) {
+    const q = examData[idx];
+    const savedAns = userAnswers[q.id];
+
+    if (savedAns === undefined) return; // No answer yet
+
+    const optionsHTML = q.options
+        .map((opt, i) => {
+            let classes = 'option-item';
+
+            // Mark correct answer
+            if (i === q.correctAnswer) {
+                classes += ' correct-answer';
+            }
+
+            // Mark user's selection
+            if (savedAns === i) {
+                if (i === q.correctAnswer) {
+                    classes += ' correct';
+                } else {
+                    classes += ' incorrect';
+                }
+            }
+
+            return `
+                <label class="${classes}">
+                    <input type="radio" name="currentQuestion" class="option-radio"
+                           value="${i}" ${savedAns === i ? "checked" : ""}
+                           onchange="selectAnswer(${q.id}, ${i})">
+                    <span class="option-text"><b>${String.fromCharCode(65 + i)}.</b> ${opt}</span>
+                </label>
+            `;
+        }).join("");
+
+    const imageHTML = q.image
+        ? `<div class="text-center mb-3"><img src="/storage/${q.image}" class="img-fluid rounded" style="max-height: 300px;" alt="Hình minh họa"></div>`
+        : '';
+
+    els.qContent.innerHTML = `
+        <div class="q-content-text">${q.content}</div>
+        ${imageHTML}
+        <div class="q-options-list practice-mode">${optionsHTML}</div>
+    `;
 }
 
 // Chuyển câu
@@ -301,6 +366,11 @@ window.toggleFlag = toggleFlag;
 window.confirmSubmit = confirmSubmit;
 window.submitExam = submitExam;
 
+// Practice mode variables (read from URL)
+const urlParams = new URLSearchParams(window.location.search);
+const isPracticeMode = urlParams.get('mode') === 'practice';
+const practiceSection = urlParams.get('section');
+
 // Show answer review mode  
 window.showAnswerReview = function () {
     isReviewMode = true;
@@ -346,7 +416,13 @@ window.showAnswerReview = function () {
 // Load đề thi từ API
 async function loadExam() {
     try {
-        const response = await fetch(`/exams/${EXAM_ID}/randomized?limit=30`);
+        // Build API URL with mode and section params
+        let apiUrl = `/exams/${EXAM_ID}/randomized?limit=30`;
+        if (isPracticeMode && practiceSection) {
+            apiUrl = `/exams/${EXAM_ID}/randomized?mode=practice&section=${practiceSection}`;
+        }
+
+        const response = await fetch(apiUrl);
         const data = await response.json();
 
         examData = data.questions.map((q) => ({
@@ -363,8 +439,20 @@ async function loadExam() {
             window.EXAM_DURATION_SECONDS = timeLeft; // Lưu thời gian ban đầu
             initSheet();
             renderQuestion(0);
-            //startTimer();
-        } else {
+
+            // Hide submit button in practice mode
+            if (isPracticeMode) {
+                const submitBtn = document.querySelector('button[onclick="confirmSubmit()"]');
+                if (submitBtn) {
+                    submitBtn.style.display = 'none';
+                }
+                // Update title to show practice mode
+                const titleEl = document.querySelector('.exam-header h4');
+                if (titleEl) {
+                    titleEl.innerHTML = `<i class="bi bi-book"></i> Ôn Tập - Phần ${practiceSection}`;
+                }
+            }
+            //startTimer();\n        } else {
             els.qContent.innerHTML = '<div class="alert alert-warning">Chưa có câu hỏi nào!</div>';
         }
     } catch (error) {

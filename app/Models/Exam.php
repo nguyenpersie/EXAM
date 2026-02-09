@@ -50,6 +50,36 @@ class Exam extends Model
         return $query->inRandomOrder()->limit($limit)->get();
     }
 
+    /**
+     * Lấy danh sách các phần (sections) có trong đề thi
+     */
+    public function getSections()
+    {
+        return $this->questions()
+            ->selectRaw('section, COUNT(*) as count')
+            ->groupBy('section')
+            ->orderBy('section')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'section' => $item->section,
+                    'count' => $item->count
+                ];
+            });
+    }
+
+    /**
+     * Lấy tất cả câu hỏi theo section (không random, theo thứ tự)
+     */
+    public function getQuestionsBySection($section)
+    {
+        return $this->questions()
+            ->with('options')
+            ->where('section', $section)
+            ->orderBy('id')
+            ->get();
+    }
+
 
     /**
      * Scope: Chỉ lấy đề thi đang hoạt động

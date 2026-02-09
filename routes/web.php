@@ -46,6 +46,7 @@ Route::prefix('exams')->name('exams.')->group(function () {
 
     // Làm bài thi
     Route::get('/{id}/test', [ExamController::class, 'test'])->name('test');
+    Route::get('/{id}/sections', [ExamController::class, 'getSections'])->name('sections');
 
     // API: Lấy đề thi đã trộn ngẫu nhiên
     Route::get('/{id}/randomized', [ExamController::class, 'getRandomizedExam'])->name('randomized');

@@ -20,7 +20,7 @@
 
         <!-- Header -->
         <div class="row mb-4">
-            <div class="col-md-8">
+            <div class="col-12">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('exams.index') }}">Danh sách đề thi</a></li>
@@ -30,10 +30,63 @@
                 <h2><i class="bi bi-file-earmark-text"></i> {{ $exam->title }}</h2>
                 <p class="text-muted">Mã đề: <strong>{{ $exam->code }}</strong></p>
             </div>
-            <div class="col-md-4 text-end">
-                <a href="{{ route('exams.test', $exam->id) }}" class="btn btn-success btn-lg">
-                    <i class="bi bi-play-circle"></i> Bắt đầu làm bài
-                </a>
+        </div>
+
+        <!-- Mode Selection Tabs -->
+        <ul class="nav nav-tabs mb-4" id="modeTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="test-tab" data-bs-toggle="tab" data-bs-target="#test-mode" type="button"
+                    role="tab" aria-controls="test-mode" aria-selected="true">
+                    <i class="bi bi-trophy"></i> Thi Thử
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="practice-tab" data-bs-toggle="tab" data-bs-target="#practice-mode"
+                    type="button" role="tab" aria-controls="practice-mode" aria-selected="false">
+                    <i class="bi bi-book"></i> Ôn Tập Theo Phần
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="modeTabContent">
+            <!-- Test Mode Tab -->
+            <div class="tab-pane fade show active" id="test-mode" role="tabpanel" aria-labelledby="test-tab">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body text-center py-5">
+                                <i class="bi bi-trophy text-warning" style="font-size: 4rem;"></i>
+                                <h3 class="mt-3">Thi Thử - 30 Câu Ngẫu Nhiên</h3>
+                                <p class="text-muted mb-4">
+                                    Làm bài thi với 30 câu hỏi được chọn ngẫu nhiên, có chấm điểm và đánh giá kết quả
+                                </p>
+                                <a href="{{ route('exams.test', $exam->id) }}" class="btn btn-success btn-lg">
+                                    <i class="bi bi-play-circle"></i> Bắt Đầu Thi Thử
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practice Mode Tab -->
+            <div class="tab-pane fade" id="practice-mode" role="tabpanel" aria-labelledby="practice-tab">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            <strong>Chế độ ôn tập:</strong> Chọn phần để học, xem đáp án ngay lập tức, không có chấm điểm
+                        </div>
+                        <div id="sections-list" class="row">
+                            <div class="col-12 text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Đang tải...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Đang tải danh sách phần...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -165,7 +218,8 @@
                                     <label class="form-label">Danh mục câu hỏi (tùy chọn)</label>
                                     <input type="text" class="form-control" name="category"
                                         placeholder="VD: Biển báo, An toàn giao thông...">
-                                    <small class="text-muted">Nếu để trống, sẽ lấy từ trường "Danh mục:" trong file Word</small>
+                                    <small class="text-muted">Nếu để trống, sẽ lấy từ trường "Danh mục:" trong file
+                                        Word</small>
                                 </div>
 
                                 <button type="submit" class="btn btn-success">
@@ -261,4 +315,63 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Fetch sections when practice tab is clicked
+        document.getElementById('practice-tab').addEventListener('shown.bs.tab', function () {
+            const sectionsList = document.getElementById('sections-list');
+
+            // Only fetch if not already loaded
+            if (sectionsList.dataset.loaded === 'true') return;
+
+            fetch('/exams/{{ $exam->id }}/sections')
+                .then(response => response.json())
+                .then(sections => {
+                    if (sections.length === 0) {
+                        sectionsList.innerHTML = `
+                                <div class="col-12 text-center py-5">
+                                    <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                                    <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
+                                </div>
+                            `;
+                        return;
+                    }
+
+                    let html = '';
+                    sections.forEach(section => {
+                        html += `
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <i class="bi bi-bookmark-fill text-primary"></i>
+                                                Phần ${section.section}
+                                            </h5>
+                                            <p class="card-text text-muted">
+                                                <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
+                                            </p>
+                                            <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
+                                               class="btn btn-primary btn-sm w-100">
+                                                <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                    });
+
+                    sectionsList.innerHTML = html;
+                    sectionsList.dataset.loaded = 'true';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    sectionsList.innerHTML = `
+                            <div class="col-12 text-center py-5">
+                                <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                                <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
+                            </div>
+                        `;
+                });
+        });
+    </script>
 @endsection

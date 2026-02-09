@@ -42,24 +42,44 @@ class ExamController extends Controller
     }
 
     /**
-     * API: Lấy đề thi với 30 câu hỏi ngẫu nhiên (có phân loại)
+     * API: Lấy danh sách sections
+     */
+    public function getSections($id)
+    {
+        $exam = Exam::findOrFail($id);
+        $sections = $exam->getSections();
+
+        return response()->json($sections);
+    }
+
+    /**
+     * API: Lấy đề thi với câu hỏi (hỗ trợ cả test và practice mode)
      */
     public function getRandomizedExam($id, Request $request)
     {
         $exam = Exam::findOrFail($id);
 
-        // Lấy categories được chọn (nếu có)
-        $categories = $request->input('categories', []);
-        $limit = $request->input('limit', 30);
+        $mode = $request->input('mode', 'test'); // 'test' hoặc 'practice'
+        $section = $request->input('section'); // Section cụ thể (cho practice mode)
 
-        // Lấy câu hỏi random
-        $questions = $exam->getRandomQuestionsByCategory($limit, $categories);
+        // Lấy câu hỏi dựa theo mode
+        if ($mode === 'practice' && $section) {
+            // Practice mode: Lấy tất cả câu theo section, không random
+            $questions = $exam->getQuestionsBySection($section);
+        } else {
+            // Test mode: Lấy 30 câu random
+            $categories = $request->input('categories', []);
+            $limit = $request->input('limit', 30);
+            $questions = $exam->getRandomQuestionsByCategory($limit, $categories);
+        }
 
-        // Trộn đáp án của từng câu
-        $questions = $questions->map(function ($question) {
-            $question->options = $question->options->shuffle()->values();
-            return $question;
-        });
+        // Chỉ trộn đáp án khi là test mode
+        if ($mode === 'test') {
+            $questions = $questions->map(function ($question) {
+                $question->options = $question->options->shuffle()->values();
+                return $question;
+            });
+        }
 
         $exam->questions = $questions;
 
