@@ -55,6 +55,8 @@
                                             <span class="badge bg-danger">Admin</span>
                                         @elseif($user->isTeacher())
                                             <span class="badge bg-warning text-dark">Giáo viên</span>
+                                        @elseif($user->role === 'center')
+                                            <span class="badge bg-success">Trung tâm</span>
                                         @else
                                             <span class="badge bg-secondary">Học viên</span>
                                         @endif
