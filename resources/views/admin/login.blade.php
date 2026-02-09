@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hệ thống ôn thi trắc nghiệm</title>
+    <title>TTDN Đường thủy Sông Hậu</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/images/icon-logo.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
@@ -17,7 +17,7 @@
 <body>
     <div class="container vh-100 d-flex justify-content-center align-items-center">
         <div class="card p-4" style="width: 100%; max-width: 400px;">
-            <h2 class="mb-4 text-center">LOGIN</h2>
+            <h2 class="mb-4 text-center">Đăng nhập</h2>
             <form id="loginForm" action="{{ route('login') }}" method="post">
                 <div class="mb-3">
                     <label for="student_code" class="form-label">Tài khoản (Mã học viên)</label>
