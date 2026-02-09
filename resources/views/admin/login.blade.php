@@ -11,186 +11,176 @@
     @include('partials.header_login')
 
     <style>
-        /* Reset */
-        :root {
-            --color-neutral-900: oklch(0.185 0 0);
-            color-scheme: light dark;
+        @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Quicksand", sans-serif;
         }
 
         body {
-            background-color: oklch(0.145 0 0);
-            color: oklch(0.985 0 0);
-            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #111;
+            width: 100%;
             overflow: hidden;
         }
 
-        /* SVG positioning */
-        .svg-container {
-            position: absolute;
-        }
-
-        /* Card container */
-        .login-card-container {
-            padding: 2px;
-            border-radius: 1.5em;
+        .ring {
             position: relative;
-            background: linear-gradient(-30deg,
-                    var(--gradient-color),
-                    transparent,
-                    var(--gradient-color)),
-                linear-gradient(to bottom,
-                    var(--color-neutral-900),
-                    var(--color-neutral-900));
-            --f: url(#🌀↖️);
-            --electric-border-color: #dd8448;
-            --electric-light-color: oklch(from var(--electric-border-color) l c h);
-            --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4);
+            width: 500px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Inner container */
-        .inner-container {
+        .ring i {
+            position: absolute;
+            inset: 0;
+            border: 2px solid #fff;
+            transition: 0.5s;
+        }
+
+        .ring i:nth-child(1) {
+            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+            animation: animate 6s linear infinite;
+        }
+
+        .ring i:nth-child(2) {
+            border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+            animation: animate 4s linear infinite;
+        }
+
+        .ring i:nth-child(3) {
+            border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+            animation: animate2 10s linear infinite;
+        }
+
+        .ring:hover i {
+            border: 6px solid var(--clr);
+            filter: drop-shadow(0 0 20px var(--clr));
+        }
+
+        @keyframes animate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes animate2 {
+            0% {
+                transform: rotate(360deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .login {
+            position: absolute;
+            width: 300px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .login h2 {
+            font-size: 2em;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .login .inputBx {
             position: relative;
-        }
-
-        /* Border layers */
-        .border-outer {
-            border: 2px solid oklch(from var(--electric-border-color) l c h / 0.5);
-            border-radius: 1.5em;
-            padding-right: .15em;
-            padding-bottom: .15em;
-        }
-
-        .main-card {
             width: 100%;
-            max-width: 450px;
-            border-radius: 1.5em;
-            border: 2px solid var(--electric-border-color);
-            margin-top: -4px;
-            margin-left: -4px;
-            filter: var(--f);
-            background: var(--color-neutral-900);
-            padding: 48px;
         }
 
-        /* Glow effects */
-        .glow-layer-1 {
-            border: 2px solid oklch(from var(--electric-border-color) l c h / 0.6);
-            border-radius: 24px;
+        .login .inputBx input {
+            position: relative;
             width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            filter: blur(1px);
-            pointer-events: none;
+            padding: 12px 20px;
+            background: transparent;
+            border: 2px solid #fff;
+            border-radius: 40px;
+            font-size: 1.2em;
+            color: #fff;
+            box-shadow: none;
+            outline: none;
         }
 
-        .glow-layer-2 {
-            border: 2px solid var(--electric-light-color);
-            border-radius: 24px;
+        .login .inputBx input:focus {
+            border-color: #0078ff;
+            box-shadow: 0 0 10px rgba(0, 120, 255, 0.5);
+        }
+
+        .login .inputBx input[type="submit"] {
             width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            filter: blur(4px);
-            pointer-events: none;
-        }
-
-        /* Overlay effects */
-        .overlay-1 {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 24px;
-            opacity: 1;
-            mix-blend-mode: overlay;
-            transform: scale(1.1);
-            filter: blur(16px);
-            background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white);
-            pointer-events: none;
-        }
-
-        .overlay-2 {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 24px;
-            opacity: 0.5;
-            mix-blend-mode: overlay;
-            transform: scale(1.1);
-            filter: blur(16px);
-            background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white);
-            pointer-events: none;
-        }
-
-        /* Background glow */
-        .background-glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 24px;
-            filter: blur(32px);
-            transform: scale(1.1);
-            opacity: 0.3;
-            z-index: -1;
-            background: linear-gradient(-30deg, var(--electric-light-color), transparent, var(--electric-border-color));
-        }
-
-        /* Form styling */
-        .form-control {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            border-radius: 0.5em;
-        }
-
-        .form-control:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--electric-border-color);
-            color: white;
-            box-shadow: 0 0 0 0.2rem rgba(221, 132, 72, 0.25);
-        }
-
-        .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        .form-label {
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            background: var(--electric-border-color);
+            background: linear-gradient(45deg, #ff357a, #fff172);
             border: none;
-            border-radius: 0.5em;
+            cursor: pointer;
             font-weight: 600;
+            transition: transform 0.3s;
         }
 
-        .btn-primary:hover {
-            background: oklch(from var(--electric-border-color) calc(l * 1.1) c h);
+        .login .inputBx input[type="submit"]:hover {
+            transform: scale(1.05);
         }
 
-        h2 {
-            color: white;
-            font-weight: 600;
+        .login .inputBx input::placeholder {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .login .links {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .login .links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .login .links a:hover {
+            color: #0078ff;
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .ring {
+                width: 350px;
+                height: 350px;
+            }
+
+            .login {
+                width: 250px;
+            }
+
+            .login h2 {
+                font-size: 1.5em;
+            }
+
+            .login .inputBx input {
+                font-size: 1em;
+                padding: 10px 15px;
+            }
         }
     </style>
 
@@ -198,74 +188,33 @@
 </head>
 
 <body>
-    <!-- SVG Filters -->
-    <svg class="svg-container">
-        <defs>
-            <filter id="🌀↖️" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
-                <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="1" />
-                <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
-                    <animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
-                </feOffset>
-
-                <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="1" />
-                <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
-                    <animate attributeName="dy" values="0; -700" dur="6s" repeatCount="indefinite" calcMode="linear" />
-                </feOffset>
-
-                <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="2" />
-                <feOffset in="noise1" dx="0" dy="0" result="offsetNoise3">
-                    <animate attributeName="dx" values="490; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
-                </feOffset>
-
-                <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="2" />
-                <feOffset in="noise2" dx="0" dy="0" result="offsetNoise4">
-                    <animate attributeName="dx" values="0; -490" dur="6s" repeatCount="indefinite" calcMode="linear" />
-                </feOffset>
-
-                <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
-                <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
-                <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
-
-                <feDisplacementMap in="SourceGraphic" in2="combinedNoise" scale="30" xChannelSelector="R"
-                    yChannelSelector="B" />
-            </filter>
-        </defs>
-    </svg>
-
-    <div class="container vh-100 d-flex justify-content-center align-items-center">
-        <div class="login-card-container">
-            <div class="inner-container">
-                <div class="border-outer">
-                    <div class="main-card">
-                        <h2 class="mb-4 text-center">Đăng nhập</h2>
-                        <form id="loginForm" action="{{ route('login') }}" method="post">
-                            <div class="mb-3">
-                                <label for="student_code" class="form-label">Tài khoản (Mã học viên)</label>
-                                <input type="text" class="form-control" name="student_code" id="student_code"
-                                    placeholder="Nhập mã học viên">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Mật khẩu</label>
-                                <input type="password" class="form-control" name="password" id="password"
-                                    placeholder="Mật khẩu">
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
-                            </div>
-                            @csrf
-                        </form>
-                    </div>
+    <!--ring div starts here-->
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+        <div class="login">
+            <h2>Đăng nhập</h2>
+            <form id="loginForm" action="{{ route('login') }}" method="post"
+                style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+                <div class="inputBx">
+                    <input type="text" name="student_code" id="student_code" placeholder="Mã học viên" required>
                 </div>
-                <div class="glow-layer-1"></div>
-                <div class="glow-layer-2"></div>
-            </div>
-
-            <div class="overlay-1"></div>
-            <div class="overlay-2"></div>
-            <div class="background-glow"></div>
+                <div class="inputBx">
+                    <input type="password" name="password" id="password" placeholder="Mật khẩu" required>
+                </div>
+                <div class="inputBx">
+                    <input type="submit" value="Đăng nhập">
+                </div>
+                @csrf
+            </form>
+            {{-- <div class="links">
+                <a href="#">Quên mật khẩu</a>
+                <a href="#">Đăng ký</a>
+            </div> --}}
         </div>
     </div>
+    <!--ring div ends here-->
 
     @include('partials.footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
