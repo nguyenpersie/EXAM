@@ -20,20 +20,33 @@
             font-family: "Quicksand", sans-serif;
         }
 
+        html,
         body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            overflow-x: hidden;
+        }
+
+        .main-content {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background: #111;
             width: 100%;
-            overflow: hidden;
         }
 
         .ring {
             position: relative;
-            width: 500px;
-            height: 500px;
+            width: 400px;
+            height: 400px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -88,17 +101,17 @@
 
         .login {
             position: absolute;
-            width: 300px;
+            width: 280px;
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
         }
 
         .login h2 {
-            font-size: 2em;
+            font-size: 1.8em;
             color: #fff;
             font-weight: 700;
         }
@@ -111,11 +124,11 @@
         .login .inputBx input {
             position: relative;
             width: 100%;
-            padding: 12px 20px;
+            padding: 10px 18px;
             background: transparent;
             border: 2px solid #fff;
             border-radius: 40px;
-            font-size: 1.2em;
+            font-size: 1em;
             color: #fff;
             box-shadow: none;
             outline: none;
@@ -156,21 +169,30 @@
             color: #fff;
             text-decoration: none;
             transition: color 0.3s;
+            font-size: 0.9em;
         }
 
         .login .links a:hover {
             color: #0078ff;
         }
 
+        /* Footer fix */
+        footer {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
         /* Responsive */
         @media (max-width: 576px) {
             .ring {
-                width: 350px;
-                height: 350px;
+                width: 320px;
+                height: 320px;
             }
 
             .login {
-                width: 250px;
+                width: 240px;
+                gap: 15px;
             }
 
             .login h2 {
@@ -178,8 +200,8 @@
             }
 
             .login .inputBx input {
-                font-size: 1em;
-                padding: 10px 15px;
+                font-size: 0.95em;
+                padding: 9px 15px;
             }
         }
     </style>
@@ -188,35 +210,38 @@
 </head>
 
 <body>
-    <!--ring div starts here-->
-    <div class="ring">
-        <i style="--clr:#00ff0a;"></i>
-        <i style="--clr:#ff0057;"></i>
-        <i style="--clr:#fffd44;"></i>
-        <div class="login">
-            <h2>Đăng nhập</h2>
-            <form id="loginForm" action="{{ route('login') }}" method="post"
-                style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
-                <div class="inputBx">
-                    <input type="text" name="student_code" id="student_code" placeholder="Mã học viên" required>
-                </div>
-                <div class="inputBx">
-                    <input type="password" name="password" id="password" placeholder="Mật khẩu" required>
-                </div>
-                <div class="inputBx">
-                    <input type="submit" value="Đăng nhập">
-                </div>
-                @csrf
-            </form>
-            {{-- <div class="links">
-                <a href="#">Quên mật khẩu</a>
-                <a href="#">Đăng ký</a>
-            </div> --}}
+    <div class="main-content">
+        <!--ring div starts here-->
+        <div class="ring">
+            <i style="--clr:#00ff0a;"></i>
+            <i style="--clr:#ff0057;"></i>
+            <i style="--clr:#fffd44;"></i>
+            <div class="login">
+                <h2>Đăng nhập</h2>
+                <form id="loginForm" action="{{ route('login') }}" method="post"
+                    style="width: 100%; display: flex; flex-direction: column; gap: 18px;">
+                    <div class="inputBx">
+                        <input type="text" name="student_code" id="student_code" placeholder="Mã học viên" required>
+                    </div>
+                    <div class="inputBx">
+                        <input type="password" name="password" id="password" placeholder="Mật khẩu" required>
+                    </div>
+                    <div class="inputBx">
+                        <input type="submit" value="Đăng nhập">
+                    </div>
+                    @csrf
+                </form>
+                {{-- <div class="links">
+                    <a href="#">Quên mật khẩu</a>
+                    <a href="#">Đăng ký</a>
+                </div> --}}
+            </div>
         </div>
+        <!--ring div ends here-->
     </div>
-    <!--ring div ends here-->
 
     @include('partials.footer')
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
