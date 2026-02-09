@@ -198,7 +198,7 @@
 
             <!-- Import câu hỏi -->
             <div class="col-lg-7 mb-4">
-                @if(auth()->check() && auth()->user()->canManageContent())
+                @if(auth()->check() && auth()->user()->role === 'center')
                     <div class="card shadow-sm mb-3">
                         <div class="card-header bg-success text-white">
                             <h5 class="mb-0"><i class="bi bi-upload"></i> Import câu hỏi</h5>
@@ -234,86 +234,49 @@
                     </div>
                 @endif
 
-                <!-- Hướng dẫn -->
-                <div class="card shadow-sm mb-3">
-                    <div class="card-header bg-info text-white">
-                        <h6 class="mb-0"><i class="bi bi-info-circle"></i> Định dạng file Word (.docx)</h6>
+            </div>
+
+
+            <!-- Quản lý -->
+            @if(auth()->check() && auth()->user()->role === 'center')
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0"><i class="bi bi-gear"></i> Quản lý</h6>
                     </div>
                     <div class="card-body">
-                        <p><strong>Mỗi câu hỏi theo cấu trúc:</strong></p>
-                        <div class="border p-3 bg-light small" style="font-family: monospace;">
-                            Câu 1: Biển báo nào cấm đi ngược chiều?<br>
-                            A. Biển P.123<br>
-                            B. Biển P.124<br>
-                            C. Biển P.125<br>
-                            D. Biển W.201<br>
-                            Đáp án: A<br>
-                            Phần: Phần 1 - Biển báo<br>
-                            Độ khó: easy<br>
-                            Danh mục: Biển báo<br>
-                            ---<br>
-                            <br>
-                            Câu 2: Tốc độ tối đa trong khu dân cư là bao nhiêu?<br>
-                            A. 40 km/h<br>
-                            B. 50 km/h<br>
-                            C. 60 km/h<br>
-                            D. 70 km/h<br>
-                            Đáp án: C<br>
-                            ---
-                        </div>
+                        <div class="d-grid gap-2">
+                            <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-primary">
+                                <i class="bi bi-pencil"></i> Chỉnh sửa thông tin đề thi
+                            </a>
+                            <a href="{{ route('questions.index', $exam->id) }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-list-check"></i> Quản lý câu hỏi ({{ $exam->questions->count() }})
+                            </a>
 
-                        <div class="alert alert-warning mt-3 mb-0 small">
-                            <i class="bi bi-exclamation-triangle"></i>
-                            <strong>Lưu ý:</strong><br>
-                            • Mỗi câu phân cách bằng dấu --- hoặc ===<br>
-                            • Đáp án đúng: ghi A, B, C hoặc D<br>
-                            • Phần, Độ khó, Danh mục là tùy chọn<br>
-                            • Độ khó: easy (dễ), medium (trung bình), hard (khó)
+                            @if($exam->questions->count() > 0)
+                                <form action="{{ route('questions.destroyAll', $exam->id) }}" method="POST"
+                                    onsubmit="return confirm('Xóa TẤT CẢ {{ $exam->questions->count() }} câu hỏi? Hành động này không thể hoàn tác!')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-warning w-100">
+                                        <i class="bi bi-trash"></i> Xóa tất cả câu hỏi ({{ $exam->questions->count() }})
+                                    </button>
+                                </form>
+                            @endif
+
+                            <form action="{{ route('exams.destroy', $exam->id) }}" method="POST"
+                                onsubmit="return confirm('Xóa đề thi này? Tất cả câu hỏi cũng sẽ bị xóa!')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger w-100">
+                                    <i class="bi bi-trash"></i> Xóa đề thi
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
-
-
-                <!-- Quản lý -->
-                @if(auth()->check() && auth()->user()->canManageContent())
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-light">
-                            <h6 class="mb-0"><i class="bi bi-gear"></i> Quản lý</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-grid gap-2">
-                                <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-primary">
-                                    <i class="bi bi-pencil"></i> Chỉnh sửa thông tin đề thi
-                                </a>
-                                <a href="{{ route('questions.index', $exam->id) }}" class="btn btn-outline-primary w-100">
-                                    <i class="bi bi-list-check"></i> Quản lý câu hỏi ({{ $exam->questions->count() }})
-                                </a>
-
-                                @if($exam->questions->count() > 0)
-                                    <form action="{{ route('questions.destroyAll', $exam->id) }}" method="POST"
-                                        onsubmit="return confirm('Xóa TẤT CẢ {{ $exam->questions->count() }} câu hỏi? Hành động này không thể hoàn tác!')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-warning w-100">
-                                            <i class="bi bi-trash"></i> Xóa tất cả câu hỏi ({{ $exam->questions->count() }})
-                                        </button>
-                                    </form>
-                                @endif
-
-                                <form action="{{ route('exams.destroy', $exam->id) }}" method="POST"
-                                    onsubmit="return confirm('Xóa đề thi này? Tất cả câu hỏi cũng sẽ bị xóa!')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger w-100">
-                                        <i class="bi bi-trash"></i> Xóa đề thi
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            </div>
+            @endif
         </div>
+    </div>
     </div>
 
     <script>
@@ -329,35 +292,35 @@
                 .then(sections => {
                     if (sections.length === 0) {
                         sectionsList.innerHTML = `
-                                <div class="col-12 text-center py-5">
-                                    <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
-                                    <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
-                                </div>
-                            `;
+                                        <div class="col-12 text-center py-5">
+                                            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                                            <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
+                                        </div>
+                                    `;
                         return;
                     }
 
                     let html = '';
                     sections.forEach(section => {
                         html += `
-                                <div class="col-md-6 col-lg-4 mb-3">
-                                    <div class="card h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <i class="bi bi-bookmark-fill text-primary"></i>
-                                                Phần ${section.section}
-                                            </h5>
-                                            <p class="card-text text-muted">
-                                                <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
-                                            </p>
-                                            <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
-                                               class="btn btn-primary btn-sm w-100">
-                                                <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
-                                            </a>
+                                        <div class="col-md-6 col-lg-4 mb-3">
+                                            <div class="card h-100 shadow-sm">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">
+                                                        <i class="bi bi-bookmark-fill text-primary"></i>
+                                                        Phần ${section.section}
+                                                    </h5>
+                                                    <p class="card-text text-muted">
+                                                        <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
+                                                    </p>
+                                                    <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
+                                                       class="btn btn-primary btn-sm w-100">
+                                                        <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            `;
+                                    `;
                     });
 
                     sectionsList.innerHTML = html;
@@ -366,11 +329,11 @@
                 .catch(error => {
                     console.error('Error:', error);
                     sectionsList.innerHTML = `
-                            <div class="col-12 text-center py-5">
-                                <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
-                                <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
-                            </div>
-                        `;
+                                    <div class="col-12 text-center py-5">
+                                        <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                                        <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
+                                    </div>
+                                `;
                 });
         });
     </script>

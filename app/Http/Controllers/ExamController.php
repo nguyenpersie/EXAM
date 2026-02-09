@@ -120,6 +120,11 @@ class ExamController extends Controller
      */
     public function store(Request $request)
     {
+        // Only center can create exams
+        if (auth()->user()->role !== 'center') {
+            abort(403, 'Unauthorized action.');
+        }
+
         $validated = $request->validate([
             'code' => 'required|unique:exams',
             'title' => 'required',
@@ -158,6 +163,11 @@ class ExamController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Only center can update exams
+        if (auth()->user()->role !== 'center') {
+            abort(403, 'Unauthorized action.');
+        }
+
         $exam = Exam::findOrFail($id);
 
         $validated = $request->validate([
@@ -180,10 +190,15 @@ class ExamController extends Controller
      */
     public function destroy($id)
     {
-        $exam = Exam::findOrFail($id);
-        $exam->delete();
+        //Only center can delete exams
+        if (auth()->user()->role !== 'center') {
+            abort(403, 'Unauthorized action.');
+        }
 
-        return redirect()->route('exams.index')
-            ->with('success', 'Đề thi đã được xóa!');
+        $exam = Exam::findOrFail($id);
+        $exam->delete(); // Cascade delete handled by foreign keys
+
+        return redirect()->route('exams.home')
+            ->with('success', 'Đề thi và tất cả câu hỏi đã được xóa!');
     }
 }
