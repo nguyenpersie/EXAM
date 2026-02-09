@@ -112,7 +112,7 @@
 
         .login h2 {
             font-size: 1.8em;
-            color: #ffffff1a;
+            color: #1d1c1c0a;
             font-weight: 700;
         }
 
