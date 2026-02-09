@@ -112,7 +112,7 @@
 
         .login h2 {
             font-size: 1.8em;
-            color: #302c2c;
+            color: #fff;
             font-weight: 700;
         }
 
@@ -125,13 +125,19 @@
             position: relative;
             width: 100%;
             padding: 10px 18px;
-            background: #0000004d;
-            border: 2px solid #fff172;
+            background: transparent;
+            border: 2px solid #fff;
             border-radius: 40px;
             font-size: 1em;
             color: #fff;
             box-shadow: none;
             outline: none;
+        }
+
+        /* Thêm padding bên phải cho input password để chừa chỗ cho icon */
+        .login .inputBx input[type="password"],
+        .login .inputBx input[type="text"].password-input {
+            padding-right: 45px;
         }
 
         .login .inputBx input:focus {
@@ -154,6 +160,23 @@
 
         .login .inputBx input::placeholder {
             color: rgba(255, 255, 255, 0.75);
+        }
+
+        /* Icon toggle password */
+        .toggle-password {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2em;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+
+        .toggle-password:hover {
+            color: #0078ff;
         }
 
         .login .links {
@@ -203,6 +226,16 @@
                 font-size: 0.95em;
                 padding: 9px 15px;
             }
+
+            .login .inputBx input[type="password"],
+            .login .inputBx input[type="text"].password-input {
+                padding-right: 40px;
+            }
+
+            .toggle-password {
+                right: 15px;
+                font-size: 1.1em;
+            }
         }
     </style>
 
@@ -225,6 +258,7 @@
                     </div>
                     <div class="inputBx">
                         <input type="password" name="password" id="password" placeholder="Mật khẩu" required>
+                        <i class="bi bi-eye-slash toggle-password" id="togglePassword"></i>
                     </div>
                     <div class="inputBx">
                         <input type="submit" value="Đăng nhập">
@@ -243,6 +277,22 @@
     @include('partials.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            // Toggle type attribute
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Toggle icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+    </script>
 </body>
 
 </html>
