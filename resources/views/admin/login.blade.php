@@ -73,7 +73,7 @@
 
                 <div class="max-w-md mx-auto">
                     <div>
-                        <h1 class="text-2xl font-semibold">Đăng nhập</h1>
+                        <h1 class="text-2xl font-semibold text-center">ĐĂNG NHẬP</h1>
                     </div>
                     <div class="divide-y divide-gray-200">
                         <form id="loginForm" action="{{ route('login') }}" method="post"
