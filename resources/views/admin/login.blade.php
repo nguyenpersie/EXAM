@@ -64,12 +64,12 @@
 </head>
 
 <body>
-    <div class="min-h-screen bg-gray-100 py-4 flex flex-col justify-start sm:py-8">
-        <div class="relative py-2 sm:max-w-xl sm:mx-auto mt-8">
+    <div class="min-h-screen bg-gray-100 py-4 flex flex-col justify-start sm:py-8 px-4">
+        <div class="relative py-2 w-full max-w-md mx-auto mt-8">
             <div
                 class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
             </div>
-            <div class="relative px-4 py-6 bg-white shadow-lg sm:rounded-3xl sm:p-12">
+            <div class="relative px-6 py-8 bg-white shadow-lg rounded-2xl sm:rounded-3xl sm:p-12">
 
                 <div class="max-w-md mx-auto">
                     <div>
