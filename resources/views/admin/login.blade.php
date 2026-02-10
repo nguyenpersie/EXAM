@@ -77,8 +77,7 @@
         }
 
         .form__group {
-            width: 100%;
-            max-width: 18rem;
+            width: 18rem;
             margin: 0 auto 2rem;
             position: relative;
         }
@@ -145,6 +144,8 @@
                 -3px -3px 8px #FFFFFF;
             cursor: pointer;
             transition: opacity 0.3s;
+            width: 18rem;
+            margin: 0 auto;
         }
 
         .form__button:focus {
