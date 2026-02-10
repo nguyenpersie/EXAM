@@ -70,10 +70,12 @@
 
         .logo__circle img {
             margin: auto;
-            width: calc(6.25rem / 2);
-            height: calc(6.25rem / 2);
-            opacity: 0.8;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            opacity: 1;
+            object-fit: cover;
+            border-radius: 9999px;
+            padding: 0.5rem;
         }
 
         .form__group {
