@@ -51,20 +51,31 @@
         </div>
 
         <!-- Mode Selection Tabs -->
-        <ul class="nav nav-tabs mb-4" id="modeTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="test-tab" data-bs-toggle="tab" data-bs-target="#test-mode" type="button"
-                    role="tab" aria-controls="test-mode" aria-selected="true">
-                    <i class="bi bi-trophy"></i> Thi Thử
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="practice-tab" data-bs-toggle="tab" data-bs-target="#practice-mode"
-                    type="button" role="tab" aria-controls="practice-mode" aria-selected="false">
-                    <i class="bi bi-book"></i> Ôn Tập Theo Phần
-                </button>
-            </li>
-        </ul>
+        <div class="custom-tabs-wrapper">
+            <ul class="custom-tabs" id="modeTabs" role="tablist">
+                <li class="custom-tab-item" role="presentation">
+                    <button class="custom-tab-link active" id="test-tab" data-bs-toggle="tab" data-bs-target="#test-mode"
+                        type="button" role="tab" aria-controls="test-mode" aria-selected="true">
+                        <svg class="custom-tab-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span class="custom-tab-text">Thi Thử</span>
+                    </button>
+                </li>
+                <li class="custom-tab-item" role="presentation">
+                    <button class="custom-tab-link" id="practice-tab" data-bs-toggle="tab" data-bs-target="#practice-mode"
+                        type="button" role="tab" aria-controls="practice-mode" aria-selected="false">
+                        <svg class="custom-tab-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path
+                                d="M10.75 16.82A7.462 7.462 0 0115 15.5c.71 0 1.396.098 2.046.282A.75.75 0 0018 15.06v-11a.75.75 0 00-.546-.721A9.006 9.006 0 0015 3a8.963 8.963 0 00-4.25 1.065V16.82zM9.25 4.065A8.963 8.963 0 005 3c-.85 0-1.673.118-2.454.339A.75.75 0 002 4.06v11a.75.75 0 00.954.721A7.506 7.506 0 015 15.5c1.579 0 3.042.487 4.25 1.32V4.065z" />
+                        </svg>
+                        <span class="custom-tab-text">Ôn Tập Theo Phần</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
 
         <div class="tab-content" id="modeTabContent">
             <!-- Test Mode Tab -->
@@ -310,35 +321,35 @@
                 .then(sections => {
                     if (sections.length === 0) {
                         sectionsList.innerHTML = `
-                                                                                <div class="col-12 text-center py-5">
-                                                                                    <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
-                                                                                    <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
-                                                                                </div>
-                                                                            `;
+                                                                                    <div class="col-12 text-center py-5">
+                                                                                        <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                                                                                        <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
+                                                                                    </div>
+                                                                                `;
                         return;
                     }
 
                     let html = '';
                     sections.forEach(section => {
                         html += `
-                                                                                <div class="col-md-6 col-lg-4 mb-3">
-                                                                                    <div class="card h-100 shadow-sm">
-                                                                                        <div class="card-body">
-                                                                                            <h5 class="card-title">
-                                                                                                <i class="bi bi-bookmark-fill text-primary"></i>
-                                                                                                Phần ${section.section}
-                                                                                            </h5>
-                                                                                            <p class="card-text text-muted">
-                                                                                                <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
-                                                                                            </p>
-                                                                                            <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
-                                                                                               class="btn btn-primary btn-sm w-100">
-                                                                                                <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
-                                                                                            </a>
+                                                                                    <div class="col-md-6 col-lg-4 mb-3">
+                                                                                        <div class="card h-100 shadow-sm">
+                                                                                            <div class="card-body">
+                                                                                                <h5 class="card-title">
+                                                                                                    <i class="bi bi-bookmark-fill text-primary"></i>
+                                                                                                    Phần ${section.section}
+                                                                                                </h5>
+                                                                                                <p class="card-text text-muted">
+                                                                                                    <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
+                                                                                                </p>
+                                                                                                <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
+                                                                                                   class="btn btn-primary btn-sm w-100">
+                                                                                                    <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
+                                                                                                </a>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            `;
+                                                                                `;
                     });
 
                     sectionsList.innerHTML = html;
@@ -347,11 +358,11 @@
                 .catch(error => {
                     console.error('Error:', error);
                     sectionsList.innerHTML = `
-                                                                            <div class="col-12 text-center py-5">
-                                                                                <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
-                                                                                <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
-                                                                            </div>
-                                                                        `;
+                                                                                <div class="col-12 text-center py-5">
+                                                                                    <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                                                                                    <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
+                                                                                </div>
+                                                                            `;
                 });
         });
     </script>

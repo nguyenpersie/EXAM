@@ -416,4 +416,111 @@
       display: block;
     }
   }
+
+  /* Custom Tabs Wrapper */
+  .custom-tabs-wrapper {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Custom Tabs Container */
+  .custom-tabs {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border-bottom: none;
+  }
+
+  .custom-tab-item {
+    list-style: none;
+  }
+
+  /* Tab Link/Button */
+  .custom-tab-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 35px;
+    background-color: #f3f4f6;
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .custom-tab-link:hover {
+    background-color: #e5e7eb;
+    color: #374151;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .custom-tab-link.active {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 14px -2px rgba(79, 70, 229, 0.3),
+      0 4px 6px -2px rgba(79, 70, 229, 0.2);
+  }
+
+  .custom-tab-link.active:hover {
+    background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+    box-shadow: 0 10px 18px -2px rgba(79, 70, 229, 0.4),
+      0 6px 8px -2px rgba(79, 70, 229, 0.3);
+  }
+
+  /* Tab Icon */
+  .custom-tab-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .custom-tab-link:not(.active) .custom-tab-icon {
+    color: #9ca3af;
+  }
+
+  .custom-tab-link.active .custom-tab-icon {
+    color: #ffffff;
+  }
+
+  /* Tab Text */
+  .custom-tab-text {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .custom-tabs {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .custom-tab-link {
+      width: 100%;
+      justify-content: center;
+      padding: 0.875rem 1.25rem;
+    }
+
+    .custom-tab-text {
+      font-size: 0.9375rem;
+    }
+  }
+
+  /* Focus state cho accessibility */
+  .custom-tab-link:focus {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+  }
+
+  .custom-tab-link:focus:not(:focus-visible) {
+    outline: none;
+  }
 </style>
