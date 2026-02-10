@@ -22,33 +22,40 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/css/datepicker.min.css">
 
 <style>
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-     html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
     .header {
         background-color: #e1eff7;
         padding: 10px 0;
     }
+
     .nav-tabs {
         margin-bottom: 20px;
     }
+
     .table thead th {
         background-color: #f44336;
         color: white;
     }
+
     .user-table td {
         vertical-align: middle;
     }
+
     .pagination {
         justify-content: center;
     }
+
     .status-active {
         color: green;
     }
+
     .btn-custom {
         padding: 0.5em;
         margin-right: 0.5em;
@@ -66,24 +73,29 @@
     }
 
     .btn-custom {
-    width: 70px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    font-size: 14px;
+        width: 70px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        font-size: 14px;
     }
-    th, td {
+
+    th,
+    td {
         text-align: center;
     }
-    td.name-column, td.description-column,
-    td.email-column, td.address-column, td.tel-column {
+
+    td.name-column,
+    td.description-column,
+    td.email-column,
+    td.address-column,
+    td.tel-column {
         padding-left: 20px;
         padding-right: 20px;
         text-align: left;
     }
-
 </style>
 <div class="d-flex justify-content-end align-items-center mb-4">
     @if (Auth::check())
