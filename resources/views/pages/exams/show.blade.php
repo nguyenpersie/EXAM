@@ -21,11 +21,29 @@
         <!-- Header -->
         <div class="row mb-4">
             <div class="col-12">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('exams.index') }}">Danh sách đề thi</a></li>
-                        <li class="breadcrumb-item active">{{ $exam->code }}</li>
-                    </ol>
+                <nav class="breadcrumb">
+                    <ul class="breadcrumb-links">
+                        <li>
+                            <a href="{{ route('exams.index') }}" class="breadcrumb-box">
+                                <svg class="breadcrumb-icon-home" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span class="breadcrumb-text">Danh sách đề thi</span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="breadcrumb-box">
+                                <svg class="breadcrumb-icon" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span class="breadcrumb-text">{{ $exam->code }}</span>
+                            </div>
+                        </li>
+                    </ul>
                 </nav>
                 <h2><i class="bi bi-file-earmark-text"></i> {{ $exam->title }}</h2>
                 <p class="text-muted">Mã đề: <strong>{{ $exam->code }}</strong></p>
@@ -292,35 +310,35 @@
                 .then(sections => {
                     if (sections.length === 0) {
                         sectionsList.innerHTML = `
-                                                        <div class="col-12 text-center py-5">
-                                                            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
-                                                            <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
-                                                        </div>
-                                                    `;
+                                                                                <div class="col-12 text-center py-5">
+                                                                                    <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                                                                                    <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
+                                                                                </div>
+                                                                            `;
                         return;
                     }
 
                     let html = '';
                     sections.forEach(section => {
                         html += `
-                                                        <div class="col-md-6 col-lg-4 mb-3">
-                                                            <div class="card h-100 shadow-sm">
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title">
-                                                                        <i class="bi bi-bookmark-fill text-primary"></i>
-                                                                        Phần ${section.section}
-                                                                    </h5>
-                                                                    <p class="card-text text-muted">
-                                                                        <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
-                                                                    </p>
-                                                                    <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
-                                                                       class="btn btn-primary btn-sm w-100">
-                                                                        <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    `;
+                                                                                <div class="col-md-6 col-lg-4 mb-3">
+                                                                                    <div class="card h-100 shadow-sm">
+                                                                                        <div class="card-body">
+                                                                                            <h5 class="card-title">
+                                                                                                <i class="bi bi-bookmark-fill text-primary"></i>
+                                                                                                Phần ${section.section}
+                                                                                            </h5>
+                                                                                            <p class="card-text text-muted">
+                                                                                                <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
+                                                                                            </p>
+                                                                                            <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
+                                                                                               class="btn btn-primary btn-sm w-100">
+                                                                                                <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            `;
                     });
 
                     sectionsList.innerHTML = html;
@@ -329,11 +347,11 @@
                 .catch(error => {
                     console.error('Error:', error);
                     sectionsList.innerHTML = `
-                                                    <div class="col-12 text-center py-5">
-                                                        <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
-                                                        <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
-                                                    </div>
-                                                `;
+                                                                            <div class="col-12 text-center py-5">
+                                                                                <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                                                                                <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
+                                                                            </div>
+                                                                        `;
                 });
         });
     </script>
