@@ -60,7 +60,7 @@
             height: 6.25rem;
             display: flex;
             border-radius: 9999px;
-            background-color: #E9D985;
+            background-color: #ffffffff;
             box-shadow:
                 0px 0px 2px #5F5F5F,
                 0px 0px 0px 5px #ECF0F3,
