@@ -14,12 +14,39 @@
 <body>
     <div class="container py-4">
         <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb" class="mb-3">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('exams.index') }}">Danh sách đề thi</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('exams.show', $exam->id) }}">{{ $exam->title }}</a></li>
-                <li class="breadcrumb-item active">Quản lý câu hỏi</li>
-            </ol>
+        <nav class="breadcrumb">
+            <ul class="breadcrumb-links">
+                <li>
+                    <a href="{{ route('exams.index') }}" class="breadcrumb-box">
+                        <svg class="breadcrumb-icon-home" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span class="breadcrumb-text">Danh sách đề thi</span>
+                    </a>
+                </li>
+                <li>
+                    <div class="breadcrumb-box">
+                        <svg class="breadcrumb-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <a href="{{ route('exams.show', $exam->id) }}" class="breadcrumb-text">{{ $exam->title }}</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="breadcrumb-box">
+                        <svg class="breadcrumb-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span class="breadcrumb-text">Quản lý câu hỏi</span>
+                    </div>
+                </li>
+            </ul>
         </nav>
 
         <!-- Header -->
