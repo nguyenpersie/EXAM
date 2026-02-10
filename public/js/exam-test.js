@@ -340,7 +340,7 @@ function showResultModal(result) {
                     </div>
                     ${result.isPassed ?
             '<div class="alert alert-success"><i class="bi bi-trophy"></i> Chúc mừng! Bạn đã đạt!</div>' :
-            '<div class="alert alert-danger"><i class="bi bi-emoji-frown"></i> Chưa đạt! Cần: ' + result.passingScore + '</div>'
+            '<div class="alert alert-danger"><i class="bi bi-emoji-frown"></i> Chưa đạt! Bạn cần: ' + result.passingScore + ' câu</div>'
         }
                 </div>
                 <div class="modal-footer">
