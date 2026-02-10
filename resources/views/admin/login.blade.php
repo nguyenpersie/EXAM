@@ -134,7 +134,7 @@
             border: none;
             font-size: 0.875rem;
             color: #FFFFFF;
-            background-color: #06b6d4;
+            background-color: #0056b3;
             width: 100%;
             display: block;
             padding: 0.875rem 1rem;
