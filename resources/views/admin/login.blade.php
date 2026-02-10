@@ -22,20 +22,30 @@
 
         html,
         body {
-            height: 100%;
+            height: 100vh;
             width: 100%;
             display: flex;
+            flex-direction: column;
             background-color: var(--main-bg-color);
-            overflow: hidden;
+            overflow-x: hidden;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
         }
 
         .container {
             margin: auto;
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 2.5rem;
             background-color: var(--main-bg-color);
             box-shadow: 13px 13px 20px #cbced1,
                 -13px -13px 20px #ffffff;
+            max-width: 400px;
         }
 
         .logo {
@@ -67,8 +77,9 @@
         }
 
         .form__group {
-            width: 18rem;
-            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 18rem;
+            margin: 0 auto 2rem;
             position: relative;
         }
 
@@ -211,6 +222,8 @@
             @csrf
         </form>
     </div>
+
+    @include('partials.footer')
 
     <script>
         // Toggle password visibility
