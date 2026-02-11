@@ -524,4 +524,144 @@
   .custom-tab-link:focus:not(:focus-visible) {
     outline: none;
   }
+
+  /* ===== LOGOUT BUTTON STYLES ===== */
+
+  .btn-logout {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(220, 53, 69, 0.3);
+    background-color: #dc3545;
+    padding: 0;
+    vertical-align: middle;
+  }
+
+  /* Icon sign */
+  .btn-logout-sign {
+    width: 100%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-logout-sign svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .btn-logout-sign svg path {
+    fill: white;
+  }
+
+  /* Text */
+  .btn-logout-text {
+    position: absolute;
+    right: 0;
+    width: 0;
+    opacity: 0;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  /* Hover effect on button width */
+  .btn-logout:hover {
+    width: 145px;
+    border-radius: 40px;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+    background-color: #c82333;
+  }
+
+  .btn-logout:hover .btn-logout-sign {
+    width: 35%;
+    padding-left: 18px;
+  }
+
+  /* Hover effect button's text */
+  .btn-logout:hover .btn-logout-text {
+    opacity: 1;
+    width: 65%;
+    padding-right: 12px;
+  }
+
+  /* Button click effect */
+  .btn-logout:active {
+    transform: translate(1px, 1px);
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+  }
+
+  /* Focus state */
+  .btn-logout:focus {
+    outline: 2px solid #dc3545;
+    outline-offset: 2px;
+  }
+
+  .btn-logout:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .btn-logout {
+      width: 42px;
+      height: 42px;
+    }
+
+    .btn-logout-sign svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn-logout-text {
+      font-size: 0.8125rem;
+    }
+
+    .btn-logout:hover {
+      width: 135px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .btn-logout {
+      width: 40px;
+      height: 40px;
+    }
+
+    .btn-logout-sign svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .btn-logout-text {
+      font-size: 0.75rem;
+    }
+
+    .btn-logout:hover {
+      width: 125px;
+    }
+
+    .btn-logout:hover .btn-logout-sign {
+      padding-left: 15px;
+    }
+  }
+
+  /* Đảm bảo căn giữa với các nút khác trong navbar */
+  .d-inline {
+    display: inline-flex !important;
+    align-items: center;
+  }
 </style>
