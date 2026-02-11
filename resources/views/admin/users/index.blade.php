@@ -88,7 +88,7 @@
                     </table>
                 </div>
 
-                @if($questions->hasPages())
+                @if($users->hasPages())
                     <div class="card-footer">
                         <div class="d-flex justify-content-center">
                             {{ $users->appends(request()->except('page'))->links('pagination::bootstrap-5') }}
