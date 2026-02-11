@@ -36,26 +36,26 @@
 
     <!-- Lọc theo danh mục -->
     <!-- @if(auth()->check() && auth()->user()->isAdmin())
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="d-flex gap-2 flex-wrap">
-              <a href="{{ route('exams.index') }}"
-                class="btn btn-sm {{ request()->is('/') ? 'btn-primary' : 'btn-outline-primary' }}">
-                Tất cả
-              </a>
-              @php
-                $categories = \App\Models\Exam::select('category')->distinct()->whereNotNull('category')->pluck('category');
-              @endphp
-              @foreach($categories as $cat)
-                <a href="{{ route('exams.category', $cat) }}"
-                  class="btn btn-sm {{ request('category') == $cat ? 'btn-primary' : 'btn-outline-primary' }}">
-                  {{ $cat }}
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="d-flex gap-2 flex-wrap">
+                <a href="{{ route('exams.index') }}"
+                  class="btn btn-sm {{ request()->is('/') ? 'btn-primary' : 'btn-outline-primary' }}">
+                  Tất cả
                 </a>
-              @endforeach
+                @php
+                  $categories = \App\Models\Exam::select('category')->distinct()->whereNotNull('category')->pluck('category');
+                @endphp
+                @foreach($categories as $cat)
+                  <a href="{{ route('exams.category', $cat) }}"
+                    class="btn btn-sm {{ request('category') == $cat ? 'btn-primary' : 'btn-outline-primary' }}">
+                    {{ $cat }}
+                  </a>
+                @endforeach
+              </div>
             </div>
           </div>
-        </div>
-      @endif -->
+        @endif -->
 
     <!-- Danh sách đề thi -->
     <div class="row">
@@ -92,15 +92,32 @@
             </div>
             <div class="card-footer bg-light">
               <div class="d-flex gap-2">
-                <a href="{{ route('exams.test', $exam->id) }}" class="btn btn-success flex-fill">
-                  <i class="bi bi-play-circle"></i> Thi thử
+                <!-- Nút Thi thử -->
+                <a href="{{ route('exams.test', $exam->id) }}" class="btn-3d btn-3d-success flex-fill">
+                  <span class="btn-3d-shadow"></span>
+                  <span class="btn-3d-edge"></span>
+                  <span class="btn-3d-front">
+                    <i class="bi bi-play-circle"></i> Thi thử
+                  </span>
                 </a>
-                <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-outline-primary">
-                  <i class="bi bi-eye"></i> Ôn tập
+
+                <!-- Nút Ôn tập -->
+                <a href="{{ route('exams.show', $exam->id) }}" class="btn-3d btn-3d-primary">
+                  <span class="btn-3d-shadow"></span>
+                  <span class="btn-3d-edge"></span>
+                  <span class="btn-3d-front">
+                    <i class="bi bi-eye"></i> Ôn tập
+                  </span>
                 </a>
+
+                <!-- Nút Chỉnh sửa (chỉ admin) -->
                 @if(auth()->check() && auth()->user()->canManageContent())
-                  <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-pencil"></i>
+                  <a href="{{ route('exams.edit', $exam->id) }}" class="btn-3d btn-3d-secondary">
+                    <span class="btn-3d-shadow"></span>
+                    <span class="btn-3d-edge"></span>
+                    <span class="btn-3d-front">
+                      <i class="bi bi-pencil"></i>
+                    </span>
                   </a>
                 @endif
               </div>

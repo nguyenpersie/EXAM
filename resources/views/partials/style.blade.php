@@ -523,4 +523,201 @@
   .custom-tab-link:focus:not(:focus-visible) {
     outline: none;
   }
+
+  /* ===== 3D BUTTON STYLES ===== */
+
+  /* Base button */
+  .btn-3d {
+    position: relative;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    transition: filter 250ms;
+    user-select: none;
+    touch-action: manipulation;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  /* Shadow layer */
+  .btn-3d-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: hsl(0deg 0% 0% / 0.25);
+    will-change: transform;
+    transform: translateY(2px);
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+  }
+
+  /* Edge layer (base colors) */
+  .btn-3d-edge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+  }
+
+  /* Front layer */
+  .btn-3d-front {
+    display: block;
+    position: relative;
+    padding: 12px 27px;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: white;
+    font-weight: 500;
+    will-change: transform;
+    transform: translateY(-4px);
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+    white-space: nowrap;
+  }
+
+  /* Hover effects */
+  .btn-3d:hover {
+    filter: brightness(110%);
+    text-decoration: none;
+  }
+
+  .btn-3d:hover .btn-3d-front {
+    transform: translateY(-6px);
+    transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+  }
+
+  .btn-3d:active .btn-3d-front {
+    transform: translateY(-2px);
+    transition: transform 34ms;
+  }
+
+  .btn-3d:hover .btn-3d-shadow {
+    transform: translateY(4px);
+    transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+  }
+
+  .btn-3d:active .btn-3d-shadow {
+    transform: translateY(1px);
+    transition: transform 34ms;
+  }
+
+  .btn-3d:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* ===== COLOR VARIANTS ===== */
+
+  /* Success (Green) - Nút Thi thử */
+  .btn-3d-success .btn-3d-edge {
+    background: linear-gradient(to left,
+        hsl(145deg 63% 32%) 0%,
+        hsl(145deg 63% 42%) 8%,
+        hsl(145deg 63% 42%) 92%,
+        hsl(145deg 63% 32%) 100%);
+  }
+
+  .btn-3d-success .btn-3d-front {
+    background: hsl(145deg 63% 49%);
+  }
+
+  /* Primary (Blue) - Nút Ôn tập */
+  .btn-3d-primary .btn-3d-edge {
+    background: linear-gradient(to left,
+        hsl(217deg 91% 40%) 0%,
+        hsl(217deg 91% 50%) 8%,
+        hsl(217deg 91% 50%) 92%,
+        hsl(217deg 91% 40%) 100%);
+  }
+
+  .btn-3d-primary .btn-3d-front {
+    background: hsl(217deg 91% 60%);
+  }
+
+  /* Secondary (Gray) - Nút Edit */
+  .btn-3d-secondary .btn-3d-edge {
+    background: linear-gradient(to left,
+        hsl(215deg 16% 37%) 0%,
+        hsl(215deg 16% 47%) 8%,
+        hsl(215deg 16% 47%) 92%,
+        hsl(215deg 16% 37%) 100%);
+  }
+
+  .btn-3d-secondary .btn-3d-front {
+    background: hsl(215deg 16% 57%);
+    padding: 12px 20px;
+    /* Nhỏ hơn một chút cho nút icon */
+  }
+
+  /* Danger (Red) - Nếu cần */
+  .btn-3d-danger .btn-3d-edge {
+    background: linear-gradient(to left,
+        hsl(340deg 100% 16%) 0%,
+        hsl(340deg 100% 32%) 8%,
+        hsl(340deg 100% 32%) 92%,
+        hsl(340deg 100% 16%) 100%);
+  }
+
+  .btn-3d-danger .btn-3d-front {
+    background: hsl(345deg 100% 47%);
+  }
+
+  /* Warning (Yellow/Orange) - Nếu cần */
+  .btn-3d-warning .btn-3d-edge {
+    background: linear-gradient(to left,
+        hsl(32deg 95% 34%) 0%,
+        hsl(32deg 95% 44%) 8%,
+        hsl(32deg 95% 44%) 92%,
+        hsl(32deg 95% 34%) 100%);
+  }
+
+  .btn-3d-warning .btn-3d-front {
+    background: hsl(32deg 95% 54%);
+  }
+
+  /* Info (Cyan) - Nếu cần */
+  .btn-3d-info .btn-3d-edge {
+    background: linear-gradient(to left,
+        hsl(188deg 78% 31%) 0%,
+        hsl(188deg 78% 41%) 8%,
+        hsl(188deg 78% 41%) 92%,
+        hsl(188deg 78% 31%) 100%);
+  }
+
+  .btn-3d-info .btn-3d-front {
+    background: hsl(188deg 78% 51%);
+  }
+
+  /* Icon spacing */
+  .btn-3d-front i {
+    margin-right: 6px;
+    font-size: 1.1em;
+  }
+
+  .btn-3d-secondary .btn-3d-front i {
+    margin-right: 0;
+    /* Nút chỉ có icon thì không cần margin */
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .btn-3d-front {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+
+    .btn-3d-secondary .btn-3d-front {
+      padding: 10px 16px;
+    }
+  }
+
+  /* Flex-fill support */
+  .btn-3d.flex-fill {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
 </style>
