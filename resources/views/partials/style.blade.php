@@ -539,6 +539,7 @@
     touch-action: manipulation;
     text-decoration: none;
     display: inline-block;
+    min-width: fit-content;
   }
 
   /* Shadow layer */
@@ -548,7 +549,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 12px;
+    border-radius: 10px;
     background: hsl(0deg 0% 0% / 0.25);
     will-change: transform;
     transform: translateY(2px);
@@ -562,22 +563,23 @@
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 12px;
+    border-radius: 10px;
   }
 
-  /* Front layer */
+  /* Front layer - ĐIỀU CHỈNH PADDING */
   .btn-3d-front {
     display: block;
     position: relative;
-    padding: 12px 27px;
-    border-radius: 12px;
-    font-size: 1rem;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 0.875rem;
     color: white;
     font-weight: 500;
     will-change: transform;
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
     white-space: nowrap;
+    line-height: 1.5;
   }
 
   /* Hover effects */
@@ -587,7 +589,7 @@
   }
 
   .btn-3d:hover .btn-3d-front {
-    transform: translateY(-6px);
+    transform: translateY(-5px);
     transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
   }
 
@@ -649,8 +651,7 @@
 
   .btn-3d-secondary .btn-3d-front {
     background: hsl(215deg 16% 57%);
-    padding: 12px 20px;
-    /* Nhỏ hơn một chút cho nút icon */
+    padding: 8px 16px;
   }
 
   /* Danger (Red) - Nếu cần */
@@ -694,30 +695,55 @@
 
   /* Icon spacing */
   .btn-3d-front i {
-    margin-right: 6px;
-    font-size: 1.1em;
+    margin-right: 5px;
+    font-size: 1em;
+    vertical-align: middle;
   }
 
   .btn-3d-secondary .btn-3d-front i {
     margin-right: 0;
-    /* Nút chỉ có icon thì không cần margin */
+  }
+
+  /* Flex-fill support - ĐẢM BẢO HIỂN THỊ ĐỦ CHỮ */
+  .btn-3d.flex-fill {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .btn-3d.flex-fill .btn-3d-front {
+    width: 100%;
+    text-align: center;
   }
 
   /* Responsive adjustments */
   @media (max-width: 768px) {
     .btn-3d-front {
-      padding: 10px 20px;
-      font-size: 0.9rem;
+      padding: 7px 14px;
+      font-size: 0.8125rem;
     }
 
     .btn-3d-secondary .btn-3d-front {
-      padding: 10px 16px;
+      padding: 7px 12px;
     }
   }
 
-  /* Flex-fill support */
-  .btn-3d.flex-fill {
-    flex: 1 1 auto;
-    min-width: 0;
+  @media (max-width: 576px) {
+    .d-flex.gap-2 {
+      gap: 0.5rem !important;
+    }
+
+    .btn-3d-front {
+      padding: 6px 12px;
+      font-size: 0.75rem;
+    }
+
+    .btn-3d-secondary .btn-3d-front {
+      padding: 6px 10px;
+    }
+
+    .btn-3d-front i {
+      margin-right: 3px;
+      font-size: 0.9em;
+    }
   }
 </style>
