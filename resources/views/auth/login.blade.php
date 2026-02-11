@@ -270,6 +270,18 @@
             this.classList.toggle('bi-eye');
             this.classList.toggle('bi-eye-slash');
         });
+
+        // Handle alert dismiss
+        document.querySelectorAll('.btn-close').forEach(button => {
+            button.addEventListener('click', function() {
+                const alert = this.closest('.alert');
+                if (alert) {
+                    alert.classList.remove('show');
+                    alert.classList.add('fade');
+                    setTimeout(() => alert.remove(), 150);
+                }
+            });
+        });
     </script>
 </body>
 
