@@ -35,7 +35,7 @@
                 </path>
               </svg>
             </div>
-            <div class="btn-logout-text">Đăng xuất</div>
+            <div class="btn-logout-text">Logout</div>
           </button>
         </form>
       </div>
@@ -43,26 +43,26 @@
 
     <!-- Lọc theo danh mục -->
     <!-- @if(auth()->check() && auth()->user()->isAdmin())
-                      <div class="card mb-4">
-                        <div class="card-body">
-                          <div class="d-flex gap-2 flex-wrap">
-                            <a href="{{ route('exams.index') }}"
-                              class="btn btn-sm {{ request()->is('/') ? 'btn-primary' : 'btn-outline-primary' }}">
-                              Tất cả
-                            </a>
-                            @php
-                              $categories = \App\Models\Exam::select('category')->distinct()->whereNotNull('category')->pluck('category');
-                            @endphp
-                            @foreach($categories as $cat)
-                              <a href="{{ route('exams.category', $cat) }}"
-                                class="btn btn-sm {{ request('category') == $cat ? 'btn-primary' : 'btn-outline-primary' }}">
-                                {{ $cat }}
+                        <div class="card mb-4">
+                          <div class="card-body">
+                            <div class="d-flex gap-2 flex-wrap">
+                              <a href="{{ route('exams.index') }}"
+                                class="btn btn-sm {{ request()->is('/') ? 'btn-primary' : 'btn-outline-primary' }}">
+                                Tất cả
                               </a>
-                            @endforeach
+                              @php
+                                $categories = \App\Models\Exam::select('category')->distinct()->whereNotNull('category')->pluck('category');
+                              @endphp
+                              @foreach($categories as $cat)
+                                <a href="{{ route('exams.category', $cat) }}"
+                                  class="btn btn-sm {{ request('category') == $cat ? 'btn-primary' : 'btn-outline-primary' }}">
+                                  {{ $cat }}
+                                </a>
+                              @endforeach
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    @endif -->
+                      @endif -->
 
     <!-- Danh sách đề thi -->
     <div class="row">
