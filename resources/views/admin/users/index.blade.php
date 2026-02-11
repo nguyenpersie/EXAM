@@ -6,7 +6,7 @@
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h2><i class="bi bi-people"></i> Quản lý học viên</h2>
+                <h2><i class="bi bi-people"></i> Quản lý tài khoản</h2>
             </div>
             <div>
                 <a href="{{ route('home') }}" class="btn btn-outline-secondary me-2">
@@ -88,9 +88,13 @@
                     </table>
                 </div>
 
-                <div class="mt-3">
-                    {{ $users->links() }}
-                </div>
+                @if($questions->hasPages())
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-center">
+                            {{ $users->appends(request()->except('page'))->links('pagination::bootstrap-5') }}
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

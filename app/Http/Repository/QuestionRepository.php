@@ -81,7 +81,7 @@ class QuestionRepository
     }
 
     /**
-     * Lấy câu hỏi ngẫu nhiên theo phần (dùng khi tạo đề thi)
+     * Lấy câu hỏi ngẫu nhiên theo phần
      */
     public function getRandomQuestionsBySection(string $section, int $count): Collection
     {

@@ -115,7 +115,7 @@ class AdminUserController extends Controller
 
         try {
             $user = $this->userService->resetPassword($id, $request->password);
-            return back()->with('success', 'Đổi mật khẩu thành công cho học viên: ' . $user->full_name);
+            return back()->with('success', 'Đổi mật khẩu thành công cho: ' . $user->full_name);
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

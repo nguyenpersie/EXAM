@@ -65,7 +65,7 @@ class UserController extends Controller
     }
 
     /**
-     * Hiển thị form đổi mật khẩu
+     * form đổi mật khẩu
      */
     public function showChangePasswordForm(): View
     {

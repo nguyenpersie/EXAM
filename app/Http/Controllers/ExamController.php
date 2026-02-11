@@ -47,7 +47,7 @@ class ExamController extends Controller
     }
 
     /**
-     * API: Lấy đề thi với câu hỏi (hỗ trợ cả test và practice mode)
+     * API: Lấy đề thi với câu hỏi
      */
     public function getRandomizedExam(int $id, Request $request): JsonResponse
     {
