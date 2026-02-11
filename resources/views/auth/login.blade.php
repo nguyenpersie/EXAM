@@ -209,6 +209,21 @@
                 <img src="{{ asset('assets/images/icon-logo.png') }}" alt="Logo">
             </div>
         </div>
+
+        {{-- Display error messages --}}
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 1rem auto; width: 18rem; border-radius: 1.5rem; font-size: 0.875rem;">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <strong>Lỗi đăng nhập!</strong>
+                <ul class="mb-0 mt-2" style="padding-left: 1.5rem;">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="font-size: 0.7rem;"></button>
+            </div>
+        @endif
+
         <form class="form" id="loginForm" action="{{ route('login') }}" method="post">
             <div class="form__group">
                 <div class="form__icon">

@@ -43,7 +43,7 @@ class ExamService
     public function getSections(int $examId): array
     {
         $exam = $this->examRepository->findById($examId);
-        return $exam->getSections();
+        return $exam->getSections()->toArray();
     }
 
     /**
