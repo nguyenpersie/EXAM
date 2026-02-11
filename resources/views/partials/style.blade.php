@@ -525,27 +525,26 @@
     outline: none;
   }
 
-  /* ===== LOGOUT BUTTON STYLES ===== */
+  /* ===== LOGOUT BUTTON COMPACT VERSION ===== */
 
   .btn-logout {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.25);
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.2);
     background-color: #dc3545;
     padding: 0;
     vertical-align: middle;
   }
 
-  /* Icon sign */
   .btn-logout-sign {
     width: 100%;
     transition: all 0.3s ease;
@@ -555,51 +554,45 @@
   }
 
   .btn-logout-sign i {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: white;
   }
 
-  /* Text */
   .btn-logout-text {
     position: absolute;
     right: 0;
     width: 0;
     opacity: 0;
     color: white;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     transition: all 0.3s ease;
     white-space: nowrap;
     overflow: hidden;
   }
 
-  /* Hover effect - mở rộng thành hình chữ nhật */
   .btn-logout:hover {
-    width: 120px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.35);
+    width: 110px;
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
     background-color: #c82333;
   }
 
   .btn-logout:hover .btn-logout-sign {
     width: 35%;
-    padding-left: 8px;
+    padding-left: 6px;
   }
 
-  /* Hover effect button's text */
   .btn-logout:hover .btn-logout-text {
     opacity: 1;
     width: 65%;
-    padding-right: 10px;
+    padding-right: 8px;
   }
 
-  /* Button click effect */
   .btn-logout:active {
     transform: scale(0.95);
-    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.25);
   }
 
-  /* Focus state */
   .btn-logout:focus {
     outline: 2px solid #dc3545;
     outline-offset: 2px;
@@ -607,55 +600,5 @@
 
   .btn-logout:focus:not(:focus-visible) {
     outline: none;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .btn-logout {
-      width: 38px;
-      height: 38px;
-    }
-
-    .btn-logout-sign i {
-      font-size: 1rem;
-    }
-
-    .btn-logout-text {
-      font-size: 0.8125rem;
-    }
-
-    .btn-logout:hover {
-      width: 110px;
-    }
-  }
-
-  @media (max-width: 576px) {
-    .btn-logout {
-      width: 36px;
-      height: 36px;
-      border-radius: 6px;
-    }
-
-    .btn-logout-sign i {
-      font-size: 0.95rem;
-    }
-
-    .btn-logout-text {
-      font-size: 0.75rem;
-    }
-
-    .btn-logout:hover {
-      width: 105px;
-    }
-
-    .btn-logout:hover .btn-logout-sign {
-      padding-left: 6px;
-    }
-  }
-
-  /* Căn giữa với các nút khác */
-  .d-inline {
-    display: inline-flex !important;
-    align-items: center;
   }
 </style>
