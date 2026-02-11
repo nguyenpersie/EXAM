@@ -2,20 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AuthService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
-    public function ViewLogin(): View
+    protected AuthService $authService;
+    protected UserService $userService;
+
+    public function __construct(AuthService $authService, UserService $userService)
     {
-        return view('admin.login');
+        $this->authService = $authService;
+        $this->userService = $userService;
     }
 
-    public function login(Request $request)
+    /**
+     * Hiển thị trang login
+     */
+    public function ViewLogin(): View
     {
-        // Validate dữ liệu đầu vào
+        return view('auth.login');
+    }
+
+    /**
+     * Xử lý đăng nhập
+     */
+    public function login(Request $request): RedirectResponse
+    {
         $request->validate([
             'student_code' => 'required|string|max:50',
             'password' => 'required|string|min:3',
@@ -24,43 +40,48 @@ class UserController extends Controller
         $credentials = $request->only('student_code', 'password');
         $remember = $request->filled('remember');
 
-        // Thử đăng nhập bằng student_code thay vì email
-        if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
+        if ($this->authService->attempt($credentials, $remember)) {
+            $this->authService->regenerateSession($request);
 
-            $user = Auth::user();
-
-            // Phân quyền chuyển hướng
-            return redirect()->intended(route('home'))
+            return redirect()
+                ->intended(route('home'))
                 ->with('success', 'Đăng nhập thành công!');
         }
 
-        // Đăng nhập thất bại
-        return back()->withErrors([
-            'student_code' => 'Mã học viên hoặc mật khẩu không đúng.',
-        ])->onlyInput('student_code');
+        return back()
+            ->withErrors(['student_code' => 'Mã học viên hoặc mật khẩu không đúng.'])
+            ->onlyInput('student_code');
     }
 
-    public function logout(Request $request)
+    /**
+     * Đăng xuất
+     */
+    public function logout(Request $request): RedirectResponse
     {
-        Auth::logout();
+        $this->authService->logout($request);
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/')->with('success', 'Đã đăng xuất thành công.');
+        return redirect('/')
+            ->with('success', 'Đã đăng xuất thành công.');
     }
+
+    /**
+     * Hiển thị form đổi mật khẩu
+     */
     public function showChangePasswordForm(): View
     {
-        if (!Auth::user()->isAdmin()) {
+        if (!$this->authService->isAdmin(auth()->user())) {
             abort(403, 'Bạn không có quyền thực hiện hành động này.');
         }
+
         return view('auth.change-password');
     }
 
-    public function changePassword(Request $request)
+    /**
+     * Đổi mật khẩu
+     */
+    public function changePassword(Request $request): RedirectResponse
     {
-        if (!Auth::user()->isAdmin()) {
+        if (!$this->authService->isAdmin(auth()->user())) {
             abort(403, 'Bạn không có quyền thực hiện hành động này.');
         }
 
@@ -73,15 +94,16 @@ class UserController extends Controller
             'new_password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự.'
         ]);
 
-        $user = Auth::user();
+        try {
+            $this->userService->changePassword(
+                auth()->id(),
+                $request->current_password,
+                $request->new_password
+            );
 
-        if (!\Illuminate\Support\Facades\Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không đúng.']);
+            return back()->with('success', 'Đổi mật khẩu thành công!');
+        } catch (\Exception $e) {
+            return back()->withErrors(['current_password' => $e->getMessage()]);
         }
-
-        $user->password = \Illuminate\Support\Facades\Hash::make($request->new_password);
-        $user->save();
-
-        return back()->with('success', 'Đổi mật khẩu thành công!');
     }
 }

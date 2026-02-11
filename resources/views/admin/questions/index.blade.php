@@ -77,7 +77,7 @@
         </div>
 
         <!-- Alerts -->
-        @include('partials.alerts')
+        @include('components.alert')
 
 
         <!-- Bộ lọc -->

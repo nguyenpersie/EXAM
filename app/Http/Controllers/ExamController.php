@@ -2,127 +2,95 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exam;
+use App\Services\ExamService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ExamController extends Controller
 {
-    // public function test($id)
-    // {
-    //     $exam = Exam::with('questions.options')->findOrFail(67);
-    //     return view('pages.test', compact('exam'));
-    // }
+    protected ExamService $examService;
 
-    public function index()
+    public function __construct(ExamService $examService)
     {
-        $query = Exam::withCount('questions');
-        $user = auth()->user();
-
-        if ($user && !$user->isAdmin()) {
-            if ($user->category) {
-                $query->where('category', $user->category);
-            }
-        }
-
-        $exams = $query->get();
-        return view('pages.exams.home', compact('exams'));
+        $this->examService = $examService;
     }
 
     /**
-     * Bắt đầu làm bài thi (Trộn ngẫu nhiên câu hỏi)
+     * Hiển thị danh sách đề thi
      */
-    public function test($id)
+    public function index(): View
     {
-        $exam = Exam::with('questions.options')->findOrFail($id);
+        $user = auth()->user();
+        $exams = $this->examService->getExamsForUser($user);
 
-        // Không trộn ở đây, để JavaScript xử lý
-        // Vì mỗi lần reload sẽ trộn lại
+        return view('exams.home', compact('exams'));
+    }
 
-        return view('pages.exams.test', compact('exam'));
+    /**
+     * Bắt đầu làm bài thi
+     */
+    public function test(int $id): View
+    {
+        $exam = $this->examService->getExamWithQuestions($id);
+        return view('exams.test', compact('exam'));
     }
 
     /**
      * API: Lấy danh sách sections
      */
-    public function getSections($id)
+    public function getSections(int $id): JsonResponse
     {
-        $exam = Exam::findOrFail($id);
-        $sections = $exam->getSections();
-
+        $sections = $this->examService->getSections($id);
         return response()->json($sections);
     }
 
     /**
      * API: Lấy đề thi với câu hỏi (hỗ trợ cả test và practice mode)
      */
-    public function getRandomizedExam($id, Request $request)
+    public function getRandomizedExam(int $id, Request $request): JsonResponse
     {
-        $exam = Exam::findOrFail($id);
+        $mode = $request->input('mode', 'test');
+        $section = $request->input('section');
+        $categories = $request->input('categories', []);
+        $limit = $request->input('limit', 30);
 
-        $mode = $request->input('mode', 'test'); // 'test' hoặc 'practice'
-        $section = $request->input('section'); // Section cụ thể (cho practice mode)
-
-        // Lấy câu hỏi dựa theo mode
-        if ($mode === 'practice' && $section) {
-            // Practice mode: Lấy tất cả câu theo section, không random
-            $questions = $exam->getQuestionsBySection($section);
-        } else {
-            // Test mode: Lấy 30 câu random
-            $categories = $request->input('categories', []);
-            $limit = $request->input('limit', 30);
-            $questions = $exam->getRandomQuestionsByCategory($limit, $categories);
-        }
-
-        // Chỉ trộn đáp án khi là test mode
-        if ($mode === 'test') {
-            $questions = $questions->map(function ($question) {
-                // Convert to array, shuffle, then back to collection
-                $optionsArray = $question->options->toArray();
-                shuffle($optionsArray);
-                $question->options = collect($optionsArray)->values();
-                return $question;
-            });
-        }
-
-        $exam->questions = $questions;
+        $exam = $this->examService->getRandomizedExam($id, $mode, $section, $categories, $limit);
 
         return response()->json($exam);
     }
 
     /**
-     * Hiển thị danh sách theo danh mục/hạng mục
+     * Hiển thị danh sách theo danh mục
      */
-    public function category($category = null)
+    public function category(?string $category = null): View
     {
-        $query = Exam::withCount('questions');
+        $exams = $this->examService->getExamsByCategory($category);
+        $categories = $this->examService->getAllCategories();
 
-        if ($category) {
-            // Giả sử bạn có trường 'category' trong bảng exams
-            $query->where('category', $category);
-        }
-
-        $exams = $query->get();
-        $categories = Exam::select('category')->distinct()->pluck('category');
-
-        return view('pages.exams.category', compact('exams', 'categories', 'category'));
+        return view('exams.category', compact('exams', 'categories', 'category'));
     }
 
     /**
      * Tạo đề thi mới
      */
-    public function create()
+    public function create(): View|RedirectResponse
     {
-        return view('pages.exams.create');
+        if (!$this->examService->canUserManageExam(auth()->user())) {
+            abort(403, 'Bạn không có quyền tạo đề thi.');
+        }
+
+        return view('exams.create');
     }
 
     /**
      * Lưu đề thi mới
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        // Only admin/center can create exams
-        if (!in_array(auth()->user()->role, ['admin', 'center'])) {
-            abort(403, 'Unauthorized action.');
+        if (!$this->examService->canUserManageExam(auth()->user())) {
+            abort(403, 'Bạn không có quyền tạo đề thi.');
         }
 
         $validated = $request->validate([
@@ -134,7 +102,7 @@ class ExamController extends Controller
             'category' => 'nullable|string',
         ]);
 
-        $exam = Exam::create($validated);
+        $exam = $this->examService->createExam($validated);
 
         return redirect()->route('exams.show', $exam->id)
             ->with('success', 'Đề thi đã được tạo thành công!');
@@ -143,32 +111,33 @@ class ExamController extends Controller
     /**
      * Hiển thị chi tiết đề thi
      */
-    public function show($id)
+    public function show(int $id): View
     {
-        $exam = Exam::with('questions.options')->findOrFail($id);
-        return view('pages.exams.show', compact('exam'));
+        $exam = $this->examService->getExamWithQuestions($id);
+        return view('exams.show', compact('exam'));
     }
 
     /**
      * Chỉnh sửa đề thi
      */
-    public function edit($id)
+    public function edit(int $id): View|RedirectResponse
     {
-        $exam = Exam::findOrFail($id);
-        return view('pages.exams.edit', compact('exam'));
+        if (!$this->examService->canUserManageExam(auth()->user())) {
+            abort(403, 'Bạn không có quyền sửa đề thi.');
+        }
+
+        $exam = $this->examService->getExamWithQuestions($id);
+        return view('exams.edit', compact('exam'));
     }
 
     /**
      * Cập nhật đề thi
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): RedirectResponse
     {
-        // Only admin/center can update exams
-        if (!in_array(auth()->user()->role, ['admin', 'center'])) {
-            abort(403, 'Unauthorized action.');
+        if (!$this->examService->canUserManageExam(auth()->user())) {
+            abort(403, 'Bạn không có quyền cập nhật đề thi.');
         }
-
-        $exam = Exam::findOrFail($id);
 
         $validated = $request->validate([
             'code' => 'required|unique:exams,code,' . $id,
@@ -179,24 +148,22 @@ class ExamController extends Controller
             'category' => 'nullable|string',
         ]);
 
-        $exam->update($validated);
+        $this->examService->updateExam($id, $validated);
 
-        return redirect()->route('exams.show', $exam->id)
+        return redirect()->route('exams.show', $id)
             ->with('success', 'Đề thi đã được cập nhật!');
     }
 
     /**
      * Xóa đề thi
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
-        // Only admin/center can delete exams
-        if (!in_array(auth()->user()->role, ['admin', 'center'])) {
-            abort(403, 'Unauthorized action.');
+        if (!$this->examService->canUserManageExam(auth()->user())) {
+            abort(403, 'Bạn không có quyền xóa đề thi.');
         }
 
-        $exam = Exam::findOrFail($id);
-        $exam->delete(); // Cascade delete handled by foreign keys
+        $this->examService->deleteExam($id);
 
         return redirect()->route('exams.home')
             ->with('success', 'Đề thi và tất cả câu hỏi đã được xóa!');

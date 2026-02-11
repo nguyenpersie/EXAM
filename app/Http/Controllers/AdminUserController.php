@@ -2,34 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserExam;
+use App\Services\UserService;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class AdminUserController extends Controller
 {
-    public function index()
+    protected UserService $userService;
+    protected AuthService $authService;
+
+    public function __construct(UserService $userService, AuthService $authService)
     {
-        // Allow Admins and Teachers to view
-        if (!auth()->user()->canManageContent()) {
+        $this->userService = $userService;
+        $this->authService = $authService;
+    }
+
+    /**
+     * Hiển thị danh sách users
+     */
+    public function index(): View|RedirectResponse
+    {
+        if (!$this->authService->canManageContent(auth()->user())) {
             abort(403);
         }
 
-        $users = UserExam::orderBy('created_at', 'desc')->paginate(10);
+        $users = $this->userService->getPaginatedUsers(10);
         return view('admin.users.index', compact('users'));
     }
 
-    public function create()
+    /**
+     * Hiển thị form tạo user
+     */
+    public function create(): View|RedirectResponse
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!$this->authService->isAdmin(auth()->user())) {
             abort(403, 'Chỉ Admin mới có quyền tạo tài khoản.');
         }
+
         return view('admin.users.create');
     }
 
-    public function store(Request $request)
+    /**
+     * Lưu user mới
+     */
+    public function store(Request $request): RedirectResponse
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!$this->authService->isAdmin(auth()->user())) {
             abort(403, 'Chỉ Admin mới có quyền tạo tài khoản.');
         }
 
@@ -42,42 +62,50 @@ class AdminUserController extends Controller
             'category' => 'nullable|string|max:20',
         ]);
 
-        if ($validated['role'] == 'student' && empty($validated['category'])) {
-            return back()->withErrors(['category' => 'Hạng thi là bắt buộc đối với học viên.'])->withInput();
+        // Validate category for students
+        if (!$this->userService->validateStudentCategory($validated['role'], $validated['category'] ?? null)) {
+            return back()
+                ->withErrors(['category' => 'Hạng thi là bắt buộc đối với học viên.'])
+                ->withInput();
         }
 
-        // Handle NOT NULL constraint for non-students
-        if ($validated['role'] !== 'student' && empty($validated['category'])) {
-            $validated['category'] = '';
+        try {
+            $this->userService->createUser($validated);
+            return redirect()
+                ->route('admin.users.index')
+                ->with('success', 'Tạo tài khoản thành công!');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['error' => $e->getMessage()])
+                ->withInput();
         }
-
-        $validated['password'] = Hash::make($validated['password']);
-
-        UserExam::create($validated);
-
-        return redirect()->route('admin.users.index')->with('success', 'Tạo tài khoản thành công!');
     }
 
-    public function destroy($id)
+    /**
+     * Xóa user
+     */
+    public function destroy(int $id): RedirectResponse
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!$this->authService->isAdmin(auth()->user())) {
             abort(403, 'Bạn không có quyền xóa tài khoản.');
         }
 
-        $user = UserExam::findOrFail($id);
-
-        // Prevent deleting self or other admins (though query filters students, extra safety)
-        if ($user->isAdmin()) {
-            return back()->with('error', 'Không thể xóa tài khoản Admin.');
+        try {
+            $this->userService->deleteUser($id);
+            return redirect()
+                ->route('admin.users.index')
+                ->with('success', 'Xóa tài khoản thành công!');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
-
-        $user->delete();
-
-        return redirect()->route('admin.users.index')->with('success', 'Xóa tài khoản thành công!');
     }
-    public function resetPassword(Request $request, $id)
+
+    /**
+     * Reset mật khẩu user
+     */
+    public function resetPassword(Request $request, int $id): RedirectResponse
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!$this->authService->isAdmin(auth()->user())) {
             abort(403, 'Bạn không có quyền đổi mật khẩu người khác.');
         }
 
@@ -85,15 +113,11 @@ class AdminUserController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        $user = UserExam::findOrFail($id);
-
-        if ($user->isAdmin()) {
-            return back()->with('error', 'Không thể đổi mật khẩu tài khoản Admin tại đây.');
+        try {
+            $user = $this->userService->resetPassword($id, $request->password);
+            return back()->with('success', 'Đổi mật khẩu thành công cho học viên: ' . $user->full_name);
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
-
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        return back()->with('success', 'Đổi mật khẩu thành công cho học viên: ' . $user->full_name);
     }
 }

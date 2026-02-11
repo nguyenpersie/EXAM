@@ -21,7 +21,7 @@
         </div>
 
 
-        @include('partials.alerts')
+        @include('components.alert')
 
 
         <div class="card shadow">
