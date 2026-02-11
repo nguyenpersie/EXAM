@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ asset('css/modern-alerts.css') }}">
+<link rel="stylesheet" href="{{ asset('css/modern-alerts.css') }}?v=2">
 <style>
   html,
   body {
