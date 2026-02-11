@@ -704,19 +704,20 @@
   }
 
   /* Hover effect */
+  /* 🎯 CUSTOMIZATION: Change button expanded width here */
   .btn-expand:hover {
-    width: 140px;
+    width: 90px;  /* Default: 90px - Increase for longer text, decrease for shorter */
     border-radius: 8px;
   }
 
   .btn-expand:hover .btn-expand-sign {
-    width: 30%;
+    width: 35%;  /* Icon takes 35% of expanded width */
     padding-left: 8px;
   }
 
   .btn-expand:hover .btn-expand-text {
     opacity: 1;
-    width: 70%;
+    width: 65%;  /* Text takes 65% of expanded width (matches icon 35% + text 65% = 100%) */
     padding-right: 10px;
   }
 
@@ -793,7 +794,7 @@
     }
 
     .btn-expand:hover {
-      width: 130px;
+      width: 85px;  /* Mobile: Slightly smaller expanded width */
     }
   }
 
@@ -813,7 +814,7 @@
     }
 
     .btn-expand:hover {
-      width: 120px;
+      width: 80px;  /* Small mobile: Even smaller expanded width */
     }
 
     .btn-expand:hover .btn-expand-sign {
