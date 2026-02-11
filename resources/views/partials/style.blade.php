@@ -658,4 +658,166 @@
     display: inline-flex !important;
     align-items: center;
   }
+
+  /* ===== EXPANDABLE BUTTON SYSTEM ===== */
+  /* Generic expandable button - Base */
+  .btn-expand {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    padding: 0;
+    vertical-align: middle;
+  }
+
+  .btn-expand-sign {
+    width: 100%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-expand-sign i {
+    font-size: 1.1rem;
+    color: white;
+  }
+
+  .btn-expand-text {
+    position: absolute;
+    right: 0;
+    width: 0;
+    opacity: 0;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  /* Hover effect */
+  .btn-expand:hover {
+    width: 140px;
+    border-radius: 8px;
+  }
+
+  .btn-expand:hover .btn-expand-sign {
+    width: 30%;
+    padding-left: 8px;
+  }
+
+  .btn-expand:hover .btn-expand-text {
+    opacity: 1;
+    width: 70%;
+    padding-right: 10px;
+  }
+
+  .btn-expand:active {
+    transform: scale(0.95);
+  }
+
+  .btn-expand:focus {
+    outline-offset: 2px;
+  }
+
+  .btn-expand:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Primary variant (blue) - for Manage Users */
+  .btn-expand-primary {
+    background-color: #0d6efd;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.25);
+  }
+
+  .btn-expand-primary:hover {
+    background-color: #0b5ed7;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.35);
+  }
+
+  .btn-expand-primary:focus {
+    outline: 2px solid #0d6efd;
+  }
+
+  /* Success variant (green) - for Create Exam */
+  .btn-expand-success {
+    background-color: #198754;
+    box-shadow: 0 2px 8px rgba(25, 135, 84, 0.25);
+  }
+
+  .btn-expand-success:hover {
+    background-color: #157347;
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.35);
+  }
+
+  .btn-expand-success:focus {
+    outline: 2px solid #198754;
+  }
+
+  /* Secondary variant (gray) - for Change Password */
+  .btn-expand-secondary {
+    background-color: #6c757d;
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.25);
+  }
+
+  .btn-expand-secondary:hover {
+    background-color: #5c636a;
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.35);
+  }
+
+  .btn-expand-secondary:focus {
+    outline: 2px solid #6c757d;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .btn-expand {
+      width: 38px;
+      height: 38px;
+    }
+
+    .btn-expand-sign i {
+      font-size: 1rem;
+    }
+
+    .btn-expand-text {
+      font-size: 0.8125rem;
+    }
+
+    .btn-expand:hover {
+      width: 130px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .btn-expand {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+    }
+
+    .btn-expand-sign i {
+      font-size: 0.95rem;
+    }
+
+    .btn-expand-text {
+      font-size: 0.75rem;
+    }
+
+    .btn-expand:hover {
+      width: 120px;
+    }
+
+    .btn-expand:hover .btn-expand-sign {
+      padding-left: 6px;
+    }
+  }
 </style>

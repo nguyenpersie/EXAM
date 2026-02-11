@@ -8,19 +8,28 @@
       </div>
       <div class="col-md-5 text-end d-flex justify-content-end align-items-center gap-2">
         @if(auth()->check() && auth()->user()->isAdmin())
-          <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary" title="Quản lý học viên">
-            <i class="bi bi-people"></i>
+          <a href="{{ route('admin.users.index') }}" class="btn-expand btn-expand-primary" title="Quản lý tài khoản">
+            <div class="btn-expand-sign">
+              <i class="bi bi-people"></i>
+            </div>
+            <div class="btn-expand-text">Quản lý</div>
           </a>
         @endif
         @if(auth()->check() && auth()->user()->canManageContent())
-          <a href="{{ route('exams.create') }}" class="btn btn-primary" title="Tạo đề thi mới">
-            <i class="bi bi-plus-circle"></i> Tạo đề
+          <a href="{{ route('exams.create') }}" class="btn-expand btn-expand-success" title="Tạo đề thi mới">
+            <div class="btn-expand-sign">
+              <i class="bi bi-plus-circle"></i>
+            </div>
+            <div class="btn-expand-text">Tạo đề</div>
           </a>
         @endif
 
         @if(auth()->check() && auth()->user()->isAdmin())
-          <a href="{{ route('change-password') }}" class="btn btn-outline-secondary" title="Đổi mật khẩu">
-            <i class="bi bi-key"></i>
+          <a href="{{ route('change-password') }}" class="btn-expand btn-expand-secondary" title="Đổi mật khẩu">
+            <div class="btn-expand-sign">
+              <i class="bi bi-key"></i>
+            </div>
+            <div class="btn-expand-text">Mật khẩu</div>
           </a>
         @endif
 
@@ -39,26 +48,26 @@
 
     <!-- Lọc theo danh mục -->
     <!-- @if(auth()->check() && auth()->user()->isAdmin())
-                            <div class="card mb-4">
-                              <div class="card-body">
-                                <div class="d-flex gap-2 flex-wrap">
-                                  <a href="{{ route('exams.index') }}"
-                                    class="btn btn-sm {{ request()->is('/') ? 'btn-primary' : 'btn-outline-primary' }}">
-                                    Tất cả
-                                  </a>
-                                  @php
-                                    $categories = \App\Models\Exam::select('category')->distinct()->whereNotNull('category')->pluck('category');
-                                  @endphp
-                                  @foreach($categories as $cat)
-                                    <a href="{{ route('exams.category', $cat) }}"
-                                      class="btn btn-sm {{ request('category') == $cat ? 'btn-primary' : 'btn-outline-primary' }}">
-                                      {{ $cat }}
+                              <div class="card mb-4">
+                                <div class="card-body">
+                                  <div class="d-flex gap-2 flex-wrap">
+                                    <a href="{{ route('exams.index') }}"
+                                      class="btn btn-sm {{ request()->is('/') ? 'btn-primary' : 'btn-outline-primary' }}">
+                                      Tất cả
                                     </a>
-                                  @endforeach
+                                    @php
+                                      $categories = \App\Models\Exam::select('category')->distinct()->whereNotNull('category')->pluck('category');
+                                    @endphp
+                                    @foreach($categories as $cat)
+                                      <a href="{{ route('exams.category', $cat) }}"
+                                        class="btn btn-sm {{ request('category') == $cat ? 'btn-primary' : 'btn-outline-primary' }}">
+                                        {{ $cat }}
+                                      </a>
+                                    @endforeach
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          @endif -->
+                            @endif -->
 
     <!-- Danh sách đề thi -->
     <div class="row">
