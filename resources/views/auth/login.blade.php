@@ -212,15 +212,17 @@
 
         {{-- Display error messages --}}
         @if($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 1rem auto; width: 18rem; border-radius: 1.5rem; font-size: 0.875rem;">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                <strong>Lỗi đăng nhập!</strong>
+            <div class="alert alert-danger alert-simple alert-dismissible fade show" role="alert" style="margin: 1rem auto; width: 18rem; border-radius: 1.5rem; font-size: 0.875rem;">
+                <i class="start-icon bi bi-x-circle-fill faa-pulse animated"></i>
+                <strong class="font-weight-bold">Lỗi đăng nhập!</strong>
                 <ul class="mb-0 mt-2" style="padding-left: 1.5rem;">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="font-size: 0.7rem;"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <i class="bi bi-x"></i>
+                </button>
             </div>
         @endif
 
