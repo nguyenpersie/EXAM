@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ asset('css/modern-alerts.css') }}">
 <style>
   html,
   body {
