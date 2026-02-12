@@ -87,7 +87,7 @@
             left: 0;
             height: 100%;
             display: flex;
-            width: 3rem;
+            width: 2.5rem;
             z-index: 1;
         }
 
@@ -212,7 +212,8 @@
 
         {{-- Display error messages --}}
         @if($errors->any())
-            <div class="alert alert-danger alert-simple alert-dismissible fade show" role="alert" style="margin: 1rem auto; width: 18rem; border-radius: 1.5rem; font-size: 0.875rem;">
+            <div class="alert alert-danger alert-simple alert-dismissible fade show" role="alert"
+                style="margin: 1rem auto; width: 18rem; border-radius: 1.5rem; font-size: 0.875rem;">
                 <i class="start-icon bi bi-x-circle-fill faa-pulse animated"></i>
                 <strong class="font-weight-bold">Lỗi đăng nhập!</strong>
                 <ul class="mb-0 mt-2" style="padding-left: 1.5rem;">
@@ -273,7 +274,7 @@
 
         // Handle alert dismiss
         document.querySelectorAll('.btn-close').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const alert = this.closest('.alert');
                 if (alert) {
                     alert.classList.remove('show');
