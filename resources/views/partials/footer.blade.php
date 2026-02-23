@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row align-items-center">
       <div class="col-auto">
-        <a href="http://157.66.24.117/">
+        <a href="https://songhau.bbq29.space/">
           <img src="{{ asset('assets/images/icon-logo.png') }}" class="footer-logo" alt="Logo" />
         </a>
       </div>
