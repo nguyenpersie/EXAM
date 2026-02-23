@@ -125,7 +125,7 @@
         }
 
         .form__control::placeholder {
-            color: #CCCCCC;
+            color: #3c3a3aff;
             font-weight: 600;
         }
 
