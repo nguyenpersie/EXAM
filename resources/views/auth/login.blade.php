@@ -126,6 +126,7 @@
 
         .form__control::placeholder {
             color: #CCCCCC;
+            font-weight: 600;
         }
 
         .form__button {
