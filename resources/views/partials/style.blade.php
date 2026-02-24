@@ -840,44 +840,41 @@
     margin-bottom: 1rem;
   }
 
-  /* Decorative gradient circle (top decoration) */
+  /* Decorative gradient circle (header accent) */
   .import-phone-card__circle {
     position: absolute;
-    width: 14rem;
-    height: 14rem;
+    width: 8rem;
+    height: 8rem;
     border-radius: 100%;
-    background: linear-gradient(40deg, #00b359, #66e0a3 70%);
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -60%);
-    z-index: 0;
-    opacity: 0.9;
+    background: rgba(255, 255, 255, 0.15);
+    top: -2rem;
+    right: -2rem;
+    z-index: 1;
   }
 
   /* Header menu bar */
   .import-phone-card__menu {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.8rem;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(0, 179, 89, 0.15);
+    padding: 1.1rem 1.8rem;
+    background: linear-gradient(135deg, #198754, #20c997);
+    border-bottom: none;
   }
 
   .import-phone-card__menu-left i,
   .import-phone-card__menu-right i {
     font-size: 1.1rem;
-    color: #198754;
-    opacity: 0.7;
+    color: #fff;
+    opacity: 0.85;
   }
 
   .import-phone-card__menu-title {
     font-weight: 800;
     font-size: 1.1rem;
-    color: #155d36;
+    color: #fff;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
