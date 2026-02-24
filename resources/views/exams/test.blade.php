@@ -179,19 +179,6 @@
       cursor: default;
       pointer-events: none;
     }
-
-    /* Blue variant for exam card */
-    .import-phone-card--blue {
-      background-color: #eef4fb;
-    }
-
-    .import-phone-card--blue .import-phone-card__menu {
-      background: linear-gradient(135deg, #0d6efd, #6ea8fe);
-    }
-
-    .import-phone-card--blue .import-phone-card__circle {
-      background: rgba(255, 255, 255, 0.12);
-    }
   </style>
 @endsection
 
@@ -236,24 +223,21 @@
     </div>
   </div>
   <div class="container py-4">
-    <div class="import-phone-card import-phone-card--blue">
-      <div class="import-phone-card__circle"></div>
-      <div class="import-phone-card__menu">
-        <div class="import-phone-card__menu-left">
-          <i class="bi bi-pencil-square"></i>
-        </div>
-        <div class="import-phone-card__menu-title">{{ $exam->title }}</div>
-        <div class="import-phone-card__menu-right" style="display: flex; align-items: center; gap: 0.5rem;">
-          <span class="badge bg-light text-dark">
-            <i class="bi bi-clock"></i> <span id="timer">--:--</span>
-          </span>
-          <a href="{{ route('exams.show', $exam->id) }}"
-            style="color: #fff; font-size: 0.85rem; text-decoration: none; opacity: 0.9;">
-            <i class="bi bi-arrow-left"></i> Quay lại
-          </a>
+    <div class="card shadow mb-4">
+      <div class="card-header bg-primary text-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0"><i class="bi bi-pencil-square"></i> {{ $exam->title }}</h4>
+          <div>
+            <span class="badge bg-light text-dark me-2">
+              <i class="bi bi-clock"></i> <span id="timer">--:--</span>
+            </span>
+            <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-light btn-sm">
+              <i class="bi bi-arrow-left"></i> Quay lại
+            </a>
+          </div>
         </div>
       </div>
-      <div class="import-phone-card__content">
+      <div class="card-body">
         <div class="exam-container">
           <!-- Panel câu hỏi -->
           <div class="question-panel">
