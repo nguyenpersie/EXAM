@@ -834,6 +834,7 @@
     padding: 1.5rem;
     box-shadow: 10px 10px 0 #000;
     font-family: "Arial", sans-serif;
+    border-radius: 12px;
   }
 
   .brutalist-card__header {
