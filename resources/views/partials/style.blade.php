@@ -832,7 +832,7 @@
     position: relative;
     width: 100%;
     background-color: #f0faf0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 35px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     display: flex;
     flex-direction: column;
@@ -909,7 +909,7 @@
     background-color: #fff;
     font-size: 0.9rem;
     color: #333;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.3s ease;
     outline: none;
   }
 
@@ -950,20 +950,19 @@
     font-weight: 700;
     cursor: pointer;
     text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: none;
-    will-change: transform;
   }
 
   .import-phone-card__btn--primary {
     background: linear-gradient(135deg, #198754, #20c997);
     color: #fff;
-    box-shadow: 0 3px 10px rgba(25, 135, 84, 0.25);
+    box-shadow: 0 4px 15px rgba(25, 135, 84, 0.3);
   }
 
   .import-phone-card__btn--primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(25, 135, 84, 0.35);
+    box-shadow: 0 6px 20px rgba(25, 135, 84, 0.45);
     background: linear-gradient(135deg, #157347, #1baa80);
     color: #fff;
   }
