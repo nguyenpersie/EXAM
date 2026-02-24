@@ -833,7 +833,7 @@
     width: 100%;
     background-color: #f0faf0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    border-radius: 40px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
