@@ -124,6 +124,7 @@
             letter-spacing: 0.15em;
         }
 
+        /* Placeholder color,text login */
         .form__control::placeholder {
             color: #3c3a3aff;
             font-weight: 600;

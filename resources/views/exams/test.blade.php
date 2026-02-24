@@ -196,11 +196,11 @@
             <div class="d-flex flex-wrap gap-4 mb-2 align-items-center">
               <div>
                 <span class="info-label text-muted">Số báo danh:</span>
-                <span class="info-value fw-bold">LPT.SH.001</span>
+                <span class="info-value fw-bold">{{ Auth::user()->student_code }}</span>
               </div>
               <div>
                 <span class="info-label text-muted">Họ tên:</span>
-                <span class="info-value text-uppercase fw-bold text-primary">Đặng Thành Nguyên</span>
+                <span class="info-value text-uppercase fw-bold text-primary">{{ Auth::user()->full_name }}</span>
               </div>
             </div>
             <div class="d-flex flex-wrap gap-4 align-items-center">
