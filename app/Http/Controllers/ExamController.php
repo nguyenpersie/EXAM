@@ -29,7 +29,7 @@ class ExamController extends Controller
     }
 
     /**
-     * Bắt đầu làm bài thi
+     * View làm bài thi lay id
      */
     public function test(int $id): View
     {
