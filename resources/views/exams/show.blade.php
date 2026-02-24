@@ -217,36 +217,56 @@
             <!-- Import câu hỏi -->
             <div class="col-lg-7 mb-4">
                 @if(auth()->check() && in_array(auth()->user()->role, ['admin', 'center']))
-                    <div class="card shadow-sm mb-3">
-                        <div class="card-header bg-success text-white">
-                            <h5 class="mb-0"><i class="bi bi-upload"></i> Import câu hỏi</h5>
+                    <div class="import-phone-card">
+                        <!-- Decorative gradient circle -->
+                        <div class="import-phone-card__circle"></div>
+
+                        <!-- Header menu bar -->
+                        <div class="import-phone-card__menu">
+                            <div class="import-phone-card__menu-left">
+                                <i class="bi bi-upload"></i>
+                            </div>
+                            <div class="import-phone-card__menu-title">Import câu hỏi</div>
+                            <div class="import-phone-card__menu-right">
+                                <i class="bi bi-file-earmark-word"></i>
+                            </div>
                         </div>
-                        <div class="card-body">
+
+                        <!-- Content area -->
+                        <div class="import-phone-card__content">
                             <form action="{{ route('questions.import', $exam->id) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="mb-3">
-                                    <label class="form-label">Chọn file Word <span class="text-danger">*</span></label>
-                                    <input type="file" class="form-control" name="file" accept=".docx,.doc" required>
-                                    <small class="text-muted">Hỗ trợ: .docx, .doc (tối đa 10MB)</small>
+                                    <label class="import-phone-card__label">
+                                        <i class="bi bi-file-earmark-arrow-up"></i> Chọn file Word
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="import-phone-card__input" name="file" accept=".docx,.doc"
+                                        required>
+                                    <small class="import-phone-card__hint">Hỗ trợ: .docx, .doc (tối đa 10MB)</small>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Danh mục câu hỏi (tùy chọn)</label>
-                                    <input type="text" class="form-control" name="category"
+                                    <label class="import-phone-card__label">
+                                        <i class="bi bi-tag"></i> Danh mục câu hỏi (tùy chọn)
+                                    </label>
+                                    <input type="text" class="import-phone-card__input" name="category"
                                         placeholder="VD: Biển báo, An toàn giao thông...">
-                                    <small class="text-muted">Nếu để trống, sẽ lấy từ trường "Danh mục:" trong file
-                                        Word</small>
+                                    <small class="import-phone-card__hint">Nếu để trống, sẽ lấy từ trường "Danh mục:"
+                                        trong file Word</small>
                                 </div>
 
-                                <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-upload"></i> Import câu hỏi
-                                </button>
-
-                                <a href="{{ asset('templates/question-template.docx') }}" class="btn btn-outline-primary">
-                                    <i class="bi bi-download"></i> Tải file mẫu
-                                </a>
+                                <div class="import-phone-card__actions">
+                                    <button type="submit" class="import-phone-card__btn import-phone-card__btn--primary">
+                                        <i class="bi bi-upload"></i> Import câu hỏi
+                                    </button>
+                                    <a href="{{ asset('templates/question-template.docx') }}"
+                                        class="import-phone-card__btn import-phone-card__btn--outline">
+                                        <i class="bi bi-download"></i> Tải file mẫu
+                                    </a>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -310,35 +330,35 @@
                 .then(sections => {
                     if (sections.length === 0) {
                         sectionsList.innerHTML = `
-                                                    <div class="col-12 text-center py-5">
-                                                        <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
-                                                        <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
-                                                    </div>
-                                                `;
+                                                        <div class="col-12 text-center py-5">
+                                                            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                                                            <p class="mt-3 text-muted">Chưa có phần nào để ôn tập</p>
+                                                        </div>
+                                                    `;
                         return;
                     }
 
                     let html = '';
                     sections.forEach(section => {
                         html += `
-                                                <div class="col-md-6 col-lg-4 mb-3">
-                                                    <div class="card h-100 shadow-sm">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">
-                                                                <i class="bi bi-bookmark-fill text-primary"></i>
-                                                                Phần ${section.section}
-                                                            </h5>
-                                                            <p class="card-text text-muted">
-                                                                <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
-                                                            </p>
-                                                            <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
-                                                                class="btn btn-primary btn-sm w-100">
-                                                                <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
-                                                            </a>
+                                                    <div class="col-md-6 col-lg-4 mb-3">
+                                                        <div class="card h-100 shadow-sm">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">
+                                                                    <i class="bi bi-bookmark-fill text-primary"></i>
+                                                                    Phần ${section.section}
+                                                                </h5>
+                                                                <p class="card-text text-muted">
+                                                                    <i class="bi bi-question-circle"></i> ${section.count} câu hỏi
+                                                                </p>
+                                                                <a href="/exams/{{ $exam->id }}/test?mode=practice&section=${section.section}" 
+                                                                    class="btn btn-primary btn-sm w-100">
+                                                                    <i class="bi bi-book"></i> Bắt Đầu Ôn Tập
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            `;
+                                                `;
                     });
 
                     sectionsList.innerHTML = html;
@@ -347,11 +367,11 @@
                 .catch(error => {
                     console.error('Error:', error);
                     sectionsList.innerHTML = `
-                                            <div class="col-12 text-center py-5">
-                                                <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
-                                                <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
-                                            </div>
-                                        `;
+                                                <div class="col-12 text-center py-5">
+                                                    <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+                                                    <p class="mt-3 text-danger">Lỗi tải danh sách phần. Vui lòng thử lại!</p>
+                                                </div>
+                                            `;
                 });
         });
     </script>

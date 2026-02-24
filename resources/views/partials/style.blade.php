@@ -826,4 +826,195 @@
       padding-left: 6px;
     }
   }
+
+  /* ===== IMPORT PHONE-STYLE CARD ===== */
+  .import-phone-card {
+    position: relative;
+    width: 100%;
+    background-color: #f0faf0;
+    box-shadow: 0 4px 35px rgba(0, 0, 0, 0.1);
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  /* Decorative gradient circle (top decoration) */
+  .import-phone-card__circle {
+    position: absolute;
+    width: 14rem;
+    height: 14rem;
+    border-radius: 100%;
+    background: linear-gradient(40deg, #00b359, #66e0a3 70%);
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    z-index: 0;
+    opacity: 0.9;
+  }
+
+  /* Header menu bar */
+  .import-phone-card__menu {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.8rem;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0, 179, 89, 0.15);
+  }
+
+  .import-phone-card__menu-left i,
+  .import-phone-card__menu-right i {
+    font-size: 1.1rem;
+    color: #198754;
+    opacity: 0.7;
+  }
+
+  .import-phone-card__menu-title {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #155d36;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Content area */
+  .import-phone-card__content {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem 1.8rem 2rem;
+  }
+
+  /* Labels */
+  .import-phone-card__label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: #155d36;
+    margin-bottom: 0.5rem;
+  }
+
+  .import-phone-card__label i {
+    margin-right: 0.25rem;
+    color: #198754;
+  }
+
+  /* Inputs */
+  .import-phone-card__input {
+    width: 100%;
+    padding: 0.65rem 1rem;
+    border: 2px solid #c3e6cb;
+    border-radius: 12px;
+    background-color: #fff;
+    font-size: 0.9rem;
+    color: #333;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+
+  .import-phone-card__input:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.15);
+  }
+
+  .import-phone-card__input::placeholder {
+    color: #a3cfb5;
+    font-weight: 500;
+  }
+
+  /* Hint text */
+  .import-phone-card__hint {
+    display: block;
+    font-size: 0.78rem;
+    color: #6c9d7f;
+    margin-top: 0.35rem;
+  }
+
+  /* Action buttons */
+  .import-phone-card__actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.2rem;
+  }
+
+  .import-phone-card__btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1rem;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: none;
+  }
+
+  .import-phone-card__btn--primary {
+    background: linear-gradient(135deg, #198754, #20c997);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(25, 135, 84, 0.3);
+  }
+
+  .import-phone-card__btn--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(25, 135, 84, 0.45);
+    background: linear-gradient(135deg, #157347, #1baa80);
+    color: #fff;
+  }
+
+  .import-phone-card__btn--primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(25, 135, 84, 0.3);
+  }
+
+  .import-phone-card__btn--outline {
+    background-color: #fff;
+    color: #198754;
+    border: 2px solid #c3e6cb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .import-phone-card__btn--outline:hover {
+    transform: translateY(-2px);
+    background-color: #f0faf0;
+    border-color: #198754;
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.15);
+    color: #155d36;
+  }
+
+  .import-phone-card__btn--outline:active {
+    transform: translateY(0);
+  }
+
+  /* Responsive */
+  @media (max-width: 576px) {
+    .import-phone-card {
+      border-radius: 28px;
+    }
+
+    .import-phone-card__menu {
+      padding: 0.8rem 1.2rem;
+    }
+
+    .import-phone-card__content {
+      padding: 1.2rem 1.2rem 1.5rem;
+    }
+
+    .import-phone-card__actions {
+      flex-direction: column;
+    }
+
+    .import-phone-card__circle {
+      width: 10rem;
+      height: 10rem;
+    }
+  }
 </style>
