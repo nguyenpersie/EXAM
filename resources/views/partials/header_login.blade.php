@@ -99,17 +99,6 @@
 </style>
 <div class="d-flex justify-content-end align-items-center mb-4">
     @if (Auth::check())
-        <div class="badge text-bg-secondary text-wrap fs-6 me-2">
-            @if (Auth::User()->group_role == 2)
-                <div value="2">Reviewer: {{ Auth::User()->name }}</div>
-            @elseif (Auth::User()->group_role > 2)
-                <div value="3">Editor: {{ Auth::User()->name }}</div>
-            @else
-                <div value="1">Admin: {{ Auth::User()->name }}</div>
-            @endif
-        </div>
-    @endif
-    @if (Auth::check())
         <button class="btn btn-danger me-1" style="margin-left: 10px;">
             <a href="{{ route('logout') }}" class="text-white text-decoration-none d-flex align-items-center">
                 <i class="bi bi-person-circle"></i> Logout
