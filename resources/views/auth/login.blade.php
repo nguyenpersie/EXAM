@@ -7,6 +7,7 @@
     <title>TTDN Đường thủy Sông Hậu</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/images/icon-logo.png') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    @include('partials.header_login')
 
     <style>
         :root {
