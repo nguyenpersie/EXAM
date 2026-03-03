@@ -17,13 +17,13 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/change-password', [UserController::class, 'showChangePasswordForm'])->name('change-password')->middleware('auth');
 Route::post('/change-password', [UserController::class, 'changePassword'])->name('change-password.post')->middleware('auth');
 
-Route::get('options', [OptionController::class, 'index'])->name('admin.options');
+Route::get('options', [OptionController::class, 'index'])->name('admin.options')->middleware('auth');
 
 // Trang chủ - Danh sách đề thi (Yêu cầu đăng nhập)
 Route::get('/', [ExamController::class, 'index'])->name('home')->middleware('auth');
 
 // Quản lý đề thi (Exams)
-Route::prefix('exams')->name('exams.')->group(function () {
+Route::prefix('exams')->name('exams.')->middleware('auth')->group(function () {
     // Danh sách đề thi
     Route::get('/', [ExamController::class, 'index'])->name('index');
 
@@ -53,7 +53,7 @@ Route::prefix('exams')->name('exams.')->group(function () {
 });
 
 // Quản lý câu hỏi (Questions)
-Route::prefix('questions')->name('questions.')->group(function () {
+Route::prefix('questions')->name('questions.')->middleware('auth')->group(function () {
     // Danh sách câu hỏi của 1 đề
     Route::get('/exam/{examId}', [QuestionController::class, 'index'])->name('index');
 
