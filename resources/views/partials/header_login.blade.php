@@ -97,12 +97,3 @@
         text-align: left;
     }
 </style>
-<div class="d-flex justify-content-end align-items-center mb-4">
-    @if (Auth::check())
-        <button class="btn btn-danger me-1" style="margin-left: 10px;">
-            <a href="{{ route('logout') }}" class="text-white text-decoration-none d-flex align-items-center">
-                <i class="bi bi-person-circle"></i> Logout
-            </a>
-        </button>
-    @endif
-</div>
