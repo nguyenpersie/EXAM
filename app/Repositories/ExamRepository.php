@@ -12,7 +12,9 @@ class ExamRepository
      */
     public function getAllWithQuestionCount(): Collection
     {
-        return Exam::withCount('questions')->get();
+        return \Illuminate\Support\Facades\Cache::remember('all_exams_with_count', 86400, function () {
+            return Exam::withCount('questions')->get();
+        });
     }
 
     /**
@@ -73,8 +75,10 @@ class ExamRepository
      */
     public function getDistinctCategories(): Collection
     {
-        return Exam::select('category')
-            ->distinct()
-            ->pluck('category');
+        return \Illuminate\Support\Facades\Cache::remember('exam_categories', 86400, function () {
+            return Exam::select('category')
+                ->distinct()
+                ->pluck('category');
+        });
     }
 }

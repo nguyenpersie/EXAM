@@ -42,8 +42,10 @@ class ExamService
      */
     public function getSections(int $examId): array
     {
-        $exam = $this->examRepository->findById($examId);
-        return $exam->getSections()->toArray();
+        return \Illuminate\Support\Facades\Cache::remember("exam_{$examId}_sections", 86400, function () use ($examId) {
+            $exam = $this->examRepository->findById($examId);
+            return $exam->getSections()->toArray();
+        });
     }
 
     /**

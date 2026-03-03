@@ -37,17 +37,32 @@ class Exam extends Model
     }
 
     /**
-     * Lấy câu hỏi ngẫu nhiên
+     * Lấy câu hỏi ngẫu nhiên (Tối ưu hóa tránh inRandomOrder)
      */
     public function getRandomQuestionsByCategory($limit = 30, $categories = [])
     {
-        $query = $this->questions()->with('options');
+        $query = $this->questions();
 
         if (!empty($categories)) {
             $query->whereIn('category', $categories);
         }
 
-        return $query->inRandomOrder()->limit($limit)->get();
+        // Lấy danh sách ID
+        $ids = $query->pluck('id')->toArray();
+
+        if (empty($ids))
+            return collect();
+
+        // Xáo trộn mảng ID trong PHP
+        shuffle($ids);
+
+        // Cắt mảng lấy số lượng câu hỏi cần thiết
+        $selectedIds = array_slice($ids, 0, $limit);
+
+        // Truy vấn lại chính xác các câu được chọn và load options
+        return \App\Models\Question::with('options')
+            ->whereIn('id', $selectedIds)
+            ->get();
     }
 
     /**
