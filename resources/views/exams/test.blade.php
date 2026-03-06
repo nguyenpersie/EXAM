@@ -179,12 +179,6 @@
       cursor: default;
       pointer-events: none;
     }
-
-    /* Vô hiệu hóa các ô chọn đáp án trong bảng trả lời khi xem lại */
-    .sheet-panel.review-mode .sheet-check {
-      cursor: default;
-      pointer-events: none;
-    }
   </style>
 @endsection
 
