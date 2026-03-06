@@ -99,6 +99,8 @@ function renderQuestion(idx) {
 
 // Chọn đáp án
 function selectAnswer(qId, optIdx) {
+    if (isReviewMode) return;
+
     userAnswers[qId] = optIdx;
 
     [0, 1, 2, 3].forEach(i => {
