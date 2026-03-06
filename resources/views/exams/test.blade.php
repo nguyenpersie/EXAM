@@ -363,5 +363,5 @@
       sheetColumn2: document.getElementById('sheet-column-2')
     };
   </script>
-  <script src="{{ asset('js/exam-test.js') }}?v=2"></script>
+  <script src="{{ asset('js/exam-test.js') }}"></script>
 @endsection
