@@ -380,6 +380,10 @@ window.showAnswerReview = function () {
     const modal = bootstrap.Modal.getInstance(document.getElementById('resultModal'));
     if (modal) modal.hide();
 
+    // Disable clicks on answer sheet cells
+    const sheetPanel = document.querySelector('.sheet-panel');
+    if (sheetPanel) sheetPanel.classList.add('review-mode');
+
     // Mark all answer sheet cells with correct/incorrect colors
     examData.forEach((q, idx) => {
         const userAns = userAnswers[q.id];
