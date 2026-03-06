@@ -373,51 +373,42 @@ const urlParams = new URLSearchParams(window.location.search);
 const isPracticeMode = urlParams.get('mode') === 'practice';
 const practiceSection = urlParams.get('section');
 
-// Show answer review mode  
+// Hiển thị chế độ xem lại đáp án sau khi nộp bài
 window.showAnswerReview = function () {
     isReviewMode = true;
-    // Close the modal
+
+    // Đóng modal kết quả
     const modal = bootstrap.Modal.getInstance(document.getElementById('resultModal'));
     if (modal) modal.hide();
 
-    // Disable clicks on answer sheet cells (remove onclick directly from DOM)
+    // Xóa onclick trực tiếp khỏi tất cả ô ABCD trong bảng trả lời
     document.querySelectorAll('.sheet-check').forEach(cell => {
         cell.onclick = null;
         cell.style.cursor = 'default';
     });
 
-    // Mark all answer sheet cells with correct/incorrect colors
-    examData.forEach((q, idx) => {
+    // Tô màu đúng/sai trên bảng trả lời
+    examData.forEach(q => {
         const userAns = userAnswers[q.id];
 
-        // Clear all cells for this question first
+        // Xóa màu cũ
         [0, 1, 2, 3].forEach(i => {
             const cell = document.getElementById(`cell-${q.id}-${i}`);
-            if (cell) {
-                cell.classList.remove('checked', 'correct', 'incorrect');
-            }
+            if (cell) cell.classList.remove('checked', 'correct', 'incorrect');
         });
 
-        // Mark the correct answer
+        // Tô xanh ô đáp án đúng
         const correctCell = document.getElementById(`cell-${q.id}-${q.correctAnswer}`);
-        if (correctCell) {
-            correctCell.classList.add('correct');
-        }
+        if (correctCell) correctCell.classList.add('correct');
 
-        // Mark user's answer if they selected one
+        // Tô xanh/đỏ ô thí sinh đã chọn
         if (userAns !== undefined) {
             const userCell = document.getElementById(`cell-${q.id}-${userAns}`);
-            if (userCell) {
-                if (userAns === q.correctAnswer) {
-                    userCell.classList.add('correct');
-                } else {
-                    userCell.classList.add('incorrect');
-                }
-            }
+            if (userCell) userCell.classList.add(userAns === q.correctAnswer ? 'correct' : 'incorrect');
         }
     });
 
-    // Re-render current question in review mode
+    // Hiển thị câu hỏi hiện tại ở chế độ xem lại
     renderQuestion(currentIdx);
 };
 

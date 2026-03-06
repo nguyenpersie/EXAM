@@ -363,39 +363,5 @@
       sheetColumn2: document.getElementById('sheet-column-2')
     };
   </script>
-  <script src="{{ asset('js/exam-test.js') }}"></script>
-  <script>
-    // Override showAnswerReview để đảm bảo tắt click ô ABCD bảng trả lời sau khi nộp bài
-    window.showAnswerReview = function () {
-      isReviewMode = true;
-
-      // Đóng modal kết quả
-      const resultModal = bootstrap.Modal.getInstance(document.getElementById('resultModal'));
-      if (resultModal) resultModal.hide();
-
-      // Xóa onclick trực tiếp khỏi tất cả ô ABCD trong bảng trả lời
-      document.querySelectorAll('.sheet-check').forEach(function (cell) {
-        cell.onclick = null;
-        cell.style.cursor = 'default';
-      });
-
-      // Tô màu đúng/sai trên bảng trả lời
-      examData.forEach(function (q) {
-        var userAns = userAnswers[q.id];
-        [0, 1, 2, 3].forEach(function (i) {
-          var cell = document.getElementById('cell-' + q.id + '-' + i);
-          if (cell) cell.classList.remove('checked', 'correct', 'incorrect');
-        });
-        var correctCell = document.getElementById('cell-' + q.id + '-' + q.correctAnswer);
-        if (correctCell) correctCell.classList.add('correct');
-        if (userAns !== undefined) {
-          var userCell = document.getElementById('cell-' + q.id + '-' + userAns);
-          if (userCell) userCell.classList.add(userAns === q.correctAnswer ? 'correct' : 'incorrect');
-        }
-      });
-
-      // Hiển thị câu hiện tại ở chế độ xem lại
-      renderQuestion(currentIdx);
-    };
-  </script>
+  <script src="{{ asset('js/exam-test.js') }}?v=3"></script>
 @endsection
