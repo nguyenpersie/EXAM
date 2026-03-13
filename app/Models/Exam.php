@@ -47,8 +47,11 @@ class Exam extends Model
             $query->whereIn('category', $categories);
         }
 
-        // Lấy danh sách ID
-        $ids = $query->pluck('id')->toArray();
+        // Cache danh sách ID câu hỏi (ít thay đổi, nhiều user đọc đồng thời)
+        $cacheKey = "exam_{$this->id}_question_ids" . (!empty($categories) ? '_' . implode('_', $categories) : '');
+        $ids = \Illuminate\Support\Facades\Cache::remember($cacheKey, 3600, function () use ($query) {
+            return $query->pluck('id')->toArray();
+        });
 
         if (empty($ids))
             return collect();

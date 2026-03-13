@@ -9,6 +9,7 @@ use App\Models\Question;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class QuestionService
@@ -84,7 +85,13 @@ class QuestionService
             ];
         }
 
-        return $this->questionRepository->createWithOptions($data, $formattedOptions);
+        $question = $this->questionRepository->createWithOptions($data, $formattedOptions);
+
+        // Xóa cache pool ID câu hỏi của đề thi này
+        Cache::forget("exam_{$data['exam_id']}_question_ids");
+        Cache::forget('all_exams_with_count');
+
+        return $question;
     }
 
     /**
@@ -108,7 +115,18 @@ class QuestionService
      */
     public function deleteQuestion(int $id): bool
     {
-        return $this->questionRepository->delete($id);
+        $question = $this->questionRepository->findWithOptions($id);
+        $examId = $question?->exam_id;
+
+        $result = $this->questionRepository->delete($id);
+
+        // Xóa cache pool ID câu hỏi
+        if ($examId) {
+            Cache::forget("exam_{$examId}_question_ids");
+            Cache::forget('all_exams_with_count');
+        }
+
+        return $result;
     }
 
     /**
@@ -116,7 +134,13 @@ class QuestionService
      */
     public function deleteQuestionsByExam(int $examId): int
     {
-        return $this->questionRepository->deleteByExamId($examId);
+        $count = $this->questionRepository->deleteByExamId($examId);
+
+        // Xóa cache pool ID câu hỏi
+        Cache::forget("exam_{$examId}_question_ids");
+        Cache::forget('all_exams_with_count');
+
+        return $count;
     }
 
     /**
@@ -160,6 +184,11 @@ class QuestionService
             }
 
             DB::commit();
+
+            // Xóa cache pool ID câu hỏi sau khi import
+            Cache::forget("exam_{$examId}_question_ids");
+            Cache::forget('all_exams_with_count');
+
             return $importedCount;
 
         } catch (\Exception $e) {

@@ -113,7 +113,8 @@ class ExamController extends Controller
      */
     public function show(int $id): View
     {
-        $exam = $this->examService->getExamWithQuestions($id);
+        // Dùng getExamBasic (không load options) để giảm tải DB
+        $exam = $this->examService->getExamBasic($id);
         return view('exams.show', compact('exam'));
     }
 

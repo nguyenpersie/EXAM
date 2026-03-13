@@ -26,11 +26,24 @@ class ExamRepository
     }
 
     /**
-     * Find exam with questions and options
+     * Find exam with questions and options (for test/edit pages)
      */
     public function findWithQuestionsAndOptions(int $id): Exam
     {
         return Exam::with('questions.options')->findOrFail($id);
+    }
+
+    /**
+     * Find exam with questions only (no options) - for show/detail page
+     * Giảm tải: không cần load nội dung options cho trang giới thiệu
+     */
+    public function findWithQuestionsOnly(int $id): Exam
+    {
+        return Exam::with([
+            'questions' => function ($q) {
+                $q->select('id', 'exam_id', 'category', 'level', 'section');
+            }
+        ])->findOrFail($id);
     }
 
     /**

@@ -30,11 +30,19 @@ class ExamService
     }
 
     /**
-     * Get exam by ID with questions and options
+     * Get exam by ID with questions and options (for test/edit pages)
      */
     public function getExamWithQuestions(int $id): Exam
     {
         return $this->examRepository->findWithQuestionsAndOptions($id);
+    }
+
+    /**
+     * Get exam for show page - questions only, no options (giảm tải server)
+     */
+    public function getExamBasic(int $id): Exam
+    {
+        return $this->examRepository->findWithQuestionsOnly($id);
     }
 
     /**
