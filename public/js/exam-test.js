@@ -421,9 +421,9 @@ async function loadExam() {
             apiUrl = `/exams/${EXAM_ID}/randomized?mode=practice&section=${practiceSection}`;
         }
 
-        console.log('Practice Mode:', isPracticeMode);
-        console.log('Section:', practiceSection);
-        console.log('API URL:', apiUrl);
+        //console.log('Practice Mode:', isPracticeMode);
+        //console.log('Section:', practiceSection);
+        //console.log('API URL:', apiUrl);
 
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -436,7 +436,7 @@ async function loadExam() {
             correctAnswer: q.options.findIndex(opt => opt.is_correct === 1)
         }));
 
-        console.log('Đã load:', examData.length, 'câu hỏi');
+        //console.log('Đã load:', examData.length, 'câu hỏi');
 
         if (examData.length > 0) {
             window.EXAM_DURATION_SECONDS = timeLeft; // Lưu thời gian ban đầu
