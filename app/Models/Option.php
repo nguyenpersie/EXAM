@@ -19,6 +19,10 @@ class Option extends Model
         'is_correct',
     ];
 
+    protected $casts = [
+        'is_correct' => 'boolean',
+    ];
+
     // Quan hệ ngược lại với câu hỏi
     public function question()
     {

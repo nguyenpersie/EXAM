@@ -433,7 +433,7 @@ async function loadExam() {
             content: q.content,
             image: q.image,
             options: q.options.map(opt => opt.content),
-            correctAnswer: q.options.findIndex(opt => opt.is_correct === 1)
+            correctAnswer: q.options.findIndex(opt => !!opt.is_correct)
         }));
 
         console.log('Đã load:', examData.length, 'câu hỏi');
