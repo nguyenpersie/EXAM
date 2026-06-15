@@ -19,6 +19,9 @@ Route::post('/change-password', [UserController::class, 'changePassword'])->name
 
 Route::get('options', [OptionController::class, 'index'])->name('admin.options')->middleware('auth');
 
+// Trang giới thiệu (test – chưa thay thế trang chủ)
+Route::get('/intruduce', [HomeController::class, 'intro'])->name('intro');
+
 // Trang chủ - Danh sách đề thi (Yêu cầu đăng nhập)
 Route::get('/', [ExamController::class, 'index'])->name('home')->middleware('auth');
 
