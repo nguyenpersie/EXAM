@@ -8,6 +8,11 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+// Trang giới thiệu (Xem trước)
+Route::get('/introduce', function () {
+    return view('pages.introduce');
+})->name('introduce');
+
 // Login Route
 Route::get('/login', [UserController::class, 'ViewLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
