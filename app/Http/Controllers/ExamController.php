@@ -166,7 +166,7 @@ class ExamController extends Controller
 
         $this->examService->deleteExam($id);
 
-        return redirect()->route('home')
+        return redirect()->route('exams.home')
             ->with('success', 'Đề thi và tất cả câu hỏi đã được xóa!');
     }
 }

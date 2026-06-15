@@ -250,11 +250,6 @@
                     Đăng nhập
                 </button>
             </div>
-            <div class="text-center mt-3">
-                <a href="{{ route('intro') }}" style="color: #0056b3; font-size: 0.875rem; text-decoration: none;">
-                    <i class="bi bi-info-circle"></i> Giới thiệu trung tâm
-                </a>
-            </div>
             @csrf
         </form>
     </div>

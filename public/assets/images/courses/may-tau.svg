@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none">
-  <rect width="400" height="240" fill="#2c3e50"/>
-  <rect y="160" width="400" height="80" fill="#1a252f"/>
-  <rect x="130" y="70" width="140" height="90" rx="8" fill="#34495e" stroke="#f39c12" stroke-width="3"/>
-  <circle cx="170" cy="115" r="18" fill="#f39c12"/>
-  <circle cx="230" cy="115" r="18" fill="#f39c12"/>
-  <rect x="155" y="50" width="90" height="20" rx="4" fill="#e67e22"/>
-  <text x="200" y="215" text-anchor="middle" fill="#fff" font-family="Segoe UI,sans-serif" font-size="18" font-weight="600">Máy tàu thçy</text>
-</svg>
